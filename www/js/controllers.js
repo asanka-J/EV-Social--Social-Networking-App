@@ -404,19 +404,14 @@ angular.module('app.controllers', [])
 		 					 var data = snapshot.val();
 		 					 var noofl=data.noOfDisLikes;
 
-
-		 									 var alertPopup = $ionicPopup.alert({
+					 var alertPopup = $ionicPopup.alert({
 		 											template: noofl,
-
-
-		 									 });
+					 });
 		 									 var postsref = new Firebase('https://snev.firebaseio.com/posts');
-
 
 		 													 // Modify the 'first' and 'last' children, but leave other data at fredNameRef unchanged
 		 													 postsref.child(value).update({ noOfDisLikes: noofl+1});
-
-		 					 });
+	 });
 
 	 };
 
@@ -440,8 +435,6 @@ angular.module('app.controllers', [])
 
 //post controller
 .controller('mypostCtrl', function($scope,$rootScope,$ionicPopup){
-
-
 
 	var ref = new Firebase('https://snev.firebaseio.com/posts');
 
@@ -519,7 +512,62 @@ angular.module('app.controllers', [])
   };
 })
 
+//************************************************************************************
 
+
+.controller('newselect', function($scope,$rootScope,$ionicPopup,$location,$window) {
+
+	$scope.setSelectedPost = function(title1) {
+  //$rootScope.postt = title1;
+  window.localStorage.setItem("settitle",title1);
+
+	// var SelectdP=$rootScope.postt;
+
+alert(a);
+    	};
+  })
+
+
+  //post controller
+  .controller('getSelectedpost', function($scope,$rootScope,$ionicPopup,$window){
+
+	var SelectdP=window.localStorage.getItem("settitle");
+  
+
+  	var ref = new Firebase('https://snev.firebaseio.com/posts');
+
+  		ref.orderByChild("title").equalTo(SelectdP).on("value", function(snapshot,prevChildKey) {
+  		  $scope.$apply(function(){
+  			$scope.myposts = snapshot.val();
+  			console.log(prevChildKey.key());
+
+  		  });
+  		});
+
+  })
+
+//
+// //getSelectedpost
+// .controller('getSelectedpost', function($scope,$rootScope,$ionicPopup,$location) {
+//
+// 	var SelectdP=$rootScope.postt;
+// 	var ref = new Firebase('https://snev.firebaseio.com/posts');
+//
+// 		ref.orderByChild("title").equalTo(SelectdP).on("value", function(snapshot,prevChildKey) {
+// 		  $scope.$apply(function(){
+// 			$scope.selctdPost = snapshot.val();
+// 			console.log(prevChildKey.key());
+//
+// 		  });
+// 		});
+//
+//
+// })
+
+
+
+
+/******************************************************************************************
 
 
  //asanka end

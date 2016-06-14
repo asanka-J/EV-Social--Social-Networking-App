@@ -1,14 +1,13 @@
 
-<ion-view  view-title="Post Home page">
+<ion-view  view-title="My Post History">
 
 
-
-  <ion-content ng-controller="postCtrl">
+  <ion-content ng-controller="getSelectedpost">
 
 	 <div class="padding"> </div>
 
     <ion-list>
-      <ion-item  ng-repeat="post in posts" class="item-icon-right item-remove-animate">
+      <ion-item  ng-repeat="post in myposts" class="item-icon-right item-remove-animate">
 
         <div class="item item-divider"> <div class="padding"> </div></div>
 
@@ -22,85 +21,23 @@
                 </div>
 
               <div class="item item-body">
-                <img height="250px" width="400px"  src={{post.image}}>
+                <img height="250" width="100" class="full-image" src={{post.image}}>
                 <p>
                 {{post.description}} </p>
                 <p>
                   <a href="#" class="subdued">{{post.noOfLikes}} Like</a>
                   <a href="#" class="subdued">5 Comments</a>
                 </p>
+                <!-- //like dislike report -->
+                <div ng-controller="postCtrl">
+                  <button  ng-click=addlike(post.title) class="styl ion-thumbsup " ></button>
+                  <button  ng-click=adddislike(post.title) class="styl ion-thumbsdown " ></button>
+                  <button  ng-click=report(post.title) class="styl ion-flag " ></button>
 
-            <div ng-controller="postCtrl">
-              <button  ng-click=addlike(post.title) class="styl ion-thumbsup " ></button>
-              <button  ng-click=adddislike(post.title) class="styl ion-thumbsdown " ></button>
-              <button  ng-click=report(post.title) class="styl ion-flag " ></button>
+                </div>
+                    <button  >Edit Post</button>
 
-            </div>
-
-</div>
-
-
-  <div class="item item-body">
-
-							   <!-- {{comment.Comment}} -->
-<button  ui-sref="viewMyComment" >View Comments</button>
-
-  <div class="comment-form"  ng-controller="cmntController" >    <!-- new comment Form -->
-    <!-- Comment Avatar -->
-    <div class="comment-avatar">
-      <img src="http://lorempixel.com/200/200/people">
-    </div>
-
-    <form class="form" name="form" ng-submit="form.$valid && addComment(comment,post.title) && showAlert()" novalidate>
-      <div class="form-row">
-        <textarea class="input"
-                  ng-model="comment"
-                  placeholder="Add comment..."
-                  required></textarea>
-      </div>
-
-      <div class="form-row">
-        <input class="commentbtn" type="submit" value="Add Comment">
-      </div>
-    </form><!-- end of new comment form -->
-
-
-
-    <!-- load comments -->
-
-       <div class="comment">
-         <!-- Comment Avatar -->
-         <div class="comment-avatar">
-           <img src="http://lorempixel.com/200/200/people">
-         </div>
-
-         <!-- Comment Box -->
-         <div class="comment-box">
-
-           <div class="comment-text">Eligendi voluptatum ducimus architecto tempore, quaerat explicabo veniam fuga corporis totam reprehenderit quasi sapiente modi tempora at perspiciatis mollitia, dolores voluptate. Cumque, corrupti?</div>
-           <div class="comment-footer">
-             <div class="comment-info">
-               <span class="comment-author">
-                 <a href="mailto:ximme13@somedomain.io">Ximme</a>
-               </span>
-               <span class="comment-date">Jan 31, 1986 11:32:04 PM</span>
-             </div>
-
-             <div class="comment-actions">
-               <a href="#">Reply</a>
-             </div>
-           </div>
-         </div>
-       </div> <!-- end of load comments -->
-
-
-  </div>  <!-- End of comment div -->
-
-
-
-
-
-	  </div>
+          </div>
 
 					  </ion-item>
 
@@ -110,8 +47,6 @@
     </ion-list>
 
   </ion-content>
-
-
 
  <ion-footer-bar align-title="left" >
 

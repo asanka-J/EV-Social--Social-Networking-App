@@ -159,7 +159,7 @@ angular.module('app.routes', [])
     })
 
 
-    
+
 
     .state('viewpost', {
       url: '/viewpost',

@@ -46,8 +46,9 @@
   <div class="item item-body">
 
 							   <!-- {{comment.Comment}} -->
-<button ui-sref="viewpost" style=" padding: 5px 20px; background: #0099CC; border: none;color: white;">View Comments</button>
-
+                 <div ng-controller="newselect">
+<button ui-sref="viewpost"  ng-click=setSelectedPost(post.title) style=" padding: 5px 20px; background: #0099CC; border: none;color: white;">View Comments</button>
+    </div>
 
   <div class="comment-form"  ng-controller="cmntController" >    <!-- new comment Form -->
     <!-- Comment Avatar -->

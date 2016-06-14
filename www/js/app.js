@@ -28,6 +28,8 @@ angular.module('app', ['ionic', 'app.controllers',  'app.routes', 'app.services'
 
 
 
+
+
 //adding a post
 .controller('userController', function($scope, $http, $state,$ionicPopup,$rootScope) {
    $scope.postForm = function(title,description){
