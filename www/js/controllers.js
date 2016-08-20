@@ -876,6 +876,41 @@ angular.module('app.controllers', [])
 
 
  //asanka end
+/************/
+//Make Appointment
+ .controller ('makeAppointmentCtrl' , function($scope, $http, $state,$ionicPopup) {
+	$scope.makeAppointmentForm = function(cname, tele, vRegNum, station) {
+		var makeAppoRef1 = new Firebase('https://snev.firebaseio.com/make_apointments');
+		var makeAppoRef1 = makeAppoRef1.push();
+		
+		//pass the data to DB ---------------------------------------------------------------
+     var noticeID = makeAppoRef1.key();
+       makeAppoRef1.set({ 'cname': cname,   'tele': tele , 'vRegNum': vRegNum});
+       var path = makeAppoRef1.toString();
+
+		//alert successfully add
+		var alertPopup = $ionicPopup.alert({
+		title: 'Successful! <i class="ion-checkmark-round"></i>',
+		template:'You have Successfuly added the notice' 
+		});
+
+         $scope.cname="";
+			
+         $scope.tele="";
+		 $scope.vRegNum="";
+		 $scope.date="";
+			
+
+	}
+		//Clear the fields.------------------------------------------------
+		$scope.makeAppointmentForm2 = function(cname, tele, vRegNum) {
+  		$scope.cname="";
+			
+         $scope.tele="";
+		 $scope.vRegNum="";
+		 $scope.date="";
+		};
+ })
 
 
 //view user records
