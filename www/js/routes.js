@@ -12,11 +12,33 @@ angular.module('app.routes', [])
 
 
 
-  .state('welcomeEVUser', {
-    url: '/login',
-    templateUrl: 'templates/welcomeEVUser.html',
-    controller: 'welcomeEVUserCtrl'
-  })
+  .state('login', {
+      url: '/login',
+      templateUrl: 'templates/login.html',
+      controller:'loginController'
+    })
+    .state('forgot', {
+      url: '/forgot',
+      templateUrl: 'templates/forgot.html',
+      controller:'forgotController'
+    })
+    .state('register', {
+      url: '/register',
+      templateUrl: 'templates/register.html',
+      controller:'registerController'
+    })
+    .state('home', {
+      url: '/home',
+      templateUrl: 'templates/home.html',
+      controller:'homeController'
+    })
+
+
+ // .state('welcomeEVUser', {
+  //  url: '/login',
+ //   templateUrl: 'templates/welcomeEVUser.html',
+ //   controller: 'welcomeEVUserCtrl'
+ // })
 
   .state('signup', {
     url: '/signup',
@@ -24,11 +46,11 @@ angular.module('app.routes', [])
     controller: 'signupCtrl'
   })
 
-  .state('home', {
-    url: '/home',
-    templateUrl: 'templates/home.html',
-    controller: 'homeCtrl'
-  })
+ // .state('home', {
+//    url: '/home',
+ //   templateUrl: 'templates/home.html',
+//    controller: 'homeCtrl'
+//  })
 
   .state('map', {
     url: '/map',

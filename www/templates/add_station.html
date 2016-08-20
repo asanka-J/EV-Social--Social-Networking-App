@@ -13,44 +13,55 @@
 				 <label class="item item-input">
 					<input type="text" name="name" ng-model="station.name" placeholder="Station Name" required>
 				 </label>
-				 <span style="color:red" ng-show="myForm.name.$error.required">Name is required</span>
+				 <span style="color:red" ng-show="myForm.$submitted && myForm.name.$error.required">Name is required</span>
 				 <div class="spacer" style="width: 283px; height: 10px;"></div>
 				
 				 <label class="item item-input">
 					<textarea  name="description" ng-model="station.desc" placeholder="Description" required></textarea>
 				 </label>
-				 <span style="color:red" ng-show="myForm.description.$error.required">Description is required</span>
+				 <span style="color:red" ng-show="myForm.$submitted && myForm.description.$error.required">Description is required</span>
 				 <div class="spacer" style="width: 283px; height: 10px;"></div>
-				
+				 
+				  <label class="item item-input item-select">
+					<div class="input-label" style="color:#999"><font size="2">
+						Charger Type
+					</font></div>
+					<select name="type" ng-model="station.type" required>
+						  <option>Fast Charging Station</option>
+						  <option>Slow Charging Station</option>
+					</select>
+				  </label>
+				  <span style="color:red" ng-show="myForm.$submitted && myForm.type.$error.required">Type is required</span>
+				 <div class="spacer" style="width: 283px; height: 10px;"></div>
 				 <label class="item item-input">
 					<input type="text" name="address" ng-model="station.address" placeholder="Address" required>
 				 </label>
-				 <span style="color:red" ng-show="myForm.address.$error.required">Address is required</span>
+				 <span style="color:red" ng-show="myForm.$submitted && myForm.address.$error.required">Address is required</span>
 				 <div class="spacer" style="width: 283px; height: 10px;"></div>
 				
 				 <label class="item item-input">
-					<input type="text" name="contact" ng-model="station.contact" placeholder="Contact" ng-minlength="10" 
-					ng-maxlength="10"  required>
+					<input type="text" name="contact" ng-model="station.contact" placeholder="Contact (optional)"  data-ng-init="station.contact = ''" ng-minlength="10" 
+					ng-maxlength="10">
 				 </label>
 				 <span style="color:red" ng-show="myForm.contact.$error.required">Telephone no is required</span>
 				 <span style="color:red" ng-show="myForm.contact.$error.minlength || myForm.contact.$error.maxlength ">Phone number should be 10 digits</span>
 				 <div class="spacer" style="width: 283px; height: 10px;"></div>
 				 
 					<label class="item item-input">
-				 <input type="email" ng-model="station.email" name="email" placeholder="Email" required>
+				 <input type="email" ng-model="station.email" name="email" placeholder="Email (optional)" data-ng-init="station.email = ''">
 				 </label>
 				 <span style="color:red" ng-show="myForm.email.$error.required">Email is required</span>
 				 <span style="color:red" ng-show="myForm.email.$error.email">Not valid email!</span>
 				 <div class="spacer" style="width: 283px; height: 10px;"></div>
 				 
 				 <label class="item item-input">
-					<input type="url" ng-model="station.web" placeholder="Web" name="url" required>
+					<input type="url" ng-model="station.web" placeholder="Web (optional)" name="url" data-ng-init="station.web = ''">
 				 </label>
 				  <span style="color:red" ng-show="myForm.url.$error.required">Required</span>
 				 <span style="color:red" ng-show="myForm.url.$error.url">Not valid url!</span>
 				  
 
-                <button class="button button-full button-positive" ng-disabled="myForm.$invalid" ng-click="saveDetails()">
+                <button class="button button-full button-positive" ng-click="myForm.$valid && saveDetails()">
                     Save
                 </button>
             </div>

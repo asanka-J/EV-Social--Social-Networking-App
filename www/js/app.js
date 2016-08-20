@@ -5,8 +5,10 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('app', ['ionic', 'app.controllers',  'app.routes', 'app.services', 'app.directives','ngCordova','firebase','angular-md5', 'app.configs'])
+'Use Strict';
+angular.module('app', ['ionic','ngCordovaOauth','ngStorage','ngMessages', 'app.controllers',  'app.routes', 'app.services', 'app.directives','ngCordova','firebase','angular-md5', 'app.configs','app.util','app.auth'])
 
+.constant('FURL', 'https://snev.firebaseio.com/')
 .run(function($ionicPlatform, $rootScope, $ionicLoading, $location, CONFIG) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -28,23 +30,17 @@ angular.module('app', ['ionic', 'app.controllers',  'app.routes', 'app.services'
 
 
 
-//adding a new post
+//adding a post
 .controller('userController', function($scope, $http, $state,$ionicPopup,$rootScope) {
    $scope.postForm = function(title,description){
-      // $rootScope.test = "TEST user";
-      // 	 var username= $rootScope.test;
-         var username1=window.localStorage.getItem("user");
+      $rootScope.test = "TEST user";
+      	 var username= $rootScope.test;
          var imagelocation='https://startupjuncture.com/wp-content/uploads/2016/02/test-in-de-auto-selfie-social-charging.jpeg';
 
 		    var messageListRef = new Firebase('https://snev.firebaseio.com/posts');
      var newMessageRef = messageListRef.push();
-       newMessageRef.set({ 'title': title, 'description': description ,'image':'https://startupjuncture.com/wp-content/uploads/2016/02/test-in-de-auto-selfie-social-charging.jpeg', 'username':username1 , 'noOfLikes': 0,'noOfDisLikes': 0 ,'noOfReports': 0  });
+       newMessageRef.set({ 'title': title, 'description': description ,'image':'https://startupjuncture.com/wp-content/uploads/2016/02/test-in-de-auto-selfie-social-charging.jpeg', 'username':username, 'noOfLikes': 0,'noOfDisLikes': 0 ,'noOfReports': 0  });
        var path = newMessageRef.toString();
-
-       var alertPopup = $ionicPopup.alert({
-         title: 'Successful! <i class="ion-checkmark-round"></i>',
-         template:'You have Successfuly Created a Post'
-         });
 
          $scope.title="";
          $scope.description="";
