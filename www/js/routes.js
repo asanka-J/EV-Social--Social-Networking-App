@@ -68,6 +68,12 @@ angular.module('app.routes', [])
     templateUrl: 'templates/stationDetail.html',
     controller: 'stationDetailCtrl'
   })
+  
+  .state('stationDirection', {
+    url: '/stationDirection',
+    templateUrl: 'templates/stationDirection.html',
+    controller: 'stationDirectionCtrl'
+  })
 
   .state('socialNetwork', {
     url: '/socialnetwork',
