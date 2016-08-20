@@ -2,11 +2,89 @@
     height: 100%;
 }
 
+/** Error Messages **/
+
+/** Styling for the username field **/
+label.item.has-error {
+  border-bottom: 2px solid red;
+}
+
+/** Styling for the password field when an error exists**/
+label.item.has-error-lr {
+  border-bottom: 2px solid red;
+}
+
+/** Styling for the password field when an error has been resolved**/
+label.item.valid-lr {
+  border-left: 2px solid green;
+  border-right: 2px solid green;
+}
+
+/** Styling for the error text and container **/
+.form-errors {
+  margin: 5px 0
+}
+.form-error {
+  padding: 2px 0 2px 16px;
+  color: red;
+}
+
+#whitelbl{
+	 background-color: white;
+}
+
 #map {
     width: 100%;
     height: 100%;
 }
 
+#panel{
+        width:80%;height:400px;margin:10px auto;
+      }
+	  
 #addmap{
         width:80%;height:400px;margin:10px auto;box-shadow:0 3px 25px black;
       }
+	  
+ #floating-panel {
+        position: absolute;
+        bottom: 35px;
+        left: 5%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        font-family: 'Roboto','sans-serif';
+        line-height: 20px;
+        padding-left: 10px;
+      }
+	  
+#floating-panel2 {
+        position: absolute;
+        top: 35px;
+        right: 5%;
+        z-index: 5;
+        padding: 5px;
+      }
+	  
+
+	  
+.ibox {
+  float: left;
+  width: 10px;
+  height: 10px;
+  margin: 5px;
+  border: 1px solid rgba(0, 0, 0, .2);
+}
+
+.green {
+  background: #AEDC20;
+}
+
+.orange {
+  background: #EC7A2B;
+}
+
+.ash {
+  background: #4D4E4E;
+}

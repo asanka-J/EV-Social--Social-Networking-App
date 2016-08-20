@@ -1,5 +1,98 @@
+'Use Strict';
 angular.module('app.controllers', [])
 
+
+.controller('forgotController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils) {
+  var ref = new Firebase(FURL);
+  $scope.resetpassword = function(user) {
+      if(angular.isDefined(user)){
+      Auth.resetpassword(user)
+        .then(function() {
+          //console.log("Password reset email sent successfully!");
+          $location.path('/login');
+        }, function(err) {
+           //console.error("Error: ", err);
+        });
+      }
+    };
+})
+
+.controller('homeController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils) {
+  var ref = new Firebase(FURL);
+
+  $scope.logOut = function () {
+      Auth.logout();
+      $location.path("/login");
+  }
+
+})
+
+.controller('loginController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils) {
+  var ref = new Firebase(FURL);
+  var userkey = "";
+  $scope.signIn = function (user) {
+    console.log("login success");
+    if(angular.isDefined(user)){
+    Utils.show();
+    Auth.login(user)
+      .then(function(authData) {
+      //console.log("id del usuario:" + JSON.stringify(authData));
+
+      ref.child('profile').orderByChild("id").equalTo(authData.uid).on("child_added", function(snapshot) {
+        console.log(snapshot.key());
+        userkey = snapshot.key();
+        var obj = $firebaseObject(ref.child('profile').child(userkey));
+
+        obj.$loaded()
+          .then(function(data) {
+            //console.log(data === obj); // true
+            //console.log(obj.email);
+			$localStorage.username = obj.name;
+            $localStorage.useremail = obj.email;
+			$localStorage.vehiclename=obj.vehicle_name;
+			$localStorage.licenceplate=obj.licence_plate;
+			$localStorage.mobileno=obj.mobile;
+			$localStorage.uregdate=obj.registered_in;
+            $localStorage.userkey = userkey;
+
+              Utils.hide();
+              $state.go('home');
+              console.log("Starter page","Home");
+
+          })
+          .catch(function(error) {
+            console.error("Error:", error);
+          });
+      });
+
+      }, function(err) {
+        Utils.hide();
+         Utils.errMessage(err);
+      });
+    }
+  };
+
+})
+
+.controller('registerController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils) {
+
+  $scope.register = function(user) {
+    if(angular.isDefined(user)){
+    Utils.show();
+    Auth.register(user)
+      .then(function() {
+         Utils.hide();
+         console.log("user login id:" + JSON.stringify(user));
+         Utils.alertshow("Successfully","The User was Successfully Created.");
+         $location.path('/');
+      }, function(err) {
+         Utils.hide();
+         Utils.errMessage(err);
+      });
+    }
+  };
+
+})
 
 .controller('welcomeEVUserCtrl', function($scope) {
 
@@ -9,14 +102,15 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('homeCtrl', function($scope) {
-
+.controller('homeController', function($scope,$localStorage) {
+	$scope.username=$localStorage.username;
 })
 
 
 //isuru start
 
 .controller('StationCtrl', function($scope,$firebase,$ionicPopup) {
+	
 // Adding new station
 	$scope.station = {};
 
@@ -30,14 +124,19 @@ angular.module('app.controllers', [])
 
 
 	$scope.saveDetails = function(){
+	
+		 
 	    var lat = $scope.station.latitude;
 	    var lgt = $scope.station.longitude;
 	    var nme = $scope.station.name;
 		var dsc = $scope.station.desc;
+		var typ = $scope.station.type;
 		var add = $scope.station.address;
 		var cnt = $scope.station.contact;
 		var ema = $scope.station.email;
 		var web = $scope.station.web;
+		
+		 
 
 	    var fb = new Firebase("https://snev.firebaseio.com/Stations_Details");
 
@@ -46,9 +145,11 @@ angular.module('app.controllers', [])
 		    longitude: lgt,
 		    name: nme,
 			description:dsc,
+			type:typ,
 			address:add,
 			contact:cnt,
 			email:ema,
+			state:"active",
 			website:web,
 
 		}).then(function(ref) {
@@ -98,7 +199,7 @@ angular.module('app.controllers', [])
     };
 })
 
-.controller('stationDetailCtrl', function($scope,stationData,$ionicPopup) {
+.controller('stationDetailCtrl', function($scope,stationData,$cordovaGeolocation,$ionicPopup,$cordovaLaunchNavigator) {
 
 	var data = stationData.getProperty();
 		if(data=='')
@@ -112,6 +213,26 @@ angular.module('app.controllers', [])
 			$scope.website=data.website;
 
 
+		/*$scope.launchNavigator = function() {
+			     $cordovaGeolocation.getCurrentPosition().then(function(position){
+			
+			
+		
+		var cpostion = {lat: position.coords.latitude, lng: position.coords.longitude};
+		
+		 
+	
+		
+
+		var destination = [data.latitude,data.longitude];
+		var start = cpostion;
+		$cordovaLaunchNavigator.navigate(destination, start).then(function() {
+		  console.log("Navigator launched");
+		}, function (err) {
+		  console.error(err);
+		});
+		});
+	  };*/
 
 
 	  $scope.call = function () {
@@ -138,7 +259,6 @@ angular.module('app.controllers', [])
 
 
 
-
 })
 .service('stationData', function () {
         var property = '';
@@ -154,15 +274,17 @@ angular.module('app.controllers', [])
     })
 
 
+
+
 .controller('mapCtrl', function($scope,$cordovaGeolocation,$firebase,stationData,$location) {
         var options = {timeout: 10000, enableHighAccuracy: true};
 
         $cordovaGeolocation.getCurrentPosition(options).then(function(position){
 
-            var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            var nlatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
             var mapOptions = {
-                center: latLng,
+                center: nlatLng,
                 zoom: 7,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
@@ -176,62 +298,194 @@ angular.module('app.controllers', [])
                 var marker = new google.maps.Marker({
                     map: $scope.map,
                     animation: google.maps.Animation.DROP,
-                    position: latLng,
+                    position: nlatLng,
 					icon: 'img/me.png'
 
                 });
+				
 
                 var infoWindow = new google.maps.InfoWindow({
                     content: "Here I am!"
                 });
 
                 var firebaseObj = new Firebase("https://snev.firebaseio.com/Stations_Details");
-
-
-                firebaseObj.on("child_added", function(snapshot, prevChildKey){
-
+				
+			///loading only active stations
+			
+				firebaseObj.orderByChild("state").equalTo("active").on("child_added", function(snapshot) {
+				 
+				
 
                         var station = snapshot.val();
-                        var markerPos = new google.maps.LatLng(station.latitude, station.longitude);
+						
+								 var stationinfoWindow = new google.maps.InfoWindow({
+                    content: station.name+'<br> Tel: '+station.contact
+                });
+						//selecting fast station and assigning seperate icon
+						if(station.type=='Fast Charging Station')
+						{
+							var markerPos = new google.maps.LatLng(station.latitude, station.longitude);
 
 
-                        var stations = new google.maps.Marker({
-                            map:$scope.map,
-                            animation: google.maps.Animation.DROP,
-                            position: markerPos,
-                            icon: 'img/station.png'
-                        });
+							var stations = new google.maps.Marker({
+								map:$scope.map,
+								animation: google.maps.Animation.DROP,
+								position: markerPos,
+								icon: 'img/station.png'
+							});
+							
+						//click event for fast stations
+							 google.maps.event.addListener(stations, 'click', function () {
+								 stationinfoWindow.open($scope.map, stations);  
+							});
+						
+						
+						//doubleclick event for fast stations
+							 google.maps.event.addListener(stations, 'dblclick', function () {
+								 //var id = snapshot.key();
+								 var data = snapshot.val();
+								 stationData.setProperty(data);
+								 $location.path("/stationDetail");
+								 window.location.assign("#/stationDetail");
+							});
+						}
+						//selecting slow station and assigning seperate icon
+						else if(station.type=='Slow Charging Station')
+						{
+							var smarkerPos = new google.maps.LatLng(station.latitude, station.longitude);
 
 
-
-
-						 google.maps.event.addListener(stations, 'click', function () {
-							 //var id = snapshot.key();
-							 var data = snapshot.val();
-							 stationData.setProperty(data);
-							 $location.path("/stationDetail");
-						     window.location.assign("#/stationDetail");
-						});
-
+							var slowstations = new google.maps.Marker({
+								map:$scope.map,
+								animation: google.maps.Animation.DROP,
+								position: smarkerPos,
+								icon: 'img/slowstation.png'
+							});
+						
+						//click event for slow stations
+							 google.maps.event.addListener(slowstations, 'click', function () {
+								 stationinfoWindow.open($scope.map, slowstations);  
+							});
+						
+						//doubleclick event for slow stations
+							 google.maps.event.addListener(slowstations, 'dblclick', function () {
+								 //var id = snapshot.key();
+								 var data = snapshot.val();
+								 stationData.setProperty(data);
+								 $location.path("/stationDetail");
+								 window.location.assign("#/stationDetail");
+							});
+						}
+						
+						
 
                 }, function (errorObject) {
                     console.log("The read failed: " + errorObject.code);
                 });
 
+				
+				firebaseObj.orderByChild("state").equalTo("deactive").on("child_added", function(snapshot) {
+				 
+				
+							
+                        var station = snapshot.val();
+						
+						  var inactiveinfoWindow = new google.maps.InfoWindow({
+							content: station.name+"<br>Currently not in service !"
+							});
+						
+							var demarkerPos = new google.maps.LatLng(station.latitude, station.longitude);
 
 
+							var stations = new google.maps.Marker({
+								map:$scope.map,
+								animation: google.maps.Animation.DROP,
+								position: demarkerPos,
+								icon: 'img/destation.png'
+							});
+							
+							 google.maps.event.addListener(stations, 'click', function () {
+								inactiveinfoWindow.open($scope.map, stations);  
+							});
+						
+		
+
+                }, function (errorObject) {
+                    console.log("The read failed: " + errorObject.code);
+                });
 
                 google.maps.event.addListener(marker, 'click', function () {
                     infoWindow.open($scope.map, marker);
                 });
 
+			//To get closest stations to Ev user
+					var me=true;
+					var zoom=$scope.map.getZoom();
+						 $scope.me = function () {	 
+						 if(me)
+						 {
+							$scope.map.setCenter(nlatLng);
+							$scope.map.setZoom(zoom + 5);
+							me=false;
+						 }
+						 
+						 else
+						 {
+							$scope.map.setCenter(nlatLng);
+							$scope.map.setZoom(zoom);
+							me=true;
+						 }
+						};
+						
             });
 
+					
+						
+						
 
         }, function(error){
             console.log("Could not get location");
         });
+		
+	
 
+})
+
+.controller('stationDirectionCtrl', function($scope,$cordovaGeolocation,$firebase,stationData,$location) {
+       var directionsService = new google.maps.DirectionsService();
+         var directionsDisplay = new google.maps.DirectionsRenderer();
+    
+         var map = new google.maps.Map(document.getElementById('addmap'), {
+           zoom:7,
+           mapTypeId: google.maps.MapTypeId.ROADMAP
+         });
+        
+         directionsDisplay.setMap(map);
+         directionsDisplay.setPanel(document.getElementById('panel'));
+		 
+		
+            $cordovaGeolocation.getCurrentPosition().then(function(position){
+			
+			var data=stationData.getProperty();
+		
+		var cpostion = {lat: position.coords.latitude, lng: position.coords.longitude};
+		var spostion = {lat: data.latitude, lng: data.longitude};
+		 
+	
+		
+    
+         var request = {
+           origin: cpostion, 
+           destination: spostion,
+           travelMode: google.maps.DirectionsTravelMode.DRIVING
+         };
+		
+         directionsService.route(request, function(response, status) {
+           if (status == google.maps.DirectionsStatus.OK) {
+             directionsDisplay.setDirections(response);
+           }
+         });
+});
 })
 //isuru end
 

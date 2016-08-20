@@ -1,0 +1,102 @@
+<ion-view view-title="Register">
+  <ion-content class="padding-top">
+    <div class="text-center padding-top">
+    </div>
+    <form name="registerForm" novalidate ng-submit="registerForm.$valid && register(user)"
+    ng-class="{ 'has-error' : registerForm.txtemail.$invalid && registerForm.$submitted }">
+    <div class="list">
+	
+		<label class="item item-input item-floating-label" name="name">
+          <span class="input-label">Name</span>
+		   <input name="txtname" type="text" ng-model="user.name" placeholder="Name"
+		ng-pattern="/^[a-zA-Z\s]*$/"
+        required>
+         </label>
+		  <div class="form-errors" ng-messages="registerForm.txtname.$error" ng-if="registerForm.$submitted">
+        <div class="form-error" ng-message="required">This field is required.</div>
+        <div class="form-error" ng-message="pattern">Must contain letters only</div>
+      </div>
+				
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Email</span>
+        <input name="txtemail" type="email" ng-model="user.email" placeholder="Email"
+        ng-minlength="5"
+        ng-maxlength="30"
+        required>
+      </label>
+	 
+      <div class="form-errors" ng-messages="registerForm.txtemail.$error" ng-if="registerForm.$submitted">
+	  <div class="form-error" ng-message="required">This field is required.</div>
+	  <div class="form-error" ng-message="email">This field is must be an email.</div>
+      <div class="form-error" ng-message="minlength">This field is must be at least 5 characters.</div>
+      <div class="form-error" ng-message="maxlength">This field is must be less than 30 characters.</div>
+      </div>
+	  
+		<label class="item item-input item-floating-label" name="vehiclename">
+		<span class="input-label">Vehicle Name</span>
+              <input name="txtvehiclename" type="text" ng-model="user.vehiclename" placeholder="Vehicle Name"
+		ng-pattern="/^[a-zA-Z\s]*$/"
+        required>
+         </label>
+		  <div class="form-errors" ng-messages="registerForm.txtvehiclename.$error" ng-if="registerForm.$submitted">
+        <div class="form-error" ng-message="required">This field is required.</div>
+        <div class="form-error" ng-message="pattern">Must contain letters only</div>
+      </div>
+	  
+          <label class="item item-input item-floating-label" name="licenceplate">
+               <span class="input-label">Licence Plate</span>
+              <input name="txtlicenceplate" type="text" ng-model="user.licenceplate" placeholder="Licence Plate"
+		ng-pattern="/^(?:[a-zA-Z]{1,3})-[0-9]{4}$/"
+        required>
+         </label>
+		  <div class="form-errors" ng-messages="registerForm.txtlicenceplate.$error" ng-if="registerForm.$submitted">
+        <div class="form-error" ng-message="required">This field is required.</div>
+        <div class="form-error" ng-message="pattern">Need a valid vehicle no ex: AAC-3422</div>
+      </div>
+	  
+          <label class="item item-input item-floating-label" name="mobileno">
+               <span class="input-label">Mobile</span>
+             <input name="txtmobileno" type="text" ng-model="user.mobileno" placeholder="Mobile"
+		 ng-minlength="10"
+        ng-maxlength="10"
+        required>
+         </label>
+		  <div class="form-errors" ng-messages="registerForm.txtmobileno.$error" ng-if="registerForm.$submitted">
+        <div class="form-error" ng-message="required">This field is required.</div>
+         <div class="form-error" ng-message="minlength">Phone number should be 10 digits</div>
+        <div class="form-error" ng-message="maxlength">Phone number should be 10 digits</div>
+      </div>
+	  
+        <label class="item item-input item-floating-label" ng-class="{ 'has-error-lr' : registerForm.txtpassword.$invalid  && registerForm.$submitted}">
+        <span class="input-label">Password</span>
+        <input name="txtpassword" type="password" ng-model="user.password" placeholder="Password"
+        ng-minlength="5"
+        ng-maxlength="25"
+		ng-pattern="/(?=.*[a-zA-Z])(?=.*[^a-zA-Z])/"
+        required>
+      </label>
+      <div class="form-errors" ng-messages="registerForm.txtpassword.$error" ng-if="registerForm.$submitted">
+        <div class="form-error" ng-message="required">This field is required.</div>
+        <div class="form-error" ng-message="minlength">This field is must be at least 5 characters.</div>
+        <div class="form-error" ng-message="maxlength">This field is must be less than 30 characters.</div>
+        <div class="form-error" ng-message="pattern">Must contain letters, and non-alpha character (a number or a symbol.)</div>
+      </div>
+	  
+	  <label class="item item-input item-floating-label" ng-class="{ 'has-error-lr' : registerForm.txtcpassword.$invalid  && registerForm.$submitted}">
+        <span class="input-label">Confirm Password</span>
+        <input name="txtcpassword" type="password" ng-model="user.cpassword" placeholder="Confirm Password"
+		ng-pattern="{{user.password}}"
+        required>
+      </label>
+	   <div class="form-errors" ng-messages="registerForm.txtcpassword.$error" ng-if="registerForm.$submitted">
+        <div class="form-error" ng-message="required">This field is required.</div>
+        <div class="form-error" ng-message="pattern">Password not equal!!!</div>
+      </div>
+	 
+    </div>
+    <div class="padding-top">
+      <input type="submit" value="Register" class="button button-block button-positive"/>
+    </div>
+  </form>
+  </ion-content>
+</ion-view>
