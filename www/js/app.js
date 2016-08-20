@@ -1,4 +1,3 @@
-// Ionic Starter App
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
@@ -26,25 +25,6 @@ angular.module('app', ['ionic','ngCordovaOauth','ngStorage','ngMessages', 'app.c
 
   });
 
-})
-
-
-
-//adding a post
-.controller('userController', function($scope, $http, $state,$ionicPopup,$rootScope) {
-   $scope.postForm = function(title,description){
-      $rootScope.test = "TEST user";
-      	 var username= $rootScope.test;
-         var imagelocation='https://startupjuncture.com/wp-content/uploads/2016/02/test-in-de-auto-selfie-social-charging.jpeg';
-
-		    var messageListRef = new Firebase('https://snev.firebaseio.com/posts');
-     var newMessageRef = messageListRef.push();
-       newMessageRef.set({ 'title': title, 'description': description ,'image':'https://startupjuncture.com/wp-content/uploads/2016/02/test-in-de-auto-selfie-social-charging.jpeg', 'username':username, 'noOfLikes': 0,'noOfDisLikes': 0 ,'noOfReports': 0  });
-       var path = newMessageRef.toString();
-
-         $scope.title="";
-         $scope.description="";
-
-
-      };
 });
+
+
