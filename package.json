@@ -1,7 +1,7 @@
 {
-  "name": "sep-project",
+  "name": "EVSocial",
   "version": "1.1.1",
-  "description": "SEP-Project: An Ionic project",
+  "description": "Fast charging station finder",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^2.0.4",
@@ -15,12 +15,14 @@
     "shelljs": "^0.3.0"
   },
   "cordovaPlugins": [
+    "cordova-plugin-geolocation",
     "cordova-plugin-device",
     "cordova-plugin-console",
     "cordova-plugin-whitelist",
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
-    "ionic-plugin-keyboard"
+    "ionic-plugin-keyboard",
+    "uk.co.workingedge.phonegap.plugin.launchnavigator"
   ],
   "cordovaPlatforms": []
 }
