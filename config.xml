@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.ionicframework.sepproject560103" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>SEP-Project</name>
+  <name>EVSocial</name>
   <description>
-        An Ionic Framework and Cordova project.
+       Fast charging station finder
     </description>
-  <author email="you@example.com" href="http://example.com.com/">
-      Your Name Here
+  <author email="uaarangala@gmail.com" href="https://www.facebook.com/isuru.arangala">
+      Isuru Udara
     </author>
   <content src="index.html"/>
   <access origin="*"/>
+  <access origin="https://*" launch-external="yes"/>
+  <access origin="http://*" launch-external="yes"/>
+  <access origin="tel:*" launch-external="yes" />
+  <access origin="mailto:*" launch-external="yes" />
+  <plugin name="uk.co.workingedge.phonegap.plugin.launchnavigator" source="npm" />
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>
