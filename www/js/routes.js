@@ -166,7 +166,13 @@ angular.module('app.routes', [])
     controller: 'chargingRecordsCtrl'
   })
 
+//asanka profile
 
+   .state('profie', {
+      url: '/profile',
+      templateUrl: 'templates/profile.html',
+      // controller:'loginController'
+    })
 
 
   //asanka chat
