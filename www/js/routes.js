@@ -168,7 +168,7 @@ angular.module('app.routes', [])
 
 //asanka profile
 
-   .state('profie', {
+   .state('profile', {
       url: '/profile',
       templateUrl: 'templates/profile.html',
       // controller:'loginController'
