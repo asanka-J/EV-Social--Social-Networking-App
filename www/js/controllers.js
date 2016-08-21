@@ -24,6 +24,8 @@ angular.module('app.controllers', [])
       Auth.logout();
       $location.path("/login");
   }
+  
+  $scope.username=$localStorage.username;
 
 })
 
@@ -102,9 +104,6 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('homeController', function($scope,$localStorage) {
-	$scope.username=$localStorage.username;
-})
 
 
 //isuru start
@@ -199,7 +198,7 @@ angular.module('app.controllers', [])
     };
 })
 
-.controller('stationDetailCtrl', function($scope,stationData,$cordovaGeolocation,$ionicPopup,$cordovaLaunchNavigator) {
+.controller('stationDetailCtrl', function($scope,stationData,$ionicPopup,$cordovaLaunchNavigator,$location) {
 
 	var data = stationData.getProperty();
 		if(data=='')
@@ -213,26 +212,17 @@ angular.module('app.controllers', [])
 			$scope.website=data.website;
 
 
-		/*$scope.launchNavigator = function() {
-			     $cordovaGeolocation.getCurrentPosition().then(function(position){
-			
-			
-		
-		var cpostion = {lat: position.coords.latitude, lng: position.coords.longitude};
-		
-		 
-	
-		
+		$scope.launchNavigator = function() {
+			 
 
 		var destination = [data.latitude,data.longitude];
-		var start = cpostion;
-		$cordovaLaunchNavigator.navigate(destination, start).then(function() {
+		$cordovaLaunchNavigator.navigate(destination).then(function() {
 		  console.log("Navigator launched");
-		}, function (err) {
-		  console.error(err);
+		}, function (err) {	  
+		  $location.path('/stationDirection');
 		});
-		});
-	  };*/
+	
+	  };
 
 
 	  $scope.call = function () {
@@ -276,12 +266,21 @@ angular.module('app.controllers', [])
 
 
 
-.controller('mapCtrl', function($scope,$cordovaGeolocation,$firebase,stationData,$location) {
+.controller('mapCtrl', function($scope,$cordovaGeolocation,$firebase,stationData,$location,$ionicPlatform, $localStorage) {
+	
+	$ionicPlatform.ready(function(){
         var options = {timeout: 10000, enableHighAccuracy: true};
-
+			
         $cordovaGeolocation.getCurrentPosition(options).then(function(position){
+			$localStorage.userLatitude=position.coords.latitude;
+			$localStorage.userLongitude=position.coords.longitude;
+			}, function(error){
+            console.log("Could not get location");
+			$localStorage.userLatitude="6.9271";
+			$localStorage.userLongitude="79.8612";
+        });
 
-            var nlatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            var nlatLng = new google.maps.LatLng($localStorage.userLatitude, $localStorage.userLongitude);
 
             var mapOptions = {
                 center: nlatLng,
@@ -440,18 +439,12 @@ angular.module('app.controllers', [])
             });
 
 					
-						
-						
-
-        }, function(error){
-            console.log("Could not get location");
-        });
 		
-	
+	});
 
 })
 
-.controller('stationDirectionCtrl', function($scope,$cordovaGeolocation,$firebase,stationData,$location) {
+.controller('stationDirectionCtrl', function($scope,$localStorage,$firebase,stationData,$location) {
        var directionsService = new google.maps.DirectionsService();
          var directionsDisplay = new google.maps.DirectionsRenderer();
     
@@ -462,13 +455,12 @@ angular.module('app.controllers', [])
         
          directionsDisplay.setMap(map);
          directionsDisplay.setPanel(document.getElementById('panel'));
-		 
 		
-            $cordovaGeolocation.getCurrentPosition().then(function(position){
 			
 			var data=stationData.getProperty();
 		
-		var cpostion = {lat: position.coords.latitude, lng: position.coords.longitude};
+		
+		var cpostion = {lat: $localStorage.userLatitude, lng: $localStorage.userLongitude};
 		var spostion = {lat: data.latitude, lng: data.longitude};
 		 
 	
@@ -485,7 +477,7 @@ angular.module('app.controllers', [])
              directionsDisplay.setDirections(response);
            }
          });
-});
+
 })
 //isuru end
 

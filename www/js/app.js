@@ -21,7 +21,14 @@ angular.module('app', ['ionic','ngCordovaOauth','ngStorage','ngMessages', 'app.c
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
    }
-
+	
+	if (window.cordova) {
+    cordova.plugins.diagnostic.isLocationEnabled(function(enabled) {
+        alert("GPS is " + (enabled ? "enabled" : "disabled"));
+    }, function(error) {
+        alert("The following error occurred: " + error);
+    });
+	}
 
   });
 
