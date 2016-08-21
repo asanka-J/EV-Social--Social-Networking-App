@@ -24,7 +24,49 @@
           </ion-item>
         </ion-list>
       </div>
+
+      <ion-list option-buttons="itemButtons" can-swipe="true">
+
+  <ion-item>
+    <ion-label stacked>Username</ion-label>
+    <ion-input type="text"></ion-input>
+  </ion-item>
+   <ion-item>
+    <ion-label stacked>First name</ion-label>
+    <ion-input type="text"></ion-input>
+  </ion-item>
+   <ion-item>
+    <ion-label stacked>Second name</ion-label>
+    <ion-input type="text"></ion-input>
+  </ion-item>
+   <ion-item>
+    <ion-label stacked>Home town location</ion-label>
+    <ion-input type="text"></ion-input>
+  </ion-item>
+   <ion-item>
+    <ion-label stacked>Email adress</ion-label>
+    <ion-label type="text">email@test.com</ion-input>
+  </ion-item>
+
+  
+
+<!--should implement-->
+			<label class="item item-divider">
+    			List
+  			</label>
+  			<ion-item ng-if="list.length == 0">
+				Press <i class="icon ion-ios7-plus-outline"></i> to add item
+			</ion-item>
+			<!--  -->
+			<ion-item ng-repeat="item in list" item="item" item-type="item item-icon-left" ng-click="makeDefault(item)" ng-tap="makeDefault(item)">
+	  					<i ng-if="item.useAsDefault" class="icon ion-checkmark"></i>
+	  					{{ item.description }}
+			</ion-item>
+		</ion-list>
+    
     </ion-content>
+
+    
 
  
 
