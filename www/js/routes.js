@@ -152,7 +152,7 @@ angular.module('app.routes', [])
   .state('newPosts', {
     url: '/newPosts',
     templateUrl: 'templates/newPost.html',
-    controller: 'userController'
+   
   })
   .state('posthistroy', {
     url: '/posthistroy',

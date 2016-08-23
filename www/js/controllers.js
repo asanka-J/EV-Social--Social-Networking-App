@@ -986,19 +986,30 @@ $scope.ToggleCompleted = function(toStatus){
 })
 
 
-.controller('tempuser', function($scope) {
+// .controller('tempuser', function($scope) {
 
-  $scope.makeTempUser = function(user1) {
-    window.localStorage.clear();
-  window.localStorage.setItem("user",user1);
+//   $scope.makeTempUser = function(user1) {
+//     window.localStorage.clear();
+//   window.localStorage.setItem("user",user1);
 
 
-  };
+//   };
+// })
+
+.controller('loadPostCtrl', function($scope ,$ionicPopup, $localStorage){
+	var ref = new Firebase('https://snev.firebaseio.com/posts');
+	ref.on("value", function(snapshot,prevChildKey) {
+		  $scope.$apply(function(){
+			$scope.loadposts = snapshot.val();
+			//console.log(prevChildKey.key());
+
+		  });
+		});
 })
 
 
 //post controller
-.controller('postCtrl', function($scope ,$ionicPopup){
+.controller('postCtrl', function($scope ,$ionicPopup, $localStorage){
 	var ref = new Firebase('https://snev.firebaseio.com/posts');
 	 var ref2 = new Firebase('https://snev.firebaseio.com/comments');
 
@@ -1008,7 +1019,7 @@ $scope.ToggleCompleted = function(toStatus){
 	 			var title1=title;
 
 					//get key of child equals to ==title
-					  var ref = new Firebase("https://snev.firebaseio.com/posts");
+				
 					  ref.orderByChild("title").equalTo(title1).on("child_added", function(snapshot) {
 					  var value=snapshot.key();
 						var data = snapshot.val();
@@ -1034,7 +1045,7 @@ $scope.ToggleCompleted = function(toStatus){
 		 $scope.adddislike = function(title1) {
 
 
-	         var username=window.localStorage.getItem("user");
+	         var username=$localStorage.username;
 		 					//get key of child equals to ==title
 		 					  var ref = new Firebase("https://snev.firebaseio.com/posts");
 		 				   	ref.orderByChild("title").equalTo(title1).on("child_added", function(snapshot) {
@@ -1060,7 +1071,7 @@ $scope.ToggleCompleted = function(toStatus){
 
   //  alert("username"+$rootScope.test);
   		// 	var username= $rootScope.test;
-          var username=window.localStorage.getItem("user");
+          var username=$localStorage.username;
 
   		 				 //get key of child equals to ==title
   		 					 var ref = new Firebase("https://snev.firebaseio.com/posts");
@@ -1081,13 +1092,7 @@ $scope.ToggleCompleted = function(toStatus){
 	    };
 
 
-		ref.on("value", function(snapshot,prevChildKey) {
-		  $scope.$apply(function(){
-			$scope.posts = snapshot.val();
-			//console.log(prevChildKey.key());
 
-		  });
-		});
 
 		ref2.on("value", function(snapshot) {
 		  $scope.$apply(function(){
@@ -1099,10 +1104,10 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 //post controller
-.controller('mypostCtrl', function($scope ,$ionicPopup){
+.controller('mypostCtrl', function($scope ,$ionicPopup, $localStorage){
 
 	var ref = new Firebase('https://snev.firebaseio.com/posts');
-  var username=window.localStorage.getItem("user");
+  var username=$localStorage.username;
 
 		 ref.orderByChild("username").equalTo(username).on("value", function(snapshot,prevChildKey) {
 		  $scope.$apply(function(){
@@ -1116,15 +1121,17 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 //adding a post
-.controller('userController', function($scope, $http, $state,$ionicPopup,$rootScope) {
+.controller('newPostController', function($scope, $http, $state,$ionicPopup,$rootScope, $localStorage,$firebase) {
    $scope.postForm = function(title,description){
-      $rootScope.test = "TEST user";
-      	 var username= $rootScope.test;
+     
+      	 var username= $localStorage.username;
+				
          var imagelocation='https://startupjuncture.com/wp-content/uploads/2016/02/test-in-de-auto-selfie-social-charging.jpeg';
+				 var timestamp = Firebase.ServerValue.TIMESTAMP;
 
 		    var messageListRef = new Firebase('https://snev.firebaseio.com/posts');
      var newMessageRef = messageListRef.push();
-       newMessageRef.set({ 'title': title, 'description': description ,'image':'https://startupjuncture.com/wp-content/uploads/2016/02/test-in-de-auto-selfie-social-charging.jpeg', 'username':username, 'noOfLikes': 0,'noOfDisLikes': 0 ,'noOfReports': 0  });
+       newMessageRef.set({ 'title': title, 'description': description ,'image':'https://startupjuncture.com/wp-content/uploads/2016/02/test-in-de-auto-selfie-social-charging.jpeg', 'username':username,'timeStamp': timestamp,'noOfLikes': 0,'noOfDisLikes': 0 ,'noOfReports': 0  });
        var path = newMessageRef.toString();
 
          $scope.title="";
@@ -1137,7 +1144,7 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 
-.controller('cmntController', function($scope ,$ionicPopup,$location) {
+.controller('cmntController', function($scope ,$ionicPopup,$location,$localStorage) {
 
 	$scope.addComment = function(comment,title1) {
 
@@ -1146,7 +1153,7 @@ $scope.ToggleCompleted = function(toStatus){
   	ref.orderByChild("title").equalTo(title1).on("child_added", function(snapshot) {
 	  var value=snapshot.key();
 
-    var username=window.localStorage.getItem("user");
+    var username=$localStorage.username;
 
 		//adding  comments
 		var messageListRef = new Firebase('https://snev.firebaseio.com/comments');
@@ -1166,7 +1173,7 @@ $scope.ToggleCompleted = function(toStatus){
 })
 
 // viewing post
-.controller('viewpostController', function($scope ,$ionicPopup,$location) {
+.controller('viewpostController', function($scope ,$ionicPopup,$location, $localStorage) {
 
 //adding a comment
 	$scope.addComment = function(comment,title1) {
@@ -1182,7 +1189,7 @@ $scope.ToggleCompleted = function(toStatus){
 		//add comments
 		var messageListRef = new Firebase('https://snev.firebaseio.com/comments');
 		var newMessageRef = messageListRef.push();
-	 newMessageRef.set({ 'title': title1, 'comment':comment  , 'username': 'usernamevar', 'noOfLikes': 0,'noOfDisLikes': 0  });
+	 newMessageRef.set({ 'title': title1, 'comment':comment  , 'username': $localStorage.username, 'noOfLikes': 0,'noOfDisLikes': 0  });
 	 var path = newMessageRef.toString();
 
 	 var alertPopup = $ionicPopup.alert({
@@ -1196,7 +1203,7 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 //get selected post and store
-.controller('newselect', function($scope ,$ionicPopup,$location,$window) {
+.controller('newselect', function($scope ,$ionicPopup,$location,$window,$localStorage) {
 
 	$scope.setSelectedPost = function(title1) {
     window.localStorage.clear();

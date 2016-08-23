@@ -7,9 +7,9 @@
           <button class="button icon ion-plus-circled" ui-sref="posthistroy" style=" padding: 5px 20px; background: #0099CC; border: none;color: white;">View My Post History</button>
 
 
-<div class="bar bar-subheader2"  ng-controller="tempuser" >    <!-- new comment Form -->
+<!--<div class="bar bar-subheader2"  ng-controller="tempuser" >     new comment Form -->
 
-
+<!--
   <form class="form" name="form" ng-submit="makeTempUser(comment,post.title)" novalidate>
     <div class="form-row">
       <textarea class="input"
@@ -21,18 +21,18 @@
     <div class="form-row">
       <input class="commentbtn" type="submit" value="Enter the user name">
     </div>
-  </form><!-- end of new comment form -->
+  </form> end of new comment form 
 
-</div>  <!-- End of test username div -->
+</div>   End of test username div -->
 </div>
 <br>
 
-  <ion-content ng-controller="postCtrl">
+  <ion-content ng-controller="loadPostCtrl">
 
 	 <div class="padding"> </div>
 <div class = "button button-block padding">_</div>
     <ion-list>
-      <ion-item  ng-repeat="post in posts | orderBy : 'timestamp':true " class="item-icon-right item-remove-animate">
+      <ion-item  ng-repeat="post in loadposts | orderBy : 'timeStamp':true " class="item-icon-right item-remove-animate">
 
         <div class="item item-divider"> <div class="padding"> </div></div>
 
