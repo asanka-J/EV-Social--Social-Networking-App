@@ -174,6 +174,12 @@ angular.module('app.routes', [])
       // controller:'loginController'
     })
 
+     .state('profileEdit', {
+      url: '/profileEdit',
+      templateUrl: 'templates/profileEdit.html',
+      // controller:'loginController'
+    })
+
 
   //asanka chat
   .state('rooms', {
