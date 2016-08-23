@@ -198,11 +198,13 @@ angular.module('app.controllers', [])
     };
 })
 
-.controller('stationDetailCtrl', function($scope,stationData,$ionicPopup,$cordovaLaunchNavigator,$location) {
+.controller('stationDetailCtrl', function($scope,stationData,$ionicPopup,$cordovaLaunchNavigator,$location,$localStorage) {
+
 
 	var data = stationData.getProperty();
 		if(data=='')
 		{console.log("Could not get station details");}
+	
 
             $scope.name=data.name;
 			$scope.description=data.description;
@@ -245,20 +247,427 @@ angular.module('app.controllers', [])
 		  else
 			window.open(data.website, '_system');
       };
+	  
+			var sid = stationData.getStationid();
+			var uid = $localStorage.userkey;
+	  
+	  		      var firebaseObj = new Firebase("https://snev.firebaseio.com/user_status");
+				  firebaseObj.orderByChild("station_id").equalTo(sid).on("child_added", function(snapshot) {
+				 
+                        var station_status = snapshot.val();
+						if(station_status.user_id==uid){
+							current_status=snapshot.val();
+							if(current_status.on_myWay==1)
+							{$scope.myway=true;}
+							if(current_status.in_theQueue==1)
+							{$scope.inqueue=true;}
+							if(current_status.charging==1)
+							{$scope.charge=true;}
+							if(current_status.completed==1)
+							{$scope.complete=true;}
+							
+						}
+						
+					
+                });
+	  
+	  
+	  
+	  
+	  $scope.ToggleOnMyWay = function(toStatus){
+		  
+		  if(toStatus==true){
+		  
+				
+			//loading only current stations
+			
+				firebaseObj.orderByChild("station_id").equalTo(sid).on("child_added", function(snapshot) {
+				 
+                        var station_status = snapshot.val();
+						//creating first time
+						if(station_status==""){
+							fb.push({user_id: uid,station_id: sid,on_myWay: 1, in_theQueue: 0,charging:0,
+							completed:0,}).then(function(ref) {
+								$scope.static = {};
+							}, function(error) {
+								console.log("Error:adding first time", error);
+							});
+							
+						}
+						if(station_status.user_id==uid){
+							
+							var onComplete = function(error) {
+							  if (error) {
+								console.log('Synchronization failed');
+							  } else {
+								$ionicPopup.alert({
+										title: 'Enabled on my way ! ',
+									});
+							  }
+							};
+							
+							//updating the status by 1 by geeting the unique key
+							status_id=snapshot.key();
+							
+							var onWay=station_status.on_myWay+1;	
+							 var statusRef = new Firebase("https://snev.firebaseio.com/user_status");
+						     statusRef.child(status_id).update({on_myWay: onWay}, onComplete);
+
+							
+							
+						}
+						
+				 }, function (errorObject) {
+                    console.log("The read failed: " + errorObject.code);
+                });
+		  
+		  }
+		  
+		  else{
+			  		
+			//loading only current stations
+			
+				firebaseObj.orderByChild("station_id").equalTo(sid).on("child_added", function(snapshot) {
+				 
+                        var station_status = snapshot.val();
+						
+						if(station_status.user_id==uid){
+							
+							var onComplete = function(error) {
+							  if (error) {
+								console.log('Synchronization failed');
+							  } else {
+								$ionicPopup.alert({
+										title: 'Disable on my way!',
+									});
+							  }
+							};
+							
+							//updating the status by 1 by geting the unique key
+							status_id=snapshot.key();
+							
+							var onWay=station_status.on_myWay-1;	
+							 var statusRef = new Firebase("https://snev.firebaseio.com/user_status");
+						     statusRef.child(status_id).update({on_myWay: onWay}, onComplete);
+
+							
+							
+						}
+						
+				 }, function (errorObject) {
+                    console.log("The read failed: " + errorObject.code);
+                });
+			  
+			  
+		  }
+		
+			
+		}
+
+		
+		  $scope.ToggleInQueue = function(toStatus){
+		  
+		  if(toStatus==true){
+		  
+				
+			//loading only current stations
+			
+				firebaseObj.orderByChild("station_id").equalTo(sid).on("child_added", function(snapshot) {
+				 
+                        var station_status = snapshot.val();
+						//creating first time
+						if(station_status==""){
+							fb.push({user_id: uid,station_id: sid,on_myWay: 0, in_theQueue: 1,charging:0,
+							completed:0,}).then(function(ref) {
+								$scope.static = {};
+							}, function(error) {
+								console.log("Error:adding first time", error);
+							});
+							
+						}
+						if(station_status.user_id==uid){
+							
+							var onComplete = function(error) {
+							  if (error) {
+								console.log('Synchronization failed');
+							  } else {
+								$ionicPopup.alert({
+										title: 'Enabled in queue! ',
+									});
+							  }
+							};
+							
+							//updating the status by 1 by geeting the unique key
+							status_id=snapshot.key();
+							
+							
+							var inQu=station_status.in_theQueue+1;	
+							 var statusRef = new Firebase("https://snev.firebaseio.com/user_status");
+						     statusRef.child(status_id).update({in_theQueue: inQu}, onComplete);
+
+							
+							
+						}
+						
+				 }, function (errorObject) {
+                    console.log("The read failed: " + errorObject.code);
+                });
+		  
+		  }
+		  
+		  else{
+			  		
+			//loading only current stations
+			
+				firebaseObj.orderByChild("station_id").equalTo(sid).on("child_added", function(snapshot) {
+				 
+                        var station_status = snapshot.val();
+						
+						if(station_status.user_id==uid){
+							
+							var onComplete = function(error) {
+							  if (error) {
+								console.log('Synchronization failed');
+							  } else {
+								$ionicPopup.alert({
+										title: 'Disable in queue!',
+									});
+							  }
+							};
+							
+							//updating the status by 1 by geting the unique key
+							status_id=snapshot.key();
+							
+							var inQu=station_status.in_theQueue-1;	
+							 var statusRef = new Firebase("https://snev.firebaseio.com/user_status");
+						     statusRef.child(status_id).update({in_theQueue: inQu}, onComplete);
+
+							
+							
+						}
+						
+				 }, function (errorObject) {
+                    console.log("The read failed: " + errorObject.code);
+                });
+			  
+			  
+		  }
+		
+			
+		}
+		
+		
+		
+		$scope.ToggleCharging = function(toStatus){
+		  
+		  if(toStatus==true){
+		  
+				
+			//loading only current stations
+			
+				firebaseObj.orderByChild("station_id").equalTo(sid).on("child_added", function(snapshot) {
+				 
+                        var station_status = snapshot.val();
+						//creating first time
+						if(station_status==""){
+							fb.push({user_id: uid,station_id: sid,on_myWay: 0, in_theQueue: 0,charging:1,
+							completed:0,}).then(function(ref) {
+								$scope.static = {};
+							}, function(error) {
+								console.log("Error:adding first time", error);
+							});
+							
+						}
+						if(station_status.user_id==uid){
+							
+							var onComplete = function(error) {
+							  if (error) {
+								console.log('Synchronization failed');
+							  } else {
+								$ionicPopup.alert({
+										title: 'Enabled Charging! ',
+									});
+							  }
+							};
+							
+							//updating the status by 1 by geeting the unique key
+							status_id=snapshot.key();
+							
+							
+							var charge=station_status.charging+1;	
+							 var statusRef = new Firebase("https://snev.firebaseio.com/user_status");
+						     statusRef.child(status_id).update({charging: charge}, onComplete);
+
+							
+							
+						}
+						
+				 }, function (errorObject) {
+                    console.log("The read failed: " + errorObject.code);
+                });
+		  
+		  }
+		  
+		  else{
+			  		
+			//loading only current stations
+			
+				firebaseObj.orderByChild("station_id").equalTo(sid).on("child_added", function(snapshot) {
+				 
+                        var station_status = snapshot.val();
+						
+						if(station_status.user_id==uid){
+							
+							var onComplete = function(error) {
+							  if (error) {
+								console.log('Synchronization failed');
+							  } else {
+								$ionicPopup.alert({
+										title: 'Disable Charging!',
+									});
+							  }
+							};
+							
+							//updating the status by 1 by geting the unique key
+							status_id=snapshot.key();
+							
+							var charge=station_status.charging-1;	
+							 var statusRef = new Firebase("https://snev.firebaseio.com/user_status");
+						     statusRef.child(status_id).update({charging: charge}, onComplete);
+
+							
+							
+						}
+						
+				 }, function (errorObject) {
+                    console.log("The read failed: " + errorObject.code);
+                });
+			  
+			  
+		  }
+		  
+		  
+		  
+		   
 
 
+}
+
+
+
+
+$scope.ToggleCompleted = function(toStatus){
+		  
+		  if(toStatus==true){
+		  
+				
+			//loading only current stations
+			
+				firebaseObj.orderByChild("station_id").equalTo(sid).on("child_added", function(snapshot) {
+				 
+                        var station_status = snapshot.val();
+						//creating first time
+						if(station_status==""){
+							fb.push({user_id: uid,station_id: sid,on_myWay: 0, in_theQueue: 0,charging:0,
+							completed:1,}).then(function(ref) {
+								$scope.static = {};
+							}, function(error) {
+								console.log("Error:adding first time", error);
+							});
+							
+						}
+						if(station_status.user_id==uid){
+							
+							var onComplete = function(error) {
+							  if (error) {
+								console.log('Synchronization failed');
+							  } else {
+								$ionicPopup.alert({
+										title: 'Enabled Completed! ',
+									});
+							  }
+							};
+							
+							//updating the status by 1 by geeting the unique key
+							status_id=snapshot.key();
+							
+							
+							var comp=station_status.completed+1;	
+							 var statusRef = new Firebase("https://snev.firebaseio.com/user_status");
+						     statusRef.child(status_id).update({completed: comp}, onComplete);
+
+							
+							
+						}
+						
+				 }, function (errorObject) {
+                    console.log("The read failed: " + errorObject.code);
+                });
+		  
+		  }
+		  
+		  else{
+			  		
+			//loading only current stations
+			
+				firebaseObj.orderByChild("station_id").equalTo(sid).on("child_added", function(snapshot) {
+				 
+                        var station_status = snapshot.val();
+						
+						if(station_status.user_id==uid){
+							
+							var onComplete = function(error) {
+							  if (error) {
+								console.log('Synchronization failed');
+							  } else {
+								$ionicPopup.alert({
+										title: 'Disable Completed!',
+									});
+							  }
+							};
+							
+							//updating the status by 1 by geting the unique key
+							status_id=snapshot.key();
+							
+							var comp=station_status.completed-1;	
+							 var statusRef = new Firebase("https://snev.firebaseio.com/user_status");
+						     statusRef.child(status_id).update({completed: comp}, onComplete);
+
+							
+							
+						}
+						
+				 }, function (errorObject) {
+                    console.log("The read failed: " + errorObject.code);
+                });
+			  
+			  
+		  }
+		
+
+		
+			
+		}
+		
+		
+		
 
 
 })
 .service('stationData', function () {
         var property = '';
+		var station_id = '';
 
         return {
+			 getStationid: function () {
+				return station_id;
+            },
             getProperty: function () {
                 return property;
             },
-            setProperty: function(value) {
+            setProperty: function(value,sid) {
                 property = value;
+				station_id=sid;
             }
         };
     })
@@ -266,9 +675,9 @@ angular.module('app.controllers', [])
 
 
 
-.controller('mapCtrl', function($scope,$cordovaGeolocation,$firebase,stationData,$location,$ionicPlatform, $localStorage) {
+.controller('mapCtrl', function($scope,$cordovaGeolocation,$firebase,stationData,$location, $localStorage) {
 	
-	$ionicPlatform.ready(function(){
+	
         var options = {timeout: 10000, enableHighAccuracy: true};
 			
         $cordovaGeolocation.getCurrentPosition(options).then(function(position){
@@ -309,7 +718,7 @@ angular.module('app.controllers', [])
 
                 var firebaseObj = new Firebase("https://snev.firebaseio.com/Stations_Details");
 				
-			///loading only active stations
+			//loading only active stations
 			
 				firebaseObj.orderByChild("state").equalTo("active").on("child_added", function(snapshot) {
 				 
@@ -341,9 +750,9 @@ angular.module('app.controllers', [])
 						
 						//doubleclick event for fast stations
 							 google.maps.event.addListener(stations, 'dblclick', function () {
-								 //var id = snapshot.key();
+								 var id = snapshot.key();
 								 var data = snapshot.val();
-								 stationData.setProperty(data);
+								 stationData.setProperty(data,id);
 								 $location.path("/stationDetail");
 								 window.location.assign("#/stationDetail");
 							});
@@ -368,9 +777,9 @@ angular.module('app.controllers', [])
 						
 						//doubleclick event for slow stations
 							 google.maps.event.addListener(slowstations, 'dblclick', function () {
-								 //var id = snapshot.key();
+								 var id = snapshot.key();
 								 var data = snapshot.val();
-								 stationData.setProperty(data);
+								 stationData.setProperty(data,id);
 								 $location.path("/stationDetail");
 								 window.location.assign("#/stationDetail");
 							});
@@ -438,9 +847,6 @@ angular.module('app.controllers', [])
 						
             });
 
-					
-		
-	});
 
 })
 
