@@ -26,10 +26,10 @@
         <ion-list>
         <ion-item class="item-divider item-icon-right item-assertive"><b>SET YOUR STATUS </b> <i class="icon ion-toggle-filled"></i></ion-item>
         <ion-item>
-            <ion-toggle toggle-class="toggle-stable" id="page-toggle1" class=" ">On my way</ion-toggle>
-            <ion-toggle toggle-class="toggle-positive" id="page-toggle2" class=" ">In the queue</ion-toggle>
-            <ion-toggle toggle-class="toggle-energized" id="page-toggle3" class=" ">Charging</ion-toggle>
-            <ion-toggle toggle-class="toggle-balanced" id="page-toggle4" class=" ">Completed</ion-toggle>
+            <ion-toggle ng-model="myway" ng-change="ToggleOnMyWay(myway)" toggle-class="toggle-stable" class=" ">On my way</ion-toggle>
+            <ion-toggle ng-model="inqueue" ng-change="ToggleInQueue(inqueue)" toggle-class="toggle-positive" class=" ">In the queue</ion-toggle>
+            <ion-toggle ng-model="charge" ng-change="ToggleCharging(charge)" toggle-class="toggle-energized" id="page-toggle3" class=" ">Charging</ion-toggle>
+            <ion-toggle ng-model="complete" ng-change="ToggleCompleted(complete)" toggle-class="toggle-balanced" id="page-toggle4" class=" ">Completed</ion-toggle>
         </ion-item>
       </ion-list>
 	  <br>
