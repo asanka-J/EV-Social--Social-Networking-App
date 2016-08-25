@@ -1153,12 +1153,12 @@ $scope.ToggleCompleted = function(toStatus){
   	ref.orderByChild("title").equalTo(title1).on("child_added", function(snapshot) {
 	  var value=snapshot.key();
 
-    var username=$localStorage.username;
+     var username= $localStorage.username;
 
 		//adding  comments
 		var messageListRef = new Firebase('https://snev.firebaseio.com/comments');
 		var newMessageRef = messageListRef.push();
-	 newMessageRef.set({ 'title': title1, 'comment':comment  , 'username': username, 'noOfLikes': 0,'noOfDisLikes': 0  });
+	 newMessageRef.set({ 'title': title1, 'comment':comment  , 'username':username, 'noOfLikes': 0,'noOfDisLikes': 0  });
 	 var path = newMessageRef.toString();
 
 

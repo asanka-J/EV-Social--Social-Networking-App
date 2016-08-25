@@ -24,5 +24,7 @@
     "ionic-plugin-keyboard",
     "uk.co.workingedge.phonegap.plugin.launchnavigator"
   ],
-  "cordovaPlatforms": []
+  "cordovaPlatforms": [
+    "android"
+  ]
 }
