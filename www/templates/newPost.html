@@ -12,22 +12,41 @@
             </label>
 			<span style="color:red" ng-show="newPostForm.title.$error.required">Title is required</span>
             <div class="spacer" style="width: 300px; height: 31px;"></div>
-<!-- test upload -->
-
-  <!-- upload end  -->
-
 
 
             <label class="item item-input " id="newPost-textarea2" name="Descrip">
                 <textarea placeholder="Description" ng-model="description" name="description" required></textarea>
             </label>
 			<span style="color:red" ng-show="newPostForm.description.$error.required">Description is required</span>
-            </form><br>
 
-        <a href="#" id="newPost-button16" class=" button button-stable button-small button-block ">Attach Image</a>
-        <div class="spacer" style="width: 300px; height: 68px;"></div>
-        <button id="newPost-button21" class=" button button-positive  button-block " ng-disabled="newPostForm.$invalid" ng-click="postForm(title,description)" >Publish</button>
+            <!-- test upload -->
+
+ <div class="container-fluid">
+     
+      <hr/>
+
+        <input type="file" name="file" class="inputimg" id="nameImg" accept="image/*">
+        <br />
+      
+    
+      <hr />
+      <div ng-repeat="img in imgs | toArray | orderBy: '-date'" class="col-xs-12 col-sm-6 col-md-3">
+        <img ng-src="{{img.base64}}">
+        <a class="btn btn-danger btn-block" ng-click="deleteimg(img.$id)">Delete</a>
+      </div>
+    </div>
+
+  <!-- upload end  -->
+
+           <br>
+      
+      
+        <button id="newPost-button21" class=" btn waves-effect waves-light button-block " ng-disabled="newPostForm.$invalid" ng-click="postForm(title,description) ; uploadFile()" >Publish   <i class="material-icons right">send</i></button>
         </form>
+
+
+
+    
 
 
         </div>
