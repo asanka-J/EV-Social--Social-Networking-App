@@ -27,18 +27,22 @@
 </div>
 <br>
 
-  <ion-content ng-controller="loadPostCtrl">
+  <!--<ion-content ng-controller="loadPostCtrl">-->
+   <ion-content ng-controller="base64Ctrl">
+
+
 
 	 <div class="padding"> </div>
 <div class = "button button-block padding">_</div>
     <ion-list>
-      <ion-item  ng-repeat="post in loadposts | orderBy : 'timeStamp':true " class="item-icon-right item-remove-animate">
+      <!--<ion-item  ng-repeat="post in loadposts " class="item-icon-right item-remove-animate">-->
+        <div ng-repeat="post in imgs | toArray | orderBy: '-timeStamp'" class="col-xs-12 col-sm-6 col-md-3">
 
         <div class="item item-divider"> <div class="padding"> </div></div>
 
 
 				<div class="item item-avatar">
-                <img src="https://www.combustioninstitute.org/resources/icon_member_male.png">
+                <img src="">
                 <h2>{{post.username}}</h2>
 
                 <p>November 05, 2016</p>
@@ -46,9 +50,14 @@
                 </div>
 
               <div class="item item-body">
-                <img height="250px" width="400px"  src={{post.image}}>
+                <!--<img height="250px" width="400px"  src={{post.image}}>-->
+                <!--<img height="250px" width="400px" ng-src="{{post.images}}"> remove s -->
                 <p>
                 {{post.description}} </p>
+                 <!--<p>
+                {{post.image}} </p>-->
+              
+
                 <p>
                   <a href="#" class="subdued">{{post.noOfLikes}} Like</a>
                   <a href="#" class="subdued">{{post.noOfDisLikes}} disLike</a>
@@ -75,9 +84,9 @@
 
 
 
-  <div class="comment-form"  ng-controller="cmntController" >    <!-- new comment Form -->
+  <!--<div class="comment-form"  ng-controller="cmntController" >     new comment Form -->
     <!-- Comment Avatar -->
-    <div class="comment-avatar">
+    <!--<div class="comment-avatar">
       <img src="http://lorempixel.com/200/200/people">
     </div>
 
@@ -92,14 +101,14 @@
       <div class="form-row">
         <input class="commentbtn" type="submit" value="Add Comment">
       </div>
-    </form><!-- end of new comment form -->
+    </form> end of new comment form -->
 
     <!-- load comments -->
+<!--
+  </div>   End of comment div -->
+<!--
 
-  </div>  <!-- End of comment div -->
-
-
-	  </div>
+	  </div>-->
 
 					  </ion-item>
 

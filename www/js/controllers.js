@@ -998,6 +998,7 @@ $scope.ToggleCompleted = function(toStatus){
 
 .controller('loadPostCtrl', function($scope ,$ionicPopup, $localStorage){
 	var ref = new Firebase('https://snev.firebaseio.com/posts');
+	
 	ref.on("value", function(snapshot,prevChildKey) {
 		  $scope.$apply(function(){
 			$scope.loadposts = snapshot.val();
@@ -1119,28 +1120,13 @@ $scope.ToggleCompleted = function(toStatus){
 
 })
 
+//test loading post
 
-//adding a post 
-.controller('newPostController', function($scope, $http, $state,$ionicPopup,$rootScope,$firebaseArray, $localStorage,$firebase) {
-   $scope.postForm = function(title,description){
-     
-      	 var username= $localStorage.username;
-				
-         var imagelocation='https://startupjuncture.com/wp-content/uploads/2016/02/test-in-de-auto-selfie-social-charging.jpeg';
-				 var timestamp = Firebase.ServerValue.TIMESTAMP;
-
-		    var messageListRef = new Firebase('https://snev.firebaseio.com/posts');
-     var newMessageRef = messageListRef.push();
-       newMessageRef.set({ 'title': title, 'description': description ,'image':'https://startupjuncture.com/wp-content/uploads/2016/02/test-in-de-auto-selfie-social-charging.jpeg', 'username':username,'timeStamp': timestamp,'noOfLikes': 0,'noOfDisLikes': 0 ,'noOfReports': 0  });
-       var path = newMessageRef.toString();
-
-			 	//image Upload controller 
-
-				 
+.controller("base64Ctrl", function($scope, $firebaseArray) {
   
   var ref = new Firebase("https://snev.firebaseio.com");
 
-  var img = new Firebase("https://snev.firebaseio.com/images");
+  var img = new Firebase("https://snev.firebaseio.com/posts");
   $scope.imgs = $firebaseArray(img);
 
   var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];
@@ -1166,7 +1152,90 @@ $scope.ToggleCompleted = function(toStatus){
 
               $scope.imgs.$add({
                 date: Firebase.ServerValue.TIMESTAMP,
-                base64: fileLoadedEvent.target.result
+                image: fileLoadedEvent.target.result
+              });
+            };
+
+            fileReader.readAsDataURL(fileToLoad);
+          }
+          break;
+        }
+      }
+
+      if (!blnValid) {
+        alert('File is not valid');
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  $scope.deleteimg = function(imgid) {
+    var r = confirm("Do you want to remove this image ?");
+    if (r == true) {
+      $scope.imgs.forEach(function(childSnapshot) {
+        if (childSnapshot.$id == imgid) {
+            $scope.imgs.$remove(childSnapshot).then(function(ref) {
+              ref.key() === childSnapshot.$id; // true
+            });
+        }
+      });
+    }
+  }
+
+})
+
+
+
+
+//adding a post 
+.controller('newPostController', function($scope, $http, $state,$ionicPopup,$rootScope,$firebaseArray, $localStorage,$firebase) {
+   $scope.postForm = function(title,description){
+     
+      	 var username= $localStorage.username;
+				
+      
+
+		 var messageListRef = new Firebase('https://snev.firebaseio.com/posts');
+     var newMessageRef = messageListRef.push();
+    
+  var ref = new Firebase("https://snev.firebaseio.com");
+
+  var img = new Firebase("https://snev.firebaseio.com/posts");
+  $scope.imgs = $firebaseArray(img);
+
+  var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];
+  	$scope.uploadFile = function() {
+    var sFileName = $("#nameImg").val();
+    if (sFileName.length > 0) {
+      var blnValid = false;
+      for (var j = 0; j < _validFileExtensions.length; j++) {
+        var sCurExtension = _validFileExtensions[j];
+        if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+          blnValid = true;
+          var filesSelected = document.getElementById("nameImg").files;
+          if (filesSelected.length > 0) {
+            var fileToLoad = filesSelected[0];
+
+            var fileReader = new FileReader();
+
+            fileReader.onload = function(fileLoadedEvent) {
+              var textAreaFileContents = document.getElementById(
+                "textAreaFileContents"
+              );
+
+
+              $scope.imgs.$add({
+                		timeStamp: Firebase.ServerValue.TIMESTAMP,
+                		image: fileLoadedEvent.target.result,
+								 	   title: title,
+									   description: description ,
+										 username:username,
+										 noOfLikes: 0,
+										 noOfDisLikes: 0 ,
+										 noOfReports: 0 
+      
               });
             };
 

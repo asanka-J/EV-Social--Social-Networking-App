@@ -180,11 +180,7 @@ angular.module('app.routes', [])
       // controller:'loginController'
     })
 
-    .state('imageUpload', {
-    url: '/imageUpload',
-    templateUrl: 'templates/imageUpload.html',
-    // controller: 'postsCtrl'
-  })
+  
 
 
   //asanka chat
