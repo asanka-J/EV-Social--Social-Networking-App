@@ -1388,15 +1388,13 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 //adding a follower 
-.controller('following', function($scope, $http, $state,$ionicPopup,$rootScope,$firebaseArray, $localStorage,$firebase) {
+.controller('followController', function($scope, $http, $state,$ionicPopup,$rootScope,$firebaseArray, $localStorage,$firebase) {
  
      
       	 var username= $localStorage.username;
 				
   var ref = new Firebase("https://snev.firebaseio.com/profile");
 
-
-  $scope.ref = $firebaseArray(img);
 
   	$scope.follow = function(follower) {
 	
