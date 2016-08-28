@@ -986,17 +986,9 @@ $scope.ToggleCompleted = function(toStatus){
 })
 
 
-// .controller('tempuser', function($scope) {
-
-//   $scope.makeTempUser = function(user1) {
-//     window.localStorage.clear();
-//   window.localStorage.setItem("user",user1);
-
-
-//   };
-// })
 
 .controller('loadPostCtrl', function($scope ,$ionicPopup, $localStorage){
+	$state.reload();
 	var ref = new Firebase('https://snev.firebaseio.com/posts');
 	
 	ref.on("value", function(snapshot,prevChildKey) {
@@ -1120,7 +1112,7 @@ $scope.ToggleCompleted = function(toStatus){
 
 })
 
-//test loading post
+// loading post
 
 .controller("base64Ctrl", function($scope, $firebaseArray) {
   
@@ -1129,47 +1121,7 @@ $scope.ToggleCompleted = function(toStatus){
   var img = new Firebase("https://snev.firebaseio.com/posts");
   $scope.imgs = $firebaseArray(img);
 
-  var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];
-  $scope.uploadFile = function() {
-    var sFileName = $("#nameImg").val();
-    if (sFileName.length > 0) {
-      var blnValid = false;
-      for (var j = 0; j < _validFileExtensions.length; j++) {
-        var sCurExtension = _validFileExtensions[j];
-        if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
-          blnValid = true;
-          var filesSelected = document.getElementById("nameImg").files;
-          if (filesSelected.length > 0) {
-            var fileToLoad = filesSelected[0];
-
-            var fileReader = new FileReader();
-
-            fileReader.onload = function(fileLoadedEvent) {
-              var textAreaFileContents = document.getElementById(
-                "textAreaFileContents"
-              );
-
-
-              $scope.imgs.$add({
-                date: Firebase.ServerValue.TIMESTAMP,
-                image: fileLoadedEvent.target.result
-              });
-            };
-
-            fileReader.readAsDataURL(fileToLoad);
-          }
-          break;
-        }
-      }
-
-      if (!blnValid) {
-        alert('File is not valid');
-        return false;
-      }
-    }
-
-    return true;
-  }
+ 
 
   $scope.deleteimg = function(imgid) {
     var r = confirm("Do you want to remove this image ?");
@@ -1336,6 +1288,7 @@ $scope.ToggleCompleted = function(toStatus){
 })
 
 
+
 //get selected post and store
 .controller('newselect', function($scope ,$ionicPopup,$location,$window,$localStorage) {
 
@@ -1350,7 +1303,8 @@ $scope.ToggleCompleted = function(toStatus){
   // get selected post deatils ; load comments and posts
   .controller('getSelectedpost', function($scope ,$ionicPopup,$window){
 
-	var SelectdP=window.localStorage.getItem("settitle");
+	var SelectdP=$localStorage.settitle;
+
   // alert(SelectdP);
 
   	var ref = new Firebase('https://snev.firebaseio.com/posts');
@@ -1397,6 +1351,147 @@ $scope.ToggleCompleted = function(toStatus){
 
   	};
   })
+
+
+// loading profile
+
+.controller('Loadprofile', function($scope ,$ionicPopup, $localStorage){
+
+	var ref = new Firebase('https://snev.firebaseio.com/profile');
+
+  var name=$localStorage.username;
+
+		 ref.orderByChild("name").equalTo(name).on("value", function(snapshot,prevChildKey) {
+		  $scope.$apply(function(){
+			$scope.myprofile = snapshot.val();
+		
+
+//load friend list
+  ref.orderByChild("name").equalTo(name).on("child_added", function(snapshot) {
+  
+  var nameSnapshot = snapshot.child("friends");
+  $scope.friendlist = nameSnapshot.val();
+  
+  console.log(friendlist);
+  
+});
+
+
+
+		  });
+		});
+
+})
+
+
+
+
+//adding a post 
+.controller('newPostController', function($scope, $http, $state,$ionicPopup,$rootScope,$firebaseArray, $localStorage,$firebase) {
+ 
+     
+      	 var username= $localStorage.username;
+				
+  var img = new Firebase("https://snev.firebaseio.com/posts");
+  $scope.imgs = $firebaseArray(img);
+
+  	$scope.follow = function() {
+
+  }
+
+})
+
+
+
+
+
+
+
+
+
+//Edit profile controller
+
+.controller('editProfileController', function($scope, $http, $state,$ionicPopup,$rootScope,$firebaseArray, $localStorage,$firebase) {
+   $scope.postForm = function(title,description){
+     
+      	 var username= $localStorage.username;
+				
+    
+  var ref = new Firebase("https://snev.firebaseio.com");
+
+  var img = new Firebase("https://snev.firebaseio.com/profile");
+  $scope.imgs = $firebaseArray(img);
+
+  var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];
+  	$scope.uploadFile = function() {
+    var sFileName = $("#nameImg").val();
+    if (sFileName.length > 0) {
+      var blnValid = false;
+      for (var j = 0; j < _validFileExtensions.length; j++) {
+        var sCurExtension = _validFileExtensions[j];
+        if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+          blnValid = true;
+          var filesSelected = document.getElementById("nameImg").files;
+          if (filesSelected.length > 0) {
+            var fileToLoad = filesSelected[0];
+
+            var fileReader = new FileReader();
+
+            fileReader.onload = function(fileLoadedEvent) {
+              var textAreaFileContents = document.getElementById(
+                "textAreaFileContents"
+              );
+
+		   $scope.imgs.$add({
+                		timeStamp: Firebase.ServerValue.TIMESTAMP,
+                		image: fileLoadedEvent.target.result,
+								 	   title: title,
+									   description: description ,
+										 username:username,
+										 noOfLikes: 0,
+										 noOfDisLikes: 0 ,
+										 noOfReports: 0 
+      
+              });
+            };
+
+            fileReader.readAsDataURL(fileToLoad);
+          }
+          break;
+        }
+      }
+
+      if (!blnValid) {
+        alert('File is not valid');
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  $scope.deleteimg = function(imgid) {
+    var r = confirm("Do you want to remove this image ?");
+    if (r == true) {
+      $scope.imgs.forEach(function(childSnapshot) {
+        if (childSnapshot.$id == imgid) {
+            $scope.imgs.$remove(childSnapshot).then(function(ref) {
+              ref.key() === childSnapshot.$id; // true
+            });
+        }
+      });
+    }
+  }//image Upload controller end
+
+
+         $scope.title="";
+         $scope.description="";
+
+
+      };
+})
+
+
 
 // Asanka end
 /************/
