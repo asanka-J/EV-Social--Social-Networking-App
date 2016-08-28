@@ -6,34 +6,14 @@
         <button class="button icon ion-plus-circled" ui-sref="newPosts" style=" padding: 5px 20px; background: #0099CC; border: none;color: white;">Add a Post</button>
           <button class="button icon ion-plus-circled" ui-sref="posthistroy" style=" padding: 5px 20px; background: #0099CC; border: none;color: white;">View My Post History</button>
 
-
-<!--<div class="bar bar-subheader2"  ng-controller="tempuser" >     new comment Form -->
-
-<!--
-  <form class="form" name="form" ng-submit="makeTempUser(comment,post.title)" novalidate>
-    <div class="form-row">
-      <textarea class="input"
-                ng-model="comment"
-                placeholder="Enter temporaty user"
-                required></textarea>
-    </div>
-
-    <div class="form-row">
-      <input class="commentbtn" type="submit" value="Enter the user name">
-    </div>
-  </form> end of new comment form 
-
-</div>   End of test username div -->
 </div>
 <br>
 
   <!--<ion-content ng-controller="loadPostCtrl">-->
    <ion-content ng-controller="base64Ctrl">
 
-
-
 	 <div class="padding"> </div>
-<div class = "button button-block padding">_</div>
+      <div class = "button button-block padding">_</div>
     <ion-list>
       <!--<ion-item  ng-repeat="post in loadposts " class="item-icon-right item-remove-animate">-->
         <div ng-repeat="post in imgs | toArray | orderBy: '-timeStamp'" class="col-xs-12 col-sm-6 col-md-3">
