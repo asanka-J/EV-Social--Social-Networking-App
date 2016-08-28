@@ -1209,7 +1209,7 @@ $scope.ToggleCompleted = function(toStatus){
   $scope.deleteimg = function(imgid) {
     var r = confirm("Do you want to remove this image ?");
     if (r == true) {
-      $scope.imgs.forEach(function(childSnapshot) {
+      $scope.imgs.forEach(function(childSnapshot) {		
         if (childSnapshot.$id == imgid) {
             $scope.imgs.$remove(childSnapshot).then(function(ref) {
               ref.key() === childSnapshot.$id; // true
@@ -1360,43 +1360,63 @@ $scope.ToggleCompleted = function(toStatus){
 	var ref = new Firebase('https://snev.firebaseio.com/profile');
 
   var name=$localStorage.username;
-
+		
 		 ref.orderByChild("name").equalTo(name).on("value", function(snapshot,prevChildKey) {
 		  $scope.$apply(function(){
-			$scope.myprofile = snapshot.val();
-		
-
-//load friend list
-  ref.orderByChild("name").equalTo(name).on("child_added", function(snapshot) {
-  
-  var nameSnapshot = snapshot.child("friends");
-  $scope.friendlist = nameSnapshot.val();
-  
-  console.log(friendlist);
-  
-});
-
-
+					$scope.myprofile = snapshot.val();
+						
+				//load friend list
+					var ref = new Firebase('https://snev.firebaseio.com/profile');
+					ref.orderByChild("name").equalTo(name).on("child_added", function(snapshot) {
+					
+					var nameSnapshot = snapshot.child("friends");
+					$scope.friendlist = nameSnapshot.val();
+					
+				
+					
+				});
 
 		  });
 		});
+
+
+
 
 })
 
 
 
 
-//adding a post 
-.controller('newPostController', function($scope, $http, $state,$ionicPopup,$rootScope,$firebaseArray, $localStorage,$firebase) {
+//adding a follower 
+.controller('following', function($scope, $http, $state,$ionicPopup,$rootScope,$firebaseArray, $localStorage,$firebase) {
  
      
       	 var username= $localStorage.username;
 				
-  var img = new Firebase("https://snev.firebaseio.com/posts");
-  $scope.imgs = $firebaseArray(img);
+  var ref = new Firebase("https://snev.firebaseio.com/profile");
 
-  	$scope.follow = function() {
 
+  $scope.ref = $firebaseArray(img);
+
+  	$scope.follow = function(follower) {
+	
+			ref.orderByChild("name").equalTo(follower).on("child_added", function(snapshot) {
+			var profilekey = snapshot.key();
+
+						ref.orderByChild("name").equalTo(username).on("child_added", function(mysnapshot) {
+							var userkey = mysnapshot.key();
+							var tempref = new Firebase('https://snev.firebaseio.com/profile/'+userkey+'/gravatar' );
+							var userImage=tempref.val();
+
+			var reprofile= new Firebase('https://snev.firebaseio.com/profile/'+profilekey+'/friends');
+				reprofile.push({ 'name': username, 'image':userImage });//add my image
+
+	})
+	
+			});
+
+	
+		
   }
 
 })
