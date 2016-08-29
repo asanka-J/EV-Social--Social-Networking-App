@@ -28,14 +28,13 @@
             
             <!--<button class="button" ng-click="doSomething()">
         | Change profile pic |</button>-->
-          <h3 id="profile-name">{{myprofile.name}}</h3>
+          <h3 id="profile-name" ng-model="name">{{myprofile.name}}</h3>
             
         <div class="button-bar" id="page2-button-bar5">
-        <div ng-contoller="followController">
-             <button class="button button-positive  button-block icon ion-android-contacts" id="page2-button33"  ng-click="follow()">  Follow</button>
-        </div>
-           
-            <button class="button button-positive  button-block icon ion-email" id="page2-button34">  message</button>
+       
+             <button class="button button-positive  button-block icon ion-android-contacts" id="page2-button33"  ng-click="follow(myprofile.name)">  Follow</button>
+       
+           <button class="button button-positive  button-block icon ion-email" id="page2-button34">  message</button>
         </div>
 
         </div>

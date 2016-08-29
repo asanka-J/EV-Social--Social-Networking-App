@@ -1380,6 +1380,35 @@ $scope.ToggleCompleted = function(toStatus){
 		});
 
 
+	$scope.follow = function(follower) {
+	
+			ref.orderByChild("name").equalTo(follower).on("child_added", function(snapshot) {
+			var profilekey = snapshot.key();
+
+						ref.orderByChild("name").equalTo($localStorage.username).on("child_added", function(mysnapshot) {
+							var userkey = mysnapshot.key();
+
+							var path='https://snev.firebaseio.com/profile/'+userkey+'/gravatar';
+							var tempref = new Firebase(path);
+							tempref.once("value", function(imagesnapshot) {
+								var userImage=imagesnapshot.val();
+
+									var reprofile= new Firebase('https://snev.firebaseio.com/profile/'+profilekey+'/friends');
+									 	reprofile.push({ 'name': $localStorage.username, 'image':userImage });//add my image
+
+						});
+
+				
+
+			// var reprofile= new Firebase('https://snev.firebaseio.com/profile/'+profilekey+'/friends');
+			// 	reprofile.push({ 'name': username, 'image':userImage });//add my image
+
+				})
+	
+			});
+
+  }
+
 
 
 })
@@ -1409,7 +1438,7 @@ $scope.ToggleCompleted = function(toStatus){
 			var reprofile= new Firebase('https://snev.firebaseio.com/profile/'+profilekey+'/friends');
 				reprofile.push({ 'name': username, 'image':userImage });//add my image
 
-	})
+				})
 	
 			});
 
