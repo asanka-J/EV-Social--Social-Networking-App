@@ -2,84 +2,76 @@
 <ion-view  view-title="profile edit page">
 
   
-    <ion-content has-header="true">
-
+  
+ <ion-content has-header="true" ng-controller="editProfile">
+     <div ng-repeat="myprofile in myprofile">
         
      
      
       <div id="profile-bg"></div>
       <div id="content">
         <div id="profile-info">
-          <img id="profile-image" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/94311/me.png">
+             <img id="profile-image" src="{{myprofile.gravatar}}">
             
             
             <button class="button" ng-click="doSomething()">
-        | Change profile pic |</button>
-          <h3 id="profile-name">Max</h3>
+        | Change profile pic |</button><br> 
+            <input id="profile-name"  style=" width: 33.33%;
+    text-align: center;" name="name" ng-model="name" placeholder="{{myprofile.name}}" >
+           
+			    
+				   
             
    
         </div>
        </div>
+<form>
+         <label class="item item-input item-stacked-label">
+				<span class="input-label">Description :</span>
+				<textarea  rows="5" name="description" ng-model="description" placeholder="{{myprofile.description}}" ></textarea>
+				</label>
 
+         <div>
        
-          <span id="profile-description"  class="item item-text-wrap">psum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
-             type specimen book. </span>
-        
 
-      
-       <div class="row">
-      
-        
-        <div class="col">co2</div>
-        <div class="col">col3</div>
-        <div class="col">col4</div>
-        <div class="col">co5</div> 
-       
-      </div>
-   
-    <div>
-          <ion-item >
-            <img class="post-profile-image" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/94311/me.png">
-            post text
-            <div class="post-time">Created time</div>
-            <div class="post-options">
-              <i class="icon-reply"></i>
-              <i class="icon-shuffle"></i>
-            </div>
-          </ion-item> 
-
-          <ion-item>
-            <ion-label stacked>Username</ion-label>
-           
-             <ion-input type="text" value=""></ion-input>
-          </ion-item>
           <ion-item>
             <ion-label stacked>First name</ion-label>
-            <ion-input type="text"></ion-input>
+            <input id="fname" style="width: 75%; " name="fname" ng-model="fname" placeholder="{{myprofile.name}}" >
           </ion-item>
           <ion-item>
             <ion-label stacked>Second name</ion-label>
-            <ion-input type="text"></ion-input>
+            <input id="sname"  style="width: 75%;" name="sname" ng-model="sname" placeholder="{{myprofile.sname}}" >
           </ion-item>
-          <ion-item>
-            <ion-label stacked>Email adress</ion-label>
-            <ion-label type="text">email@test.com</ion-input>
+          
+            <ion-label stacked>Contact No</ion-label>
+             <input id="contact"  style="width: 75%;"  name="contact" ng-model="contact" placeholder="{{myprofile.contact}}" >
           </ion-item>
 
       
           
            <div class="list card">
               <ion-item>
-                  <ion-label stacked>LOCATION </ion-label> 
+                  <ion-label stacked>Home town </ion-label> 
                   <div style="margin: 0px; line-height: 250px; background-color: rgb(232, 235, 239); text-align: center;">
-                   <img src="img/location.jpg" width="75%" height="100%">
+                   <img src="img/location.jpg" width="100%" height="250px">
                   </div>
               </ion-item>
           </div>
           </div>
 
+          </div>
+
+              <div ng-controller="editProfile">
+                 
+                 <button class="button button-full button-positive"   ng-click="updateProfile(description,fname,sname,email,contact)">  UPDATE   </button>
+                </div>
           
-  
+            
+</form>
+                  <div class = "button button-block padding"></div>
+                  <div class = "button button-block padding"></div>
+                  <div class = "button button-block padding"></div>
+                
   
     </ion-content>
 

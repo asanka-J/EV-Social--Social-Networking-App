@@ -78,7 +78,7 @@ angular.module('app.routes', [])
   .state('socialNetwork', {
     url: '/socialnetwork',
     templateUrl: 'templates/socialNetwork.html',
-    controller: 'socialNetworkCtrl'
+    
   })
 
   .state('messenger', {

@@ -50,7 +50,8 @@ angular.module('app.controllers', [])
             //console.log(data === obj); // true
             //console.log(obj.email);
 			$localStorage.username = obj.name;
-            $localStorage.useremail = obj.email;
+       $localStorage.useremail = obj.email;
+			   $localStorage.userimage = obj.image;
 			$localStorage.vehiclename=obj.vehicle_name;
 			$localStorage.licenceplate=obj.licence_plate;
 			$localStorage.mobileno=obj.mobile;
@@ -1457,6 +1458,47 @@ $scope.ToggleCompleted = function(toStatus){
 
   }
 
+
+
+
+})
+
+
+
+// edit profile
+
+.controller('editProfile', function($scope ,$ionicPopup, $localStorage){
+
+	var ref = new Firebase('https://snev.firebaseio.com/profile');
+
+  var username=$localStorage.username;
+
+//update profile
+	$scope.updateProfile = function(description,fname,sname,contact) {
+
+    	ref.orderByChild("name").equalTo(username).on("child_added", function(snapshot) {
+        var key=snapshot.key();
+
+        	ref.child(key).update({ description:description,sname:sname,mobile:contact});
+
+
+        });
+
+        var alertPopup = $ionicPopup.alert({
+        title: 'Successful! <i class="ion-checkmark-round"></i>',
+        template:'You have Successfuly Updated'
+         });
+
+  	};
+
+//load profile
+		 ref.orderByChild("name").equalTo(username).on("value", function(snapshot,prevChildKey) {
+		  $scope.$apply(function(){
+			$scope.myprofile = snapshot.val();
+
+
+		  });
+		});
 
 
 
