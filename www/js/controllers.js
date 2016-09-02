@@ -1019,16 +1019,28 @@ $scope.ToggleCompleted = function(toStatus){
 						var noofl=data.noOfLikes;
 
 
-                var alertPopup = $ionicPopup.alert({
-                  title: 'Successful! <i class="ion-checkmark-round"></i>',
-                  template:'You have Successfuly liked the post'
-                  });
+             	var onComplete = function(error) {
+									if (error) {
+										 var alertPopup = $ionicPopup.alert({
+                                 title: 'Successful! <i class="ion-checkmark-round"></i>',
+                                 template:'Synchronization failed'
+                              	 });
+															
+									} else {
+											
+                               var alertPopup = $ionicPopup.alert({
+                                 title: 'Successful! <i class="ion-checkmark-round"></i>',
+                                 template:'You have Successfuly Liked the post'
+                              	 });
+									}
+								};
+									
 
-							var postsref = new Firebase('https://snev.firebaseio.com/posts');
+							var postsreflike = new Firebase('https://snev.firebaseio.com/posts');
 
 
 												// Modify the 'noOfLikes  but leave other data unchanged
-										postsref.child(value).update({ noOfLikes: noofl+1});
+										postsreflike.child(value).update({ noOfLikes: noofl+1},onComplete);
 
 						});
 
@@ -1046,15 +1058,29 @@ $scope.ToggleCompleted = function(toStatus){
 		 						var data = snapshot.val();
 		 						var noofl=data.noOfDisLikes;
 
+		 										var postsrefdislike = new Firebase('https://snev.firebaseio.com/posts');
 
+		 										
+
+								var onComplete = function(error) {
+									if (error) {
+										 var alertPopup = $ionicPopup.alert({
+                                 title: 'Successful! <i class="ion-checkmark-round"></i>',
+                                 template:'Synchronization failed'
+                              	 });
+															
+									} else {
+											
                                var alertPopup = $ionicPopup.alert({
                                  title: 'Successful! <i class="ion-checkmark-round"></i>',
-                                 template:'You have Successfuly dislied the post'
+                                 template:'You have Successfuly disliked the post'
                               	 });
+									}
+								};
+									postsrefdislike.child(value).update({ noOfDisLikes: noofl+1}, onComplete);
 
-		 										var postsref = new Firebase('https://snev.firebaseio.com/posts');
 
-		 											postsref.child(value).update({ noOfDisLikes: noofl+1});
+													 
 		 						});
 		 };
 
@@ -1078,8 +1104,8 @@ $scope.ToggleCompleted = function(toStatus){
                    title: 'Successful! <i class="ion-checkmark-round"></i>',
                    template:'You have Successfuly Reported'
                 	 });
-  		 									 var postsref = new Firebase('https://snev.firebaseio.com/posts');
-  		 									 postsref.child(value).update({ noOfReports: noof2+1});
+  		 									 var postsrefreport = new Firebase('https://snev.firebaseio.com/posts');
+  		 									 postsrefreport.child(value).update({ noOfReports: noof2+1});
 	        });
 
 	    };
