@@ -1150,18 +1150,6 @@ $scope.ToggleCompleted = function(toStatus){
 
  
 
-  $scope.deleteimg = function(imgid) {
-    var r = confirm("Do you want to remove this image ?");
-    if (r == true) {
-      $scope.imgs.forEach(function(childSnapshot) {
-        if (childSnapshot.$id == imgid) {
-            $scope.imgs.$remove(childSnapshot).then(function(ref) {
-              ref.key() === childSnapshot.$id; // true
-            });
-        }
-      });
-    }
-  }
 
 })
 
