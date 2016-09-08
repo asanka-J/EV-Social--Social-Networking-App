@@ -1317,8 +1317,9 @@ $scope.ToggleCompleted = function(toStatus){
 
   // get selected post deatils ; load comments and posts
   .controller('getSelectedpost', function($scope ,$ionicPopup,$window){
-
+				$window.location.reload();
 	var SelectdP=$localStorage.settitle;
+
 
   // alert(SelectdP);
 
@@ -1328,7 +1329,7 @@ $scope.ToggleCompleted = function(toStatus){
 
          ref2.orderByChild("title").equalTo(SelectdP).on("value", function(snapshot,prevChildKey) {
            $scope.mycomments = snapshot.val();
-           	console.log(snapshot.val());
+           	//console.log(snapshot.val());
             });
 
 
