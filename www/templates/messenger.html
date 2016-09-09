@@ -3,7 +3,9 @@
         <ion-list>
             <ion-item class="item-avatar dark" ui-sref="manageProfile">
                 <img src="img/q4xbxIIlSoWlMTQ6tllU_steve.jpg">
-                <h2dark>User Name</h2dark>
+               <p >
+                {{name}}
+                </p>
             </ion-item>
             <ion-toggle toggle-class="toggle-balanced" ng-checked="true" name="activestatus">Active</ion-toggle>
             <label class="item item-input">
@@ -17,10 +19,15 @@
             </ion-list>
         </ion-list>
         <div class="spacer" style="height: 100px;"></div>
-        <div class="button-bar">
-            <a ui-sref="chat" id="messenger-button14" class="button button-positive  button-block icon ion-android-people"></a>
-            <a ui-sref="groupChat" id="messenger-button18" class="button button-positive  button-block icon ion-ios-people"></a>
-            <a ui-sref="stationChat" id="messenger-button15" class="button button-positive  button-block icon ion-android-car"></a>
-        </div>
+       
+
+ <ion-footer-bar align-title="left" >
+
+ <div class="button-bar" >
+  <a id="socialNetwork-button20"  class="button button-positive icon ion-clipboard" ui-sref="socialnetwork">    Posts</a>
+  <a class="button button-positive icon ion-android-chat " ui-sref="chatroomhome">   chat room</a>
+</div>
+
+</ion-footer-bar>
     </ion-content>
 </ion-view>

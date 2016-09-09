@@ -899,27 +899,10 @@ $scope.ToggleCompleted = function(toStatus){
 //isuru end
 
 
-.controller('messengerCtrl', function($scope) {
-
-		var presence = new Firebase('https://snev.firebaseio.com/precence'); 
-
-		presence.on("value", function(snapshot,prevChildKey) {
-		  $scope.$apply(function(){
-					$scope.onlineUsers = snapshot.val();
-		  });
-		});
-})
-
 .controller('itemsForSaleCtrl', function($scope) {
 		
 })
 
-
-.controller('presenceController', function($scope) {
-			var presence = new Firebase('https://snev.firebaseio.com/precence'); 
-    var presenceReff = new Firebase('https://<YOUR-FIREBASE-APP>.firebaseio.com/disconnectmessage');
-    presenceReff.onDisconnect().set("disconnected!");
-})
 
 .controller('adminHomepageCtrl', function($scope) {
 
@@ -1619,6 +1602,31 @@ $scope.ToggleCompleted = function(toStatus){
 
 
       };
+})
+
+
+
+
+.controller('presenceController', function($scope) {
+			var presence = new Firebase('https://snev.firebaseio.com/precence'); 
+    var presenceReff = presence.child();
+    presenceReff.onDisconnect().set("disconnected!");
+})
+
+
+
+.controller('messengerCtrl', function($scope,$localStorage) {
+		
+		$scope.name=$localStorage.username;
+		var presence = new Firebase('https://snev.firebaseio.com/precence'); 
+		
+		presence.on("value", function(snapshot,prevChildKey) {
+		  $scope.$apply(function(){
+					$scope.onlineUsers = snapshot.val();
+		  });
+		});
+
+		
 })
 
 
