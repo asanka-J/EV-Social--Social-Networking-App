@@ -20,14 +20,34 @@ angular.module('app.controllers', [])
 .controller('homeController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils) {
   var ref = new Firebase(FURL);
 
-  $scope.logOut = function () {
-      Auth.logout();
-      $location.path("/login");
-  }
-  
-  $scope.username=$localStorage.username;
 
+  $scope.logOut = function () {
+
+		
+			Auth.logout();
+			$location.path("/login");
+			var i=0;
+		
+			//managing logout presence- user control					
+			var presence = new Firebase('https://snev.firebaseio.com/precence');
+			presence.orderByChild("username").equalTo($localStorage.username).on("child_added", function(snapshot) {
+				 
+                        var userKey = snapshot.key();
+												if(i==0){
+
+													presence.child(userKey).remove();
+													// alert(userKey);
+													i++;
+												}
+					
+				 });
+
+      
+
+  }
+    $scope.username=$localStorage.username;
 })
+
 
 .controller('loginController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils) {
   var ref = new Firebase(FURL);
@@ -40,7 +60,7 @@ angular.module('app.controllers', [])
       .then(function(authData) {
       //console.log("id del usuario:" + JSON.stringify(authData));
 
-      ref.child('profile').orderByChild("id").equalTo(authData.uid).on("child_added", function(snapshot) {
+        ref.child('profile').orderByChild("id").equalTo(authData.uid).on("child_added", function(snapshot) {
         console.log(snapshot.key());
         userkey = snapshot.key();
         var obj = $firebaseObject(ref.child('profile').child(userkey));
@@ -50,8 +70,8 @@ angular.module('app.controllers', [])
             //console.log(data === obj); // true
             //console.log(obj.email);
 			$localStorage.username = obj.name;
-       $localStorage.useremail = obj.email;
-			   $localStorage.userimage = obj.image;
+      $localStorage.useremail = obj.email;
+		  $localStorage.userimage = obj.image;
 			$localStorage.vehiclename=obj.vehicle_name;
 			$localStorage.licenceplate=obj.licence_plate;
 			$localStorage.mobileno=obj.mobile;
@@ -59,6 +79,12 @@ angular.module('app.controllers', [])
             $localStorage.userkey = userkey;
 
               Utils.hide();
+
+		//managing presence- user					
+		var presence = new Firebase('https://snev.firebaseio.com/precence');
+   	 presence.push({ 'username': $localStorage.username, 'status': 'Online' });
+			
+
               $state.go('home');
               console.log("Starter page","Home");
 
@@ -544,14 +570,7 @@ angular.module('app.controllers', [])
                     console.log("The read failed: " + errorObject.code);
                 });
 			  
-			  
 		  }
-		  
-		  
-		  
-		   
-
-
 }
 
 
@@ -634,20 +653,11 @@ $scope.ToggleCompleted = function(toStatus){
 							 var statusRef = new Firebase("https://snev.firebaseio.com/user_status");
 						     statusRef.child(status_id).update({completed: comp}, onComplete);
 
-							
-							
 						}
-						
 				 }, function (errorObject) {
                     console.log("The read failed: " + errorObject.code);
                 });
-			  
-			  
 		  }
-		
-
-		
-			
 		}
 		
 		
@@ -888,16 +898,27 @@ $scope.ToggleCompleted = function(toStatus){
 })
 //isuru end
 
-.controller('socialNetworkCtrl', function($scope) {
-
-})
 
 .controller('messengerCtrl', function($scope) {
 
+		var presence = new Firebase('https://snev.firebaseio.com/precence'); 
+
+		presence.on("value", function(snapshot,prevChildKey) {
+		  $scope.$apply(function(){
+					$scope.onlineUsers = snapshot.val();
+		  });
+		});
 })
 
 .controller('itemsForSaleCtrl', function($scope) {
+		
+})
 
+
+.controller('presenceController', function($scope) {
+			var presence = new Firebase('https://snev.firebaseio.com/precence'); 
+    var presenceReff = new Firebase('https://<YOUR-FIREBASE-APP>.firebaseio.com/disconnectmessage');
+    presenceReff.onDisconnect().set("disconnected!");
 })
 
 .controller('adminHomepageCtrl', function($scope) {
@@ -924,24 +945,16 @@ $scope.ToggleCompleted = function(toStatus){
 
 })
 
-.controller('groupChatCtrl', function($scope) {
-
-})
 
 .controller('stationChatCtrl', function($scope) {
 
 })
 
-.controller('chatCtrl', function($scope) {
-
-})
 
 .controller('chargingRecordsCtrl', function($scope) {
 
 })
-.controller('posthistroy', function($scope) {
 
-})
 
  //asanaka  start
 
@@ -1089,8 +1102,6 @@ $scope.ToggleCompleted = function(toStatus){
      // report a post
   	 $scope.report = function(title1) {
 
-  //  alert("username"+$rootScope.test);
-  		// 	var username= $rootScope.test;
           var username=$localStorage.username;
 
   		 				 //get key of child equals to ==title
@@ -1105,8 +1116,8 @@ $scope.ToggleCompleted = function(toStatus){
                    title: 'Successful! <i class="ion-checkmark-round"></i>',
                    template:'You have Successfuly Reported'
                 	 });
-  		 									 var postsrefreport = new Firebase('https://snev.firebaseio.com/posts');
-  		 									 postsrefreport.child(value).update({ noOfReports: noof2+1});
+  		 								
+  		 									 ref.child(value).update({ noOfReports: noof2+1});
 	        });
 
 	    };
@@ -1123,7 +1134,7 @@ $scope.ToggleCompleted = function(toStatus){
 })
 
 
-//post controller
+//my post load controller
 .controller('mypostCtrl', function($scope ,$ionicPopup, $localStorage){
 
 	var ref = new Firebase('https://snev.firebaseio.com/posts');
@@ -1132,7 +1143,6 @@ $scope.ToggleCompleted = function(toStatus){
 		 ref.orderByChild("username").equalTo(username).on("value", function(snapshot,prevChildKey) {
 		  $scope.$apply(function(){
 			$scope.myposts = snapshot.val();
-	//		console.log(prevChildKey.key());
 
 		  });
 		});
@@ -1142,14 +1152,9 @@ $scope.ToggleCompleted = function(toStatus){
 // loading post
 
 .controller("base64Ctrl", function($scope, $firebaseArray) {
-  
-  var ref = new Firebase("https://snev.firebaseio.com");
 
   var img = new Firebase("https://snev.firebaseio.com/posts");
   $scope.imgs = $firebaseArray(img);
-
- 
-
 
 })
 
@@ -1161,9 +1166,7 @@ $scope.ToggleCompleted = function(toStatus){
    $scope.postForm = function(title,description){
      
       	 var username= $localStorage.username;
-				
-      
-
+			
 		 var messageListRef = new Firebase('https://snev.firebaseio.com/posts');
      var newMessageRef = messageListRef.push();
     
@@ -1187,7 +1190,7 @@ $scope.ToggleCompleted = function(toStatus){
 
             var fileReader = new FileReader();
 
-            fileReader.onload = function(fileLoadedEvent) {
+              fileReader.onload = function(fileLoadedEvent) {
               var textAreaFileContents = document.getElementById(
                 "textAreaFileContents"
               );

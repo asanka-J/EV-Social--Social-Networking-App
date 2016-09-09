@@ -137,11 +137,6 @@ angular.module('app.routes', [])
     controller: 'stationChatCtrl'
   })
 
-  .state('chat', {
-    url: '/chat',
-    templateUrl: 'templates/chat.html',
-    controller: 'chatCtrl'
-  })
 
   .state('posts', {
     url: '/posts',
@@ -154,11 +149,7 @@ angular.module('app.routes', [])
     templateUrl: 'templates/newPost.html',
    
   })
-  .state('posthistroy', {
-    url: '/posthistroy',
-    templateUrl: 'templates/postHistory.html',
 
-  })
 
   .state('chargingRecords', {
     url: '/chargingRecords',
