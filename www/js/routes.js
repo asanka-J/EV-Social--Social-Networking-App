@@ -81,6 +81,12 @@ angular.module('app.routes', [])
     
   })
 
+  .state('posthistory', {
+    url: '/myposthistory',
+    templateUrl: 'templates/postHistory.html',
+    
+  })
+
   .state('messenger', {
     url: '/messenger',
     templateUrl: 'templates/messenger.html',
@@ -197,9 +203,10 @@ angular.module('app.routes', [])
     .state('viewpost', {
       url: '/viewpost',
       templateUrl: 'templates/viewpost.html',
-      controller: 'viewpostController'
+    
 
 })
+
 
     // setup an abstract state for the tabs directive
 

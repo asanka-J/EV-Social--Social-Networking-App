@@ -19,87 +19,106 @@ angular.module('app.controllers', [])
 
 .controller('homeController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils) {
   var ref = new Firebase(FURL);
-
+	 var presence = new Firebase('https://snev.firebaseio.com/precence');
 
   $scope.logOut = function () {
-
-		
-			Auth.logout();
+	Auth.logout();
 			$location.path("/login");
-			var i=0;
 		
 			//managing logout presence- user control					
-			var presence = new Firebase('https://snev.firebaseio.com/precence');
+			
 			presence.orderByChild("username").equalTo($localStorage.username).on("child_added", function(snapshot) {
-				 
                         var userKey = snapshot.key();
-												if(i==0){
 
-													presence.child(userKey).remove();
-													// alert(userKey);
-													i++;
-												}
-					
+													 presence.child(userKey).set({ 'username': $localStorage.username, 'Status':'Logout','lastSeenAt':Firebase.ServerValue.TIMESTAMP });
 				 });
-
-      
-
   }
+
+
+
     $scope.username=$localStorage.username;
 })
 
 
 .controller('loginController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils) {
   var ref = new Firebase(FURL);
+	var presence = new Firebase('https://snev.firebaseio.com/precence');
   var userkey = "";
-  $scope.signIn = function (user) {
-    console.log("login success");
-    if(angular.isDefined(user)){
-    Utils.show();
-    Auth.login(user)
-      .then(function(authData) {
-      //console.log("id del usuario:" + JSON.stringify(authData));
+							
+								$scope.signIn = function (user) { 
+											console.log("login success");
+											if(angular.isDefined(user)){
+											Utils.show();
+											Auth.login(user)
+												.then(function(authData) {
+									
 
-        ref.child('profile').orderByChild("id").equalTo(authData.uid).on("child_added", function(snapshot) {
-        console.log(snapshot.key());
-        userkey = snapshot.key();
-        var obj = $firebaseObject(ref.child('profile').child(userkey));
+													ref.child('profile').orderByChild("id").equalTo(authData.uid).on("child_added", function(snapshot) {
+													console.log(snapshot.key());
+													userkey = snapshot.key();
+													var obj = $firebaseObject(ref.child('profile').child(userkey));
 
-        obj.$loaded()
-          .then(function(data) {
-            //console.log(data === obj); // true
-            //console.log(obj.email);
-			$localStorage.username = obj.name;
-      $localStorage.useremail = obj.email;
-		  $localStorage.userimage = obj.image;
-			$localStorage.vehiclename=obj.vehicle_name;
-			$localStorage.licenceplate=obj.licence_plate;
-			$localStorage.mobileno=obj.mobile;
-			$localStorage.uregdate=obj.registered_in;
-            $localStorage.userkey = userkey;
+													obj.$loaded()
+														.then(function(data) {
+														
+												$localStorage.username = obj.name;
+												$localStorage.useremail = obj.email;
+												$localStorage.userimage = obj.image;
+												$localStorage.vehiclename=obj.vehicle_name;
+												$localStorage.licenceplate=obj.licence_plate;
+												$localStorage.mobileno=obj.mobile;
+												$localStorage.uregdate=obj.registered_in;
+															$localStorage.userkey = userkey;
 
-              Utils.hide();
+																Utils.hide();
 
-		//managing presence- user					
-		var presence = new Firebase('https://snev.firebaseio.com/precence');
-   	 presence.push({ 'username': $localStorage.username, 'status': 'Online' });
-			
+														$state.go('home');
+															
 
-              $state.go('home');
-              console.log("Starter page","Home");
+														})
+														.catch(function(error) {
+															console.error("Error:", error);
+														});
+												});
 
-          })
-          .catch(function(error) {
-            console.error("Error:", error);
-          });
-      });
+												}, function(err) {
+													Utils.hide();
+													Utils.errMessage(err);
+												});
+											}
+								};
 
-      }, function(err) {
-        Utils.hide();
-         Utils.errMessage(err);
-      });
-    }
-  };
+
+	
+							
+							$scope.presencecheck = function(users){
+								 //	alert("prsence function");					
+								 		var connectedRef = new Firebase("https://snev.firebaseio.com/.info/connected");
+										connectedRef.on("value", function(snap) {
+											if (snap.val() === true) {
+													//managing presence- user				xxx
+														presence.orderByChild("username").equalTo($localStorage.username).on("value", function(snapshot) {
+																				var existstat = snapshot.exists();
+																					console.log(existstat);
+																					if(existstat==false){
+																							presence.push({ 'username': $localStorage.username, 'status': 'Online' });
+																					}else{
+																									presence.orderByChild("username").equalTo($localStorage.username).on("child_added", function(snapshot) {
+								          												var userKey = snapshot.key();
+
+																							if(snapshot.val().Status=="Logout" ){
+																									presence.child(userKey).set({  'username': $localStorage.username,'Status':'Online','lastSeenAt':Firebase.ServerValue.TIMESTAMP });
+																								}
+																				});
+																					}
+																			
+												});
+											} else {
+											//	alert(" connection error");
+											}
+										});
+
+							 }
 
 })
 
@@ -1117,20 +1136,22 @@ $scope.ToggleCompleted = function(toStatus){
 })
 
 
-//my post load controller
-.controller('mypostCtrl', function($scope ,$ionicPopup, $localStorage){
 
-	var ref = new Firebase('https://snev.firebaseio.com/posts');
-  var username=$localStorage.username;
+// loading post
 
-		 ref.orderByChild("username").equalTo(username).on("value", function(snapshot,prevChildKey) {
-		  $scope.$apply(function(){
-			$scope.myposts = snapshot.val();
+.controller("myPostHistorry", function($scope, $firebaseArray) {
 
-		  });
-		});
+
+  var ref = new Firebase("https://snev.firebaseio.com/posts");
+	  
+	 ref.orderByChild("username").equalTo("Asanka").on("child_added", function(snapshott,prevChildKey) {
+		
+		$scope.imgss=snapshott.val();
+	
+		})
 
 })
+
 
 // loading post
 
@@ -1233,60 +1254,23 @@ $scope.ToggleCompleted = function(toStatus){
 
 .controller('cmntController', function($scope ,$ionicPopup,$location,$localStorage) {
 
-	$scope.addComment = function(comment,title1) {
-
-	//get key of child equals to ==title
-	  var ref = new Firebase("https://snev.firebaseio.com/posts");
-  	ref.orderByChild("title").equalTo(title1).on("child_added", function(snapshot) {
-	  var value=snapshot.key();
-
-     var username= $localStorage.username;
-
-		//adding  comments
-		var messageListRef = new Firebase('https://snev.firebaseio.com/comments');
-		var newMessageRef = messageListRef.push();
-	 newMessageRef.set({ 'title': title1, 'comment':comment  , 'username':username, 'noOfLikes': 0,'noOfDisLikes': 0  });
-	 var path = newMessageRef.toString();
-
-
-    var alertPopup = $ionicPopup.alert({
-      title: 'Successful! <i class="ion-checkmark-round"></i>',
-      template:'You have Successfuly Commented'
-      });
-		 		$scope.comment="";
-
-		});
+	$scope.addComment = function(comment1,title1) {
+			
+				var user=$localStorage.username	;
+			  var messageListRef = new Firebase('https://snev.firebaseio.com/comments');
+        messageListRef.push({
+										'comment':comment1,
+										'noOfDisLikes':0,
+										'noOfLikes':0,
+										'username':user,
+										'title':title1
+										
+				 });
+   
   };
+
 })
 
-// viewing post
-.controller('viewpostController', function($scope ,$ionicPopup,$location, $localStorage) {
-
-//adding a comment
-	$scope.addComment = function(comment,title1) {
-
-	//get key of child equals to ==title
-	  var ref = new Firebase("https://snev.firebaseio.com/posts");
-	ref.orderByChild("title").equalTo(title1).on("child_added", function(snapshot) {
-	  var value=snapshot.key();
-
-
-
-
-		//add comments
-		var messageListRef = new Firebase('https://snev.firebaseio.com/comments');
-		var newMessageRef = messageListRef.push();
-	 newMessageRef.set({ 'title': title1, 'comment':comment  , 'username': $localStorage.username, 'noOfLikes': 0,'noOfDisLikes': 0  });
-	 var path = newMessageRef.toString();
-
-	 var alertPopup = $ionicPopup.alert({
-			template: '<i class="ion-checkmark-round"></i> Successfully commented  '
-	 	});
-		 		$scope.comment="";
-
-		});
-  };
-})
 
 
 
@@ -1295,19 +1279,19 @@ $scope.ToggleCompleted = function(toStatus){
 
 	$scope.setSelectedPost = function(title1) {
     window.localStorage.clear();
-  window.localStorage.setItem("settitle",title1);
+			$localStorage.settitle=title1;
+  //window.localStorage.setItem("settitle",title1);
+
+			$state.go('viewpost');
   	};
   })
 
 
 
   // get selected post deatils ; load comments and posts
-  .controller('getSelectedpost', function($scope ,$ionicPopup,$window){
-				$window.location.reload();
+  .controller('getSelectedpost', function($scope ,$ionicPopup,$window,$localStorage){
+			
 	var SelectdP=$localStorage.settitle;
-
-
-  // alert(SelectdP);
 
   	var ref = new Firebase('https://snev.firebaseio.com/posts');
     var ref2 = new Firebase('https://snev.firebaseio.com/comments');
@@ -1375,7 +1359,7 @@ $scope.ToggleCompleted = function(toStatus){
   var nameSnapshot = snapshot.child("friends");
   $scope.friendlist = nameSnapshot.val();
   
-  console.log(friendlist);
+ // console.log(friendlist);
   
 });
 

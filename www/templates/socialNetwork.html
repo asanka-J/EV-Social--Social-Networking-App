@@ -4,7 +4,7 @@
 
   <div class="bar bar-subheader">
         <button class="button icon ion-plus-circled" ui-sref="newPosts" style=" padding: 5px 20px; background: #0099CC; border: none;color: white;">Add a Post</button>
-          <button class="button icon ion-plus-circled" ui-sref="posthistroy" style=" padding: 5px 20px; background: #0099CC; border: none;color: white;">View My Post History</button>
+          <button class="button icon " ui-sref="posthistory" style=" padding: 5px 20px; background: #0099CC; border: none;color: white;">View My Post History</button>
 
 </div>
 <br>
@@ -25,7 +25,7 @@
                 <img src="">
                 <h2>{{post.username}}</h2>
 
-                <p>November 05, 2016</p>
+                <p>{{post.timeStamp | date:'d MMM yyyy'}}</p>
                 <h1>{{post.title}}</h1>
                 </div>
 
@@ -62,33 +62,6 @@
     </div>
 
 
-
-
-  <!--<div class="comment-form"  ng-controller="cmntController" >     new comment Form -->
-    <!-- Comment Avatar -->
-    <!--<div class="comment-avatar">
-      <img src="http://lorempixel.com/200/200/people">
-    </div>
-
-    <form class="form" name="form" ng-submit="form.$valid && addComment(comment,post.title) && showAlert()" novalidate>
-      <div class="form-row">
-        <textarea class="input"
-                  ng-model="comment"
-                  placeholder="Add comment..."
-                  required></textarea>
-      </div>
-
-      <div class="form-row">
-        <input class="commentbtn" type="submit" value="Add Comment">
-      </div>
-    </form> end of new comment form -->
-
-    <!-- load comments -->
-<!--
-  </div>   End of comment div -->
-<!--
-
-	  </div>-->
 
 					  </ion-item>
 

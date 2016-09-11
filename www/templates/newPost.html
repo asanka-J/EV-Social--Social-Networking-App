@@ -6,6 +6,7 @@
 
           <h1 style="text-align: center;">Enter Your post here</h1>
         <div class="spacer" style="width: 300px; height: 65px;"></div>
+       
         <form id="newPost-form7" class="list " name="newPostForm" >
             <label class="item item-input " id="newPost-input6" name="Title">
                 <input type="text" placeholder="Title " name="title" ng-model="title" required>
@@ -19,30 +20,20 @@
             </label>
 			<span style="color:red" ng-show="newPostForm.description.$error.required">Description is required</span>
 
-            <!-- test upload -->
-
- <div class="container-fluid">
+         <div class="container-fluid">
      
-      <hr/>
+            <hr/>
 
         <input type="file" name="file" class="inputimg" id="nameImg" accept="image/*">
         <br />
-      
-    
+        
     </div>
 
   <!-- upload end  -->
 
            <br>
-      
-      
-        <button id="newPost-button21" class=" btn waves-effect waves-light button-block " ng-disabled="newPostForm.$invalid" ng-click="postForm(title,description) ; uploadFile()" >Publish   <i class="material-icons right">send</i></button>
+                <button id="newPost-button21" class=" btn waves-effect waves-light button-block " ng-disabled="newPostForm.$invalid" ng-click="postForm(title,description) ; uploadFile()" >Publish   <i class="material-icons right">send</i></button>
         </form>
-
-
-
-    
-
 
         </div>
     </ion-content>

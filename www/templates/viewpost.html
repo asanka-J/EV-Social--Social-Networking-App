@@ -42,7 +42,7 @@
                     <img src="http://lorempixel.com/200/200/people">
                   </div>
 
-                    <form class="form" name="form" ng-submit="form.$valid && addComment(comment,post.title) && showAlert()" novalidate>
+                    <form class="form" name="form" >
                       <div class="form-row">
                         <textarea class="input"
                                   ng-model="comment"
@@ -51,7 +51,7 @@
                       </div>
 
                       <div class="form-row">
-                        <input class="commentbtn" type="submit" value="Add Comment">
+                        <input class="commentbtn" type="submit" ng-click="addComment(comment,post.title)" value="Add Comment">
                       </div>
                     </form><!-- end of new comment form -->
 

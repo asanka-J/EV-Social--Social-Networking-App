@@ -1,43 +1,61 @@
 
-<ion-view  view-title="My Post History">
+<ion-view  view-title="My post history">
 
+<br>
 
-  <ion-content ng-controller="mypostCtrl">
+  <!--<ion-content ng-controller="loadPostCtrl">-->
+   <ion-content ng-controller="base64Ctrl">
 
 	 <div class="padding"> </div>
-
+      <div class = "button button-block padding">_</div>
     <ion-list>
-      <ion-item  ng-repeat="post in myposts" class="item-icon-right item-remove-animate">
+      <!--<ion-item  ng-repeat="post in loadposts " class="item-icon-right item-remove-animate">-->
+        <div ng-repeat="post in imgs | toArray | orderBy: '-timeStamp'" class="col-xs-12 col-sm-6 col-md-3">
 
         <div class="item item-divider"> <div class="padding"> </div></div>
 
 
 				<div class="item item-avatar">
-                <img src="https://www.combustioninstitute.org/resources/icon_member_male.png">
+                <img src="">
                 <h2>{{post.username}}</h2>
 
-                <p>November 05, 2016</p>
+                <p>{{post.timeStamp | date:'d MMM yyyy'}}</p>
                 <h1>{{post.title}}</h1>
                 </div>
 
               <div class="item item-body">
-                <img height="250" width="100" class="full-image" src={{post.image}}>
+                <img height="250px" width="400px" ng-src="{{post.image}}"> 
+             
                 <p>
                 {{post.description}} </p>
+                 <!--<p>
+                {{post.image}} </p>-->
+              
+
                 <p>
                   <a href="#" class="subdued">{{post.noOfLikes}} Like</a>
+                  <a href="#" class="subdued">{{post.noOfDisLikes}} disLike</a>
+                  <a href="#" class="subdued">{{post.noOfReports}} times reported</a>
                   <a href="#" class="subdued">5 Comments</a>
                 </p>
-                <!-- //like dislike report -->
-                <div ng-controller="postCtrl">
-                  <button  ng-click=addlike(post.title) class="styl ion-thumbsup " ></button>
-                  <button  ng-click=adddislike(post.title) class="styl ion-thumbsdown " ></button>
-                  <button  ng-click=report(post.title) class="styl ion-flag " ></button>
 
-                </div>
-                    <button  ui-sref="editpost">Edit Post</button>
+            <div ng-controller="postCtrl">
+              <button  ng-click=addlike(post.title) class="styl ion-thumbsup " ></button>
+              <button  ng-click=adddislike(post.title) class="styl ion-thumbsdown " ></button>
+              <button  ng-click=report(post.title) class="styl ion-flag " ></button>
 
-          </div>
+            </div>
+
+</div>
+
+
+  <div class="item item-body">
+
+    <div ng-controller="newselect">
+      <button ui-sref="viewpost" ng-click=setSelectedPost(post.title) style=" padding: 5px 20px; background: #0099CC; border: none;color: white;">View Comments</button>
+    </div>
+
+
 
 					  </ion-item>
 
@@ -48,10 +66,12 @@
 
   </ion-content>
 
+
+
  <ion-footer-bar align-title="left" >
 
  <div class="button-bar" >
-  <a id="socialNetwork-button20"  class="button button-positive icon ion-clipboard" ui-sref="posts">    Posts</a>
+  <a id="socialNetwork-button20"  class="button button-positive icon ion-clipboard" ui-sref="socialnetwork">    Posts</a>
   <a class="button button-positive icon ion-android-chat " ui-sref="chatroomhome">   chat room</a>
 </div>
 
