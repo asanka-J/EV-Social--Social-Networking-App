@@ -15,11 +15,25 @@
 				 </label>
 				 <span style="color:red" ng-show="myForm.$submitted && myForm.name.$error.required">Name is required</span>
 				 <div class="spacer" style="width: 283px; height: 10px;"></div>
-				
+				 
 				 <label class="item item-input">
-					<textarea  name="description" ng-model="station.desc" placeholder="Description" required></textarea>
+					<input type="text"  name="port" ng-model="station.port" placeholder="Port" required>
 				 </label>
-				 <span style="color:red" ng-show="myForm.$submitted && myForm.description.$error.required">Description is required</span>
+				 <span style="color:red" ng-show="myForm.$submitted && myForm.port.$error.required">Port is required</span>
+				 <div class="spacer" style="width: 283px; height: 10px;"></div>
+				 
+				 <label class="item item-input">
+					<input type="text"  name="hours" ng-model="station.hours" placeholder="Hours (Optional)" ng-pattern="/^\d{0,9}?$/" data-ng-init="station.hours = ''">
+				 </label>
+				 
+				 <span style="color:red" ng-show="myForm.hours.$error.pattern">Numbers only</span>
+				 <div class="spacer" style="width: 283px; height: 10px;"></div>
+				 
+				 <label class="item item-input">
+					<input type="text"  name="cost" ng-model="station.cost" placeholder="Cost LKR per KWH" required ng-pattern="/^\d{0,9}?$/">
+				 </label>
+				 <span style="color:red" ng-show="myForm.$submitted && myForm.cost.$error.required">Cost is required in KWH</span>
+				  <span style="color:red" ng-show="myForm.cost.$error.pattern">Numbers only</span>
 				 <div class="spacer" style="width: 283px; height: 10px;"></div>
 				 
 				  <label class="item item-input item-select">
@@ -41,9 +55,10 @@
 				
 				 <label class="item item-input">
 					<input type="text" name="contact" ng-model="station.contact" placeholder="Contact (optional)"  data-ng-init="station.contact = ''" ng-minlength="10" 
-					ng-maxlength="10">
+					ng-maxlength="10" ng-pattern="/^\d{10}$/">
 				 </label>
 				 <span style="color:red" ng-show="myForm.contact.$error.required">Telephone no is required</span>
+				 <span style="color:red" ng-show="myForm.contact.$error.pattern">In Number format</span>
 				 <span style="color:red" ng-show="myForm.contact.$error.minlength || myForm.contact.$error.maxlength ">Phone number should be 10 digits</span>
 				 <div class="spacer" style="width: 283px; height: 10px;"></div>
 				 

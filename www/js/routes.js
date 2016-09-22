@@ -74,6 +74,12 @@ angular.module('app.routes', [])
     templateUrl: 'templates/stationDirection.html',
     controller: 'stationDirectionCtrl'
   })
+  
+     .state('stationStatus', {
+    url: '/stationStatus',
+    templateUrl: 'templates/allStatus.html',
+    controller: 'stationStatusCtrl'
+  })
 
   .state('socialNetwork', {
     url: '/socialnetwork',
