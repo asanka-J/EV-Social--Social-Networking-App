@@ -2,6 +2,58 @@
     height: 100%;
 }
 
+div.hidden {border-style: hidden;}
+
+	.controls {
+		position: absolute;
+        bottom: 35px;
+        left: 5%;
+        z-index: 5;
+        margin-top: 10px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 40px;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+	  
+ #pac-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 0px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 60%;
+		height:40px;
+      }
+
+      #pac-input:focus {
+        border-color: #4d90fe;
+      }
+
+      .pac-container {
+        font-family: Roboto;
+      }
+
+      #type-selector {
+        color: #fff;
+        background-color: #4d90fe;
+        padding: 5px 11px 0px 11px;
+      }
+
+      #type-selector label {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: 300;
+      }
+      #target {
+        width: 345px;
+      }
+
 /** Error Messages **/
 
 /** Styling for the username field **/
@@ -61,8 +113,8 @@ label.item.valid-lr {
 	  
 #floating-panel2 {
         position: absolute;
-        top: 35px;
-        right: 5%;
+        top: 10%;
+        left: 5%;
         z-index: 5;
         padding: 5px;
       }
@@ -79,6 +131,10 @@ label.item.valid-lr {
 
 .green {
   background: #AEDC20;
+}
+
+.lightgreen {
+  background: #f2ffcc;
 }
 
 .orange {

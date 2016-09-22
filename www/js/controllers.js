@@ -40,7 +40,7 @@ angular.module('app.controllers', [])
 })
 
 
-.controller('loginController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils) {
+.controller('loginController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils,$ionicSideMenuDelegate) {
   var ref = new Firebase(FURL);
 	var presence = new Firebase('https://snev.firebaseio.com/precence');
   var userkey = "";
@@ -119,6 +119,8 @@ angular.module('app.controllers', [])
 										});
 
 							 }
+							 
+	 $ionicSideMenuDelegate.canDragContent(false)
 
 })
 
@@ -174,7 +176,9 @@ angular.module('app.controllers', [])
 	    var lat = $scope.station.latitude;
 	    var lgt = $scope.station.longitude;
 	    var nme = $scope.station.name;
-		var dsc = $scope.station.desc;
+		var prt = $scope.station.port;
+		var hrs = $scope.station.hours;
+		var cst = $scope.station.cost;
 		var typ = $scope.station.type;
 		var add = $scope.station.address;
 		var cnt = $scope.station.contact;
@@ -185,11 +189,13 @@ angular.module('app.controllers', [])
 
 	    var fb = new Firebase("https://snev.firebaseio.com/Stations_Details");
 
-	    fb.push({
+	    var newfb=fb.push({
 		    latitude: lat,
 		    longitude: lgt,
 		    name: nme,
-			description:dsc,
+			port:prt,
+			hours:hrs,
+			cost:cst,
 			type:typ,
 			address:add,
 			contact:cnt,
@@ -197,9 +203,20 @@ angular.module('app.controllers', [])
 			state:"active",
 			website:web,
 
-		}).then(function(ref) {
+		}).then(function(newfb) {
 		    $scope.static = {};
 		    $scope.showAlert();
+			var key=newfb.key();
+			
+			var firebaseObj = new Firebase("https://snev.firebaseio.com/user_status");
+			
+			firebaseObj.push({user_id: "",station_id: key,on_myWay: 0, in_theQueue: 0,charging:0,
+							completed:0,time:"",}).then(function(ref) {
+								$scope.static = {};
+							}, function(error) {
+								console.log("Error:adding first time", error);
+							});
+							
 		}, function(error) {
 		    console.log("Error:", error);
 		});
@@ -238,22 +255,50 @@ angular.module('app.controllers', [])
 		    scope.$parent.station.longitude = evt.latLng.lng();
 		    scope.$apply();
 		  });
+		  
+		   google.maps.event.addListener(map, 'click', function(event) {
+			marker.setPosition(event.latLng);
+			scope.$parent.station.latitude = event.latLng.lat();
+		    scope.$parent.station.longitude =event.latLng.lng();
+		    scope.$apply();
+        });
 
 
         }
     };
 })
 
-.controller('stationDetailCtrl', function($scope,stationData,$ionicPopup,$cordovaLaunchNavigator,$location,$localStorage) {
+.controller('stationDetailCtrl', function($scope,$ionicPopup,$cordovaLaunchNavigator,$location,$localStorage, $ionicModal) {
+	
+	 $ionicModal.fromTemplateUrl('my-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+  
+  
+  $scope.openModal = function() {
+    $scope.modal.show();
+  };
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+  // Cleanup the modal when we're done with it!
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
+	
 
-
-	var data = stationData.getProperty();
+	var data = $localStorage.stationData;
 		if(data=='')
 		{console.log("Could not get station details");}
 	
 
             $scope.name=data.name;
-			$scope.description=data.description;
+			$scope.port=data.port;
+			$scope.hours= data.hours;
+			$scope.cost=data.cost;
 			$scope.address=data.address;
 			$scope.contact=data.contact;
 			$scope.email=data.email;
@@ -271,7 +316,8 @@ angular.module('app.controllers', [])
 		});
 	
 	  };
-
+	  
+	//funtions to call device features like dialer,email and web browser
 
 	  $scope.call = function () {
 		  if(data.contact=='')
@@ -294,13 +340,48 @@ angular.module('app.controllers', [])
 			window.open(data.website, '_system');
       };
 	  
-			var sid = stationData.getStationid();
+			var sid = $localStorage.stationDataID;
 			var uid = $localStorage.userkey;
+			
+			
+			   $scope.watchStatus = function () {
+			var fire = new Firebase("https://snev.firebaseio.com/user_status");
+				 var count=0;
+				fire.orderByChild('station_id').equalTo(sid).once('value', function(snapshot){
+					snapshot.forEach(function(userSnapshot) {
+					var x = userSnapshot.val();
+							if(x.user_id && ( (x.on_myWay==1) || (x.in_theQueue==1) || (x.charging==1) || (x.completed==1) ))
+							{count++;}
+					
+			});
+			var output="";
+					if(count==0){
+						output="Currently no one using station";
+					}
+					if(count==1){
+						output="Only one person using the service";
+					}
+					if(count>1){
+						output=count+" Peoples are currently using the service";
+					}
+		$scope.fullStatus=output;
+			});
+      };
+	  
+	  $scope.watchStatus();
+			
 	  
 	  		      var firebaseObj = new Firebase("https://snev.firebaseio.com/user_status");
+				  var x=0;
 				  firebaseObj.orderByChild("station_id").equalTo(sid).on("child_added", function(snapshot) {
 				 
                         var station_status = snapshot.val();
+						
+						if(station_status.user_id==""){
+							status_id=snapshot.key();
+							console.log();
+							firebaseObj.child(status_id).update({user_id: uid});
+						}
 						if(station_status.user_id==uid){
 							current_status=snapshot.val();
 							if(current_status.on_myWay==1)
@@ -312,13 +393,37 @@ angular.module('app.controllers', [])
 							if(current_status.completed==1)
 							{$scope.complete=true;}
 							
-						}
-						
+						}			
 					
-                });
-	  
-	  
-	  
+                
+				
+				 var fire = new Firebase("https://snev.firebaseio.com/user_status");
+				var has=0;
+				fire.orderByChild('station_id').equalTo(sid).once('value', function(snapshot){
+					snapshot.forEach(function(userSnapshot) {
+					var x = userSnapshot.val();
+					if(x.user_id==uid){
+						has=1;
+					}
+			});
+			
+			if(has!=1 && x!=1 && station_status.user_id!=uid){
+				fire.push({user_id: uid,station_id: sid,on_myWay: 0, in_theQueue: 0,charging:0,
+							completed:0,time:""}).then(function(ref) {
+								$scope.static = {};
+							}, function(error) {
+								
+								});
+								x=1;
+		}
+		
+    });
+	
+	
+});
+				
+
+
 	  
 	  $scope.ToggleOnMyWay = function(toStatus){
 		  
@@ -330,16 +435,6 @@ angular.module('app.controllers', [])
 				firebaseObj.orderByChild("station_id").equalTo(sid).on("child_added", function(snapshot) {
 				 
                         var station_status = snapshot.val();
-						//creating first time
-						if(station_status==""){
-							fb.push({user_id: uid,station_id: sid,on_myWay: 1, in_theQueue: 0,charging:0,
-							completed:0,}).then(function(ref) {
-								$scope.static = {};
-							}, function(error) {
-								console.log("Error:adding first time", error);
-							});
-							
-						}
 						if(station_status.user_id==uid){
 							
 							var onComplete = function(error) {
@@ -357,7 +452,7 @@ angular.module('app.controllers', [])
 							
 							var onWay=station_status.on_myWay+1;	
 							 var statusRef = new Firebase("https://snev.firebaseio.com/user_status");
-						     statusRef.child(status_id).update({on_myWay: onWay}, onComplete);
+						     statusRef.child(status_id).update({on_myWay: onWay,time:Firebase.ServerValue.TIMESTAMP}, onComplete);
 
 							
 							
@@ -366,7 +461,7 @@ angular.module('app.controllers', [])
 				 }, function (errorObject) {
                     console.log("The read failed: " + errorObject.code);
                 });
-		  
+		  $scope.watchStatus();
 		  }
 		  
 		  else{
@@ -404,7 +499,7 @@ angular.module('app.controllers', [])
                     console.log("The read failed: " + errorObject.code);
                 });
 			  
-			  
+			  $scope.watchStatus();
 		  }
 		
 			
@@ -421,16 +516,6 @@ angular.module('app.controllers', [])
 				firebaseObj.orderByChild("station_id").equalTo(sid).on("child_added", function(snapshot) {
 				 
                         var station_status = snapshot.val();
-						//creating first time
-						if(station_status==""){
-							fb.push({user_id: uid,station_id: sid,on_myWay: 0, in_theQueue: 1,charging:0,
-							completed:0,}).then(function(ref) {
-								$scope.static = {};
-							}, function(error) {
-								console.log("Error:adding first time", error);
-							});
-							
-						}
 						if(station_status.user_id==uid){
 							
 							var onComplete = function(error) {
@@ -449,7 +534,7 @@ angular.module('app.controllers', [])
 							
 							var inQu=station_status.in_theQueue+1;	
 							 var statusRef = new Firebase("https://snev.firebaseio.com/user_status");
-						     statusRef.child(status_id).update({in_theQueue: inQu}, onComplete);
+						     statusRef.child(status_id).update({in_theQueue: inQu,time:Firebase.ServerValue.TIMESTAMP}, onComplete);
 
 							
 							
@@ -458,7 +543,7 @@ angular.module('app.controllers', [])
 				 }, function (errorObject) {
                     console.log("The read failed: " + errorObject.code);
                 });
-		  
+		  $scope.watchStatus();
 		  }
 		  
 		  else{
@@ -495,7 +580,7 @@ angular.module('app.controllers', [])
 				 }, function (errorObject) {
                     console.log("The read failed: " + errorObject.code);
                 });
-			  
+			  $scope.watchStatus();
 			  
 		  }
 		
@@ -514,16 +599,6 @@ angular.module('app.controllers', [])
 				firebaseObj.orderByChild("station_id").equalTo(sid).on("child_added", function(snapshot) {
 				 
                         var station_status = snapshot.val();
-						//creating first time
-						if(station_status==""){
-							fb.push({user_id: uid,station_id: sid,on_myWay: 0, in_theQueue: 0,charging:1,
-							completed:0,}).then(function(ref) {
-								$scope.static = {};
-							}, function(error) {
-								console.log("Error:adding first time", error);
-							});
-							
-						}
 						if(station_status.user_id==uid){
 							
 							var onComplete = function(error) {
@@ -542,7 +617,7 @@ angular.module('app.controllers', [])
 							
 							var charge=station_status.charging+1;	
 							 var statusRef = new Firebase("https://snev.firebaseio.com/user_status");
-						     statusRef.child(status_id).update({charging: charge}, onComplete);
+						     statusRef.child(status_id).update({charging: charge,time:Firebase.ServerValue.TIMESTAMP}, onComplete);
 
 							
 							
@@ -551,7 +626,7 @@ angular.module('app.controllers', [])
 				 }, function (errorObject) {
                     console.log("The read failed: " + errorObject.code);
                 });
-		  
+		  $scope.watchStatus();
 		  }
 		  
 		  else{
@@ -589,7 +664,14 @@ angular.module('app.controllers', [])
                     console.log("The read failed: " + errorObject.code);
                 });
 			  
+			  $scope.watchStatus();
 		  }
+		  
+		  
+		  
+		   
+
+
 }
 
 
@@ -605,16 +687,6 @@ $scope.ToggleCompleted = function(toStatus){
 				firebaseObj.orderByChild("station_id").equalTo(sid).on("child_added", function(snapshot) {
 				 
                         var station_status = snapshot.val();
-						//creating first time
-						if(station_status==""){
-							fb.push({user_id: uid,station_id: sid,on_myWay: 0, in_theQueue: 0,charging:0,
-							completed:1,}).then(function(ref) {
-								$scope.static = {};
-							}, function(error) {
-								console.log("Error:adding first time", error);
-							});
-							
-						}
 						if(station_status.user_id==uid){
 							
 							var onComplete = function(error) {
@@ -633,7 +705,7 @@ $scope.ToggleCompleted = function(toStatus){
 							
 							var comp=station_status.completed+1;	
 							 var statusRef = new Firebase("https://snev.firebaseio.com/user_status");
-						     statusRef.child(status_id).update({completed: comp}, onComplete);
+						     statusRef.child(status_id).update({completed: comp,time:Firebase.ServerValue.TIMESTAMP}, onComplete);
 
 							
 							
@@ -642,7 +714,7 @@ $scope.ToggleCompleted = function(toStatus){
 				 }, function (errorObject) {
                     console.log("The read failed: " + errorObject.code);
                 });
-		  
+		  $scope.watchStatus();
 		  }
 		  
 		  else{
@@ -672,11 +744,20 @@ $scope.ToggleCompleted = function(toStatus){
 							 var statusRef = new Firebase("https://snev.firebaseio.com/user_status");
 						     statusRef.child(status_id).update({completed: comp}, onComplete);
 
+							
+							
 						}
+						
 				 }, function (errorObject) {
                     console.log("The read failed: " + errorObject.code);
                 });
+			  
+			  $scope.watchStatus();
 		  }
+		
+
+		
+			
 		}
 		
 		
@@ -684,28 +765,11 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 })
-.service('stationData', function () {
-        var property = '';
-		var station_id = '';
-
-        return {
-			 getStationid: function () {
-				return station_id;
-            },
-            getProperty: function () {
-                return property;
-            },
-            setProperty: function(value,sid) {
-                property = value;
-				station_id=sid;
-            }
-        };
-    })
 
 
 
 
-.controller('mapCtrl', function($scope,$cordovaGeolocation,$firebase,stationData,$location, $localStorage) {
+.controller('mapCtrl', function($scope,$cordovaGeolocation,$firebase,$location, $localStorage) {
 	
 	
         var options = {timeout: 10000, enableHighAccuracy: true};
@@ -715,8 +779,8 @@ $scope.ToggleCompleted = function(toStatus){
 			$localStorage.userLongitude=position.coords.longitude;
 			}, function(error){
             console.log("Could not get location");
-			$localStorage.userLatitude="6.9271";
-			$localStorage.userLongitude="79.8612";
+			$localStorage.userLatitude="7.80896312";
+			$localStorage.userLongitude="80.13977051";
         });
 
             var nlatLng = new google.maps.LatLng($localStorage.userLatitude, $localStorage.userLongitude);
@@ -734,12 +798,51 @@ $scope.ToggleCompleted = function(toStatus){
             google.maps.event.addListenerOnce($scope.map, 'idle', function(){
 
                 var marker = new google.maps.Marker({
-                    map: $scope.map,
+                    
                     animation: google.maps.Animation.DROP,
                     position: nlatLng,
 					icon: 'img/me.png'
 
                 });
+				
+				 // Create the search box and link it to the UI element.
+				var input = document.getElementById('pac-input');
+				var searchBox = new google.maps.places.SearchBox(input);
+				$scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+				// Bias the SearchBox results towards current map's viewport.
+				$scope.map.addListener('bounds_changed', function() {
+				  searchBox.setBounds($scope.map.getBounds());
+				});
+
+				// Listen for the event fired when the user selects a prediction and retrieve
+				// more details for that place.
+				searchBox.addListener('places_changed', function() {
+				  var places = searchBox.getPlaces();
+
+				  if (places.length == 0) {
+					return;
+				  }
+
+				  // For each place, get the icon, name and location.
+				  var bounds = new google.maps.LatLngBounds();
+				  places.forEach(function(place) {
+					if (!place.geometry) {
+					  console.log("Returned place contains no geometry");
+					  return;
+					}
+
+					if (place.geometry.viewport) {
+					  // Only geocodes have viewport.
+					  bounds.union(place.geometry.viewport);
+					} else {
+					  bounds.extend(place.geometry.location);
+					}
+				  });
+				  $scope.map.fitBounds(bounds);
+				});
+		
+				// End of search box and link it to the UI element.
 				
 
                 var infoWindow = new google.maps.InfoWindow({
@@ -755,6 +858,7 @@ $scope.ToggleCompleted = function(toStatus){
 				
 
                         var station = snapshot.val();
+						if(station.contact==""){station.contact="not provided!"};
 						
 								 var stationinfoWindow = new google.maps.InfoWindow({
                     content: station.name+'<br> Tel: '+station.contact
@@ -776,13 +880,15 @@ $scope.ToggleCompleted = function(toStatus){
 							 google.maps.event.addListener(stations, 'click', function () {
 								 stationinfoWindow.open($scope.map, stations);  
 							});
+							
 						
 						
 						//doubleclick event for fast stations
 							 google.maps.event.addListener(stations, 'dblclick', function () {
 								 var id = snapshot.key();
 								 var data = snapshot.val();
-								 stationData.setProperty(data,id);
+								 $localStorage.stationData=data;
+								  $localStorage.stationDataID=id;
 								 $location.path("/stationDetail");
 								 window.location.assign("#/stationDetail");
 							});
@@ -809,7 +915,8 @@ $scope.ToggleCompleted = function(toStatus){
 							 google.maps.event.addListener(slowstations, 'dblclick', function () {
 								 var id = snapshot.key();
 								 var data = snapshot.val();
-								 stationData.setProperty(data,id);
+								  $localStorage.stationData=data;
+								  $localStorage.stationDataID=id;
 								 $location.path("/stationDetail");
 								 window.location.assign("#/stationDetail");
 							});
@@ -862,6 +969,8 @@ $scope.ToggleCompleted = function(toStatus){
 						 $scope.me = function () {	 
 						 if(me)
 						 {
+							  
+							marker.setMap($scope.map);//setting marker me
 							$scope.map.setCenter(nlatLng);
 							$scope.map.setZoom(zoom + 5);
 							me=false;
@@ -869,6 +978,7 @@ $scope.ToggleCompleted = function(toStatus){
 						 
 						 else
 						 {
+							marker.setMap(null);//removing marker me
 							$scope.map.setCenter(nlatLng);
 							$scope.map.setZoom(zoom);
 							me=true;
@@ -880,7 +990,7 @@ $scope.ToggleCompleted = function(toStatus){
 
 })
 
-.controller('stationDirectionCtrl', function($scope,$localStorage,$firebase,stationData,$location) {
+.controller('stationDirectionCtrl', function($scope,$localStorage,$firebase,$location) {
        var directionsService = new google.maps.DirectionsService();
          var directionsDisplay = new google.maps.DirectionsRenderer();
     
@@ -893,7 +1003,8 @@ $scope.ToggleCompleted = function(toStatus){
          directionsDisplay.setPanel(document.getElementById('panel'));
 		
 			
-			var data=stationData.getProperty();
+			var data=$localStorage.stationData;
+	
 		
 		
 		var cpostion = {lat: $localStorage.userLatitude, lng: $localStorage.userLongitude};
@@ -913,6 +1024,72 @@ $scope.ToggleCompleted = function(toStatus){
              directionsDisplay.setDirections(response);
            }
          });
+
+})
+
+.controller('stationStatusCtrl', function($scope,$firebase,$localStorage) {
+	
+	$scope.ViewAllStatus = function () {
+	var sid = $localStorage.stationDataID;
+	  
+	  		      var firebaseObj = new Firebase("https://snev.firebaseio.com/user_status");
+				  firebaseObj.orderByChild("station_id").equalTo(sid).on("value", function(snapshot) {
+				 
+                      $scope.items = [];
+					 var list = [];
+					   var station_status =snapshot.val();
+						
+						snapshot.forEach(function(userSnapshot) {
+							
+							var myway=userSnapshot.val().on_myWay;
+							var que=userSnapshot.val().in_theQueue;
+							var charging=userSnapshot.val().charging;
+							var completed=userSnapshot.val().completed;
+					
+									if(myway!=0||que!=0||charging!=0||completed!=0){
+											 var station_status =userSnapshot.val();
+											 
+											 list.push(station_status);
+									}
+														
+						});
+						
+						 $scope.items = list; 
+		
+						$scope.getName= function(uid) {
+							
+							 var firebaseObj2 = new Firebase("https://snev.firebaseio.com/profile");
+						  firebaseObj2.on("value", function(snap){
+							  
+							  	snap.forEach(function(userSnapshot) {
+					
+									if(userSnapshot.key()==uid){
+											var uname=userSnapshot.val().name;
+											$scope.myname=uname;
+											
+											
+										  }
+								}
+								);
+								});
+							
+						}; 
+						
+					
+                });
+				
+	};
+	$scope.ViewAllStatus();
+
+	 $scope.colorCodeArray = [
+         "#FDD017",
+         "#F75D59",
+         "#F660AB",
+         "#9E7BFF",
+         "#607D8B",
+         "#039BE5",
+         "#009688",
+    ];
 
 })
 //isuru end
