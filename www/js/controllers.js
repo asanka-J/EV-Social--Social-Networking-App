@@ -268,26 +268,8 @@ angular.module('app.controllers', [])
     };
 })
 
-.controller('stationDetailCtrl', function($scope,$ionicPopup,$cordovaLaunchNavigator,$location,$localStorage, $ionicModal) {
+.controller('stationDetailCtrl', function($scope,$ionicPopup,$cordovaLaunchNavigator,$location,$localStorage) {
 	
-	 $ionicModal.fromTemplateUrl('my-modal.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-  
-  
-  $scope.openModal = function() {
-    $scope.modal.show();
-  };
-  $scope.closeModal = function() {
-    $scope.modal.hide();
-  };
-  // Cleanup the modal when we're done with it!
-  $scope.$on('$destroy', function() {
-    $scope.modal.remove();
-  });
 	
 
 	var data = $localStorage.stationData;
@@ -357,6 +339,7 @@ angular.module('app.controllers', [])
 			var output="";
 					if(count==0){
 						output="Currently no one using station";
+						$scope.hideView=true;
 					}
 					if(count==1){
 						output="Only one person using the service";

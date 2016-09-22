@@ -1,0 +1,18 @@
+<ion-view title="All status">
+    <ion-content padding="true" class="has-header">
+         <ul class="list" >
+			<li class="item" ng-style="{background: colorCodeArray[$index % colorCodeArray.length]}" ng-repeat="item in items">
+				<span ng-repeat="me in getName(item.user_id)"></span>
+				<p><span style="font-size:medium;font-weight: bold;">{{myname}}</span>&nbsp;
+				<span style="font-size:small;">{{item.time | date:'shortTime'}}<span></p>
+				<p>{{(item.on_myWay==1)?"I'm on my way to charging station :o":""}}</p>
+				<p>{{(item.in_theQueue==1)?"Waiting on the queue :(":""}}</p>
+				<p>{{(item.charging==1)?"Currntly charging my vehicle :)":""}}</p>
+				<p>{{(item.completed==1)?"Charge completed :D":""}}</p>
+				
+			</li>
+		</ul>
+
+  
+    </ion-content>
+</ion-view>
