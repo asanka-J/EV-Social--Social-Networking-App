@@ -1,32 +1,7 @@
 <ion-view>
   <ion-nav-title>Details</ion-nav-title>
      <ion-content padding="true" style="background: url(img/daLkLLQeieKJBgrz5kAr_app_background.jpg) no-repeat center;background-size:cover;" class="has-header">
-	 <script id="my-modal.html" type="text/ng-template">
-			  <ion-modal-view>
-				 <ion-header-bar class="bar-balanced">
-				 <h1 class="title" >All Status</h1>
-			<button class="button button-clear " ng-click="closeModal()"><i class="icon ion-close"></i></button>
-				</ion-header-bar>
-				<ion-content ng-controller="stationStatusCtrl">
-				 <div>
-				 <ul class="list" >
-			<li class="item" ng-style="{background: colorCodeArray[$index % colorCodeArray.length]}" ng-repeat="item in items">
-			
-			
-				<span ng-repeat="me in getName(item.user_id)"></span>
-				<p><span style="font-size:medium;font-weight: bold;">{{myname}}</span>&nbsp;
-				<span style="font-size:small;">{{item.time | date:'shortTime'}}<span></p>
-				<p>{{(item.on_myWay==1)?"I'm on my way to charging station :o":""}}</p>
-				<p>{{(item.in_theQueue==1)?"Waiting on the queue :(":""}}</p>
-				<p>{{(item.charging==1)?"Currntly charging my vehicle :)":""}}</p>
-				<p>{{(item.completed==1)?"Charge completed :D":""}}</p>
-				
-			</li>
-		</ul>
-			</div>
-				</ion-content>
-			  </ion-modal-view>
-			</script>
+	
 	 <div class="list card">
 
   <div class="item item-avatar">
@@ -41,7 +16,7 @@
 	<p class="lightgreen">Address : <strong>{{address}}</strong></p>
 	<div class="spacer" style="width: 283px; height: 16px;"></div>
         <p id="page-markdown2" style="color:#CC4545;" class=" "><strong>{{fullStatus}}</strong></p>
-		<p ng-click="openModal()"><a href="" >view</a></p>
+		<p ui-sref="stationStatus" ng-hide="hideView" ><a href="" >view</a></p>
         <button id="page-button1" class=" button button-balanced  button-inline " ng-click="launchNavigator()"  >Get Direction</button>
 		<div class="spacer" style="width: 283px; height: 16px;"></div>
    
