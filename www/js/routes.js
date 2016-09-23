@@ -213,6 +213,12 @@ angular.module('app.routes', [])
 
 })
 
+.state('friendslist', {
+    url: '/friendslist',
+    templateUrl: 'templates/friendslist.html',
+    
+  })
+
 
     // setup an abstract state for the tabs directive
 

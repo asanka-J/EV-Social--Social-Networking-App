@@ -1775,6 +1775,39 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 
+//loading friendlist 
+.controller('friendslistCntrl', function($scope, $http, $state,$ionicPopup,$rootScope,$firebaseArray, $localStorage,$firebase) {
+
+ 
+     
+  var username= $localStorage.username;
+	$scope.name=username;
+
+  var ref = new Firebase("https://snev.firebaseio.com/profile");
+
+	console.log("ref :" +ref);
+
+
+		
+				ref.orderByChild("name").equalTo(username).on("child_added", function(mysnapshot) {
+							var userkey = mysnapshot.key();
+						
+						var reprofile= new Firebase('https://snev.firebaseio.com/profile/'+userkey+'/friends');
+						
+									reprofile.on("value", function(snapshot,prevChildKey) {
+											$scope.$apply(function(){
+											 $scope.friends = snapshot.val();
+											
+											});
+									});
+
+				})
+	
+
+})
+
+
+
 // Asanka end
 /************/
 //Make Appointment
