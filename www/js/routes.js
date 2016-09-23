@@ -9,220 +9,333 @@ angular.module('app.routes', [])
   $stateProvider
 
 
+  .state('app', {
+    url: '/app',
+    abstract: true,
+    templateUrl: 'templates/menu.html',
+    controller: 'AppCtrl'
+  })
 
 
+ .state('app.home', {
+    url: '/home',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/home.html'
+      }
+    }
+  })
 
-  .state('login', {
+    .state('app.login', {
       url: '/login',
-      templateUrl: 'templates/login.html',
-      controller:'loginController'
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/login.html',
+          controller: 'loginController'
+        }
+      }
     })
-    .state('forgot', {
+	
+    .state('app.forgot', {
       url: '/forgot',
-      templateUrl: 'templates/forgot.html',
-      controller:'forgotController'
+	   views: {
+        'menuContent': {
+		templateUrl: 'templates/register.html',
+		controller:'registerController'
+        }
+      }
     })
-    .state('register', {
+    .state('app.register', {
       url: '/register',
-      templateUrl: 'templates/register.html',
-      controller:'registerController'
+	  views: {
+        'menuContent': {
+         templateUrl: 'templates/register.html',
+		controller:'registerController'
+        }
+      }
     })
-    .state('home', {
-      url: '/home',
-      templateUrl: 'templates/home.html',
-      controller:'homeController'
-    })
+ 
 
-
- // .state('welcomeEVUser', {
-  //  url: '/login',
- //   templateUrl: 'templates/welcomeEVUser.html',
- //   controller: 'welcomeEVUserCtrl'
- // })
-
-  .state('signup', {
+  .state('app.signup', {
     url: '/signup',
-    templateUrl: 'templates/signup.html',
-    controller: 'signupCtrl'
+	 views: {
+        'menuContent': {
+        templateUrl: 'templates/signup.html',
+        controller: 'signupCtrl'
+        }
+      }
   })
 
- // .state('home', {
-//    url: '/home',
- //   templateUrl: 'templates/home.html',
-//    controller: 'homeCtrl'
-//  })
-
-  .state('map', {
+  .state('app.map', {
     url: '/map',
-    templateUrl: 'templates/map.html',
-    controller: 'mapCtrl'
+	 views: {
+        'menuContent': {
+        templateUrl: 'templates/map.html',
+        controller: 'mapCtrl'
+        }
+      }
   })
-   .state('addStation', {
+   .state('app.addStation', {
     url: '/addStation',
-    templateUrl: 'templates/add_station.html',
-     controller: 'StationCtrl'
+	views: {
+        'menuContent': {
+        templateUrl: 'templates/add_station.html',
+        controller: 'StationCtrl'
+        }
+      }
             })
 
-  .state('stationDetail', {
+  .state('app.stationDetail', {
     url: '/stationDetail',
-    templateUrl: 'templates/stationDetail.html',
-    controller: 'stationDetailCtrl'
+	views: {
+        'menuContent': {
+       templateUrl: 'templates/stationDetail.html',
+       controller: 'stationDetailCtrl'
+        }
+      }
   })
   
-  .state('stationDirection', {
+  .state('app.stationDirection', {
     url: '/stationDirection',
-    templateUrl: 'templates/stationDirection.html',
+	views: {
+        'menuContent': {
+     templateUrl: 'templates/stationDirection.html',
     controller: 'stationDirectionCtrl'
+        }
+      }
   })
   
-     .state('stationStatus', {
+     .state('app.stationStatus', {
     url: '/stationStatus',
+	views: {
+        'menuContent': {
     templateUrl: 'templates/allStatus.html',
     controller: 'stationStatusCtrl'
+        }
+      }
   })
 
-  .state('socialNetwork', {
+  .state('app.socialNetwork', {
     url: '/socialnetwork',
+	views: {
+        'menuContent': {
     templateUrl: 'templates/socialNetwork.html',
-    
+        }
+      } 
   })
 
-  .state('posthistory', {
+  .state('app.posthistory', {
     url: '/myposthistory',
+	views: {
+        'menuContent': {
     templateUrl: 'templates/postHistory.html',
-    
+        }
+      }  
   })
 
-  .state('messenger', {
+  .state('app.messenger', {
     url: '/messenger',
+	views: {
+        'menuContent': {
     templateUrl: 'templates/messenger.html',
     controller: 'messengerCtrl'
+        }
+      }
   })
 
-  .state('itemsForSale', {
+  .state('app.itemsForSale', {
     url: '/revenue',
+	views: {
+        'menuContent': {
     templateUrl: 'templates/itemsForSale.html',
     controller: 'itemsForSaleCtrl'
+        }
+      }
   })
 
-  .state('adminHomepage', {
+  .state('app.adminHomepage', {
     url: '/adminhome',
+	views: {
+        'menuContent': {
     templateUrl: 'templates/adminHomepage.html',
     controller: 'adminHomepageCtrl'
+        }
+      }
   })
 
-  .state('acceptNewStation', {
+  .state('app.acceptNewStation', {
     url: '/adminacceptstation',
+	views: {
+        'menuContent': {
     templateUrl: 'templates/acceptNewStation.html',
     controller: 'acceptNewStationCtrl'
+        }
+      }
   })
 
-  .state('acceptRevenue', {
+  .state('app.acceptRevenue', {
     url: '/adminacceptrev',
+	views: {
+        'menuContent': {
     templateUrl: 'templates/acceptRevenue.html',
     controller: 'acceptRevenueCtrl'
+        }
+      }
   })
 
-  .state('manageProfile', {
+  .state('app.manageProfile', {
     url: '/myprofile',
+	views: {
+        'menuContent': {
     templateUrl: 'templates/manageProfile.html',
     controller: 'manageProfileCtrl'
+        }
+      }
   })
 
 
 
-  .state('page', {
+  .state('app.page', {
     url: '/page17',
+	views: {
+        'menuContent': {
     templateUrl: 'templates/page.html',
     controller: 'pageCtrl'
+        }
+      }
   })
 
-  .state('groupChat', {
+  .state('app.groupChat', {
     url: '/groupChat',
+	views: {
+        'menuContent': {
     templateUrl: 'templates/groupChat.html',
     //controller: 'RoomsCtrl'
+        }
+      }
   })
 
-  .state('stationChat', {
+  .state('app.stationChat', {
     url: '/stationchat',
+	views: {
+        'menuContent': {
     templateUrl: 'templates/stationChat.html',
     controller: 'stationChatCtrl'
+        }
+      }
   })
 
 
-  .state('posts', {
+  .state('app.posts', {
     url: '/posts',
+	views: {
+        'menuContent': {
     templateUrl: 'templates/posts.html',
     controller: 'postsCtrl'
+        }
+      }
   })
 
-  .state('newPosts', {
+  .state('app.newPosts', {
     url: '/newPosts',
+	views: {
+        'menuContent': {
     templateUrl: 'templates/newPost.html',
-   
+        }
+      }  
   })
 
 
-  .state('chargingRecords', {
+  .state('app.chargingRecords', {
     url: '/chargingRecords',
+	views: {
+        'menuContent': {
     templateUrl: 'templates/chargingRecords.html',
     controller: 'chargingRecordsCtrl'
+        }
+      }
   })
 
 //asanka profile
 
-   .state('profile', {
+   .state('app.profile', {
       url: '/profile',
+	  views: {
+        'menuContent': {
       templateUrl: 'templates/profile.html',
       // controller:'loginController'
+        }
+      }
     })
 
-     .state('profileEdit', {
+     .state('app.profileEdit', {
       url: '/profileEdit',
+	  views: {
+        'menuContent': {
       templateUrl: 'templates/profileEdit.html',
       // controller:'loginController'
+        }
+      }
     })
 
   
 
 
   //asanka chat
-  .state('rooms', {
+  .state('app.rooms', {
       url: '/chatroomhome',
+	  views: {
+        'menuContent': {
       templateUrl: '/templates/home1.html',
-
+        }
+      }
     })
-    .state('chatroomhome', {
+	
+    .state('app.chatroomhome', {
       url: '/rooms',
+	  views: {
+        'menuContent': {
       templateUrl: '/templates/rooms.html',
       controller: 'RoomsListCtrl'
+        }
+      }
     })
-    .state('room', {
+	
+    .state('app.room', {
       url: '/rooms/:roomId',
+	  views: {
+        'menuContent': {
       templateUrl: '/templates/room.html',
       controller: 'RoomDetailCtrl'
+        }
+      }
     })
 
-
-    
-
-    .state('viewpost', {
+    .state('app.viewpost', {
       url: '/viewpost',
+	  views: {
+        'menuContent': {
       templateUrl: 'templates/viewpost.html',
-    
-
+        }
+      }
 })
 
-.state('friendslist', {
+.state('app.friendslist', {
     url: '/friendslist',
-    templateUrl: 'templates/friendslist.html',
-    
+	views: {
+        'menuContent': {
+		templateUrl: 'templates/friendslist.html',
+        }
+      }
   })
 
-  .state('friendProfile', {
+  .state('app.friendProfile', {
     url: '/friendProfile',
-    templateUrl: 'templates/friendsProfile.html',
-    
+	views: {
+        'menuContent': {
+      templateUrl: 'templates/friendsProfile.html',
+        }
+      }
   })
 
   
@@ -241,47 +354,71 @@ angular.module('app.routes', [])
   // })
 
   //admin user view
-  .state('adminUserView', {
+  .state('app.adminUserView', {
     url: '/userRecords',
+	views: {
+        'menuContent': {
     templateUrl: 'templates/adminUserView.html',
     controller: 'adminUserRecordsCtrl'
+        }
+      }
   })
 
   //admin station view
-  .state('adminStationView', {
+  .state('app.adminStationView', {
     url: '/stationRecords',
+	views: {
+        'menuContent': {
     templateUrl: 'templates/adminStationView.html',
     controller: 'adminStationRecordsCtrl'
+        }
+      }
   })
 
 //make appointment
-  .state('makeAppointment', {
+  .state('app.makeAppointment', {
 	url: '/makeAppointment',
+	views: {
+        'menuContent': {
 	templateUrl: 'templates/makeAppointment.html',
 	controller: 'makeAppointmentCtrl'
+        }
+      }
   })
 
 
  //admin make new notices
-  .state('newsPage', {
+  .state('app.newsPage', {
     url: '/newspage',
+	views: {
+        'menuContent': {
     templateUrl: 'templates/newsPage.html',
     controller: 'newsPageCtrl'
+        }
+      }
   })
 
   //User view notices
-  .state('viewNewsPage', {
+  .state('app.viewNewsPage', {
     url: '/viewnewspage',
-    templateUrl: 'templates/viewNewsPage.html',
+	views: {
+        'menuContent': {
+     templateUrl: 'templates/viewNewsPage.html',
     controller: 'viewNewsPageCtrl'
+        }
+      }
   })
   
   
 
-	 .state('editpost', {
+	 .state('app.editpost', {
           url: '/editpost',
-          templateUrl: '/templates/editpost.html'
+		  views: {
+        'menuContent': {
+			templateUrl: '/templates/editpost.html'
           //controller: 'RoomDetailCtrl'
+        }
+      }
         })
 
 
@@ -289,7 +426,7 @@ angular.module('app.routes', [])
 
 
 
-$urlRouterProvider.otherwise('/login')
+$urlRouterProvider.otherwise('/app/login')
 
 
 

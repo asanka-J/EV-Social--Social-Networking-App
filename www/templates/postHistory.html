@@ -52,7 +52,7 @@
   <div class="item item-body">
 
     <div ng-controller="newselect">
-      <button ui-sref="viewpost" ng-click=setSelectedPost(post.title) style=" padding: 5px 20px; background: #0099CC; border: none;color: white;">View Comments</button>
+      <button ui-sref="app.viewpost" ng-click=setSelectedPost(post.title) style=" padding: 5px 20px; background: #0099CC; border: none;color: white;">View Comments</button>
     </div>
 
 
@@ -71,8 +71,8 @@
  <ion-footer-bar align-title="left" >
 
  <div class="button-bar" >
-  <a id="socialNetwork-button20"  class="button button-positive icon ion-clipboard" ui-sref="socialnetwork">    Posts</a>
-  <a class="button button-positive icon ion-android-chat " ui-sref="chatroomhome">   chat room</a>
+  <a id="socialNetwork-button20"  class="button button-positive icon ion-clipboard" ui-sref="app.socialnetwork">    Posts</a>
+  <a class="button button-positive icon ion-android-chat " ui-sref="app.chatroomhome">   chat room</a>
 </div>
 
 </ion-footer-bar>
