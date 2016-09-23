@@ -5,7 +5,7 @@
          <ion-content ng-controller="friendslistCntrl" padding="true" class="has-header">
              
            <ion-list>
-            <ion-item class="item-avatar dark" ui-sref="manageProfile">
+            <ion-item class="item-avatar dark" ui-sref="app.manageProfile">
                 <img src="img/q4xbxIIlSoWlMTQ6tllU_steve.jpg">
                <p >
                 <b >{{name}} </b>
@@ -33,9 +33,9 @@
 
         <div class="button-bar" >
        
-           <a ui-sref="socialNetwork" id="socialNetwork-button20"  class="button button-positive icon ion-clipboard" > Posts</a>
-           <a class="button button-positive icon ion-android-chat " ui-sref="friendslist">   private Message</a>
-        <a class="button button-positive icon ion-android-chat " ui-sref="chatroomhome">   chat room</a>
+           <a ui-sref="app.socialNetwork" id="socialNetwork-button20"  class="button button-positive icon ion-clipboard" > Posts</a>
+           <a class="button button-positive icon ion-android-chat " ui-sref="app.friendslist">   private Message</a>
+        <a class="button button-positive icon ion-android-chat " ui-sref="app.chatroomhome">   chat room</a>
         </div>
 
     </ion-footer-bar>

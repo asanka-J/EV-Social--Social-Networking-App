@@ -1,6 +1,15 @@
 'Use Strict';
 angular.module('app.controllers', [])
 
+.controller('AppCtrl', function($scope,$location) {
+	
+  $scope.logOut = function () {
+	Auth.logout();
+			$location.path("/app/login");
+			
+  }
+
+})
 
 .controller('forgotController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils) {
   var ref = new Firebase(FURL);
@@ -9,7 +18,7 @@ angular.module('app.controllers', [])
       Auth.resetpassword(user)
         .then(function() {
           //console.log("Password reset email sent successfully!");
-          $location.path('/login');
+          $location.path('/app/login');
         }, function(err) {
            //console.error("Error: ", err);
         });
@@ -21,9 +30,6 @@ angular.module('app.controllers', [])
   var ref = new Firebase(FURL);
 	 var presence = new Firebase('https://snev.firebaseio.com/precence');
 
-  $scope.logOut = function () {
-	Auth.logout();
-			$location.path("/login");
 		
 			//managing logout presence- user control					
 			
@@ -32,7 +38,7 @@ angular.module('app.controllers', [])
 
 													 presence.child(userKey).set({ 'username': $localStorage.username, 'Status':'Logout','lastSeenAt':Firebase.ServerValue.TIMESTAMP });
 				 });
-  }
+  
 
 
 
@@ -72,7 +78,7 @@ angular.module('app.controllers', [])
 
 																Utils.hide();
 
-														$state.go('home');
+														$state.go('app.home');
 															
 
 														})
@@ -294,7 +300,7 @@ angular.module('app.controllers', [])
 		$cordovaLaunchNavigator.navigate(destination).then(function() {
 		  console.log("Navigator launched");
 		}, function (err) {	  
-		  $location.path('/stationDirection');
+		  $location.path('/app/stationDirection');
 		});
 	
 	  };
@@ -872,8 +878,8 @@ $scope.ToggleCompleted = function(toStatus){
 								 var data = snapshot.val();
 								 $localStorage.stationData=data;
 								  $localStorage.stationDataID=id;
-								 $location.path("/stationDetail");
-								 window.location.assign("#/stationDetail");
+								 $location.path("/app/stationDetail");
+								 window.location.assign("#/app/stationDetail");
 							});
 						}
 						//selecting slow station and assigning seperate icon
@@ -900,8 +906,8 @@ $scope.ToggleCompleted = function(toStatus){
 								 var data = snapshot.val();
 								  $localStorage.stationData=data;
 								  $localStorage.stationDataID=id;
-								 $location.path("/stationDetail");
-								 window.location.assign("#/stationDetail");
+								 $location.path("/app/stationDetail");
+								 window.location.assign("#/app/stationDetail");
 							});
 						}
 						
@@ -1442,7 +1448,7 @@ $scope.ToggleCompleted = function(toStatus){
 			$localStorage.settitle=title1;
   //window.localStorage.setItem("settitle",title1);
 
-			$state.go('viewpost');
+			$state.go('app.viewpost');
   	};
   })
 
@@ -1884,7 +1890,7 @@ $scope.ToggleCompleted = function(toStatus){
 				//set selected profile
 				$scope.setFProfile = function(selectedprofz) {
 				$localStorage.setFname=selectedprofz;
-				$location.path("/friendProfile");
+				$location.path("/app/friendProfile");
 				
  				 }
 	
