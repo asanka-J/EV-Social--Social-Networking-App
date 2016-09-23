@@ -1,7 +1,7 @@
 'Use Strict';
 angular.module('app.controllers', [])
 
-.controller('AppCtrl', function($scope,$location) {
+.controller('AppCtrl', function($scope,$location,Auth) {
 	
   $scope.logOut = function () {
 	Auth.logout();
