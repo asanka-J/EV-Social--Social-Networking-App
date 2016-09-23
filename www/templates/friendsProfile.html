@@ -1,0 +1,98 @@
+
+<ion-view  view-title="profile page">
+
+  
+    <ion-content has-header="true" ng-controller="loadFProfileCtrl">
+     <div ng-repeat="myprofile in myprofile">
+     
+      <div id="profile-bg"></div>
+      <div id="content">
+        <div id="profile-info">
+          
+          <ion-item >
+            
+            <img id="profile-image" src="{{myprofile.gravatar}}">
+
+            <div class="post-time">
+              
+           
+           <button class="button button-outline button-positive" ui-sref="profileEdit" id="profileEdit-button">
+            <i class="icon ion-edit"></i> Edit profile
+          </button>
+      
+            </div>
+            
+            
+          </ion-item> 
+            
+            
+            <!--<button class="button" ng-click="doSomething()">
+        | Change profile pic |</button>-->
+
+          <h3 id="profile-name" ng-model="name">{{myprofile.name}}</h3>
+            
+        <div class="button-bar" id="page2-button-bar5">
+       
+             <button class="button button-positive  button-block icon ion-android-contacts" id="page2-button33"  ng-click="follow(myprofile.name)">  Follow</button>
+       
+           <button class="button button-positive  button-block icon ion-email" id="page2-button34">  message</button>
+
+        </div>
+
+        </div>
+       </div>
+
+       
+          <span id="profile-description"  class="item item-text-wrap">psum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
+             type specimen book. </span>
+        
+
+    
+        
+         </div>
+
+            
+               
+      <div class="list card">
+           <div class="container">
+	                <div id="gallery row clearfix">
+			              <div class="gallery-item" ng-repeat="friend in friendlist">
+                      <img src="{{friend.image}}" style="height: 75%""  />
+                      <p>{{friend.name}}</P>
+                    </div>
+                  </div><!-- /.gllery -->
+		          </div><!-- /.container -->
+
+      </div>
+
+
+      <div class="list card">
+         <ion-label stacked>LOCATION</ion-label>   
+       <div style="margin: 0px; line-height: 250px; background-color: rgb(232, 235, 239); text-align: center;">
+            <img src="img/location.jpg" width="75%" height="100%">
+        </div>
+
+      </div>
+      
+
+
+  </div>
+  
+  
+    </ion-content>
+
+    
+  <ion-footer-bar align-title="left" >
+
+      <div class="button-bar" >
+        <a id="socialNetwork-button20"  class="button button-positive icon ion-clipboard" ui-sref="socialnetwork">    Posts</a>
+        <a class="button button-positive icon ion-android-chat " ui-sref="friendslist">   My friends</a>
+        <a class="button button-positive icon ion-android-chat " ui-sref="chatroomhome">   chat room</a>
+      </div>
+
+    </ion-footer-bar>
+
+</ion-view>
+
+
+ <link rel="stylesheet" href="css/socialNetwork/profile.css">    <!-- comment css -->

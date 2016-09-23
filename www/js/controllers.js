@@ -1519,13 +1519,9 @@ $scope.ToggleCompleted = function(toStatus){
   var nameSnapshot = snapshot.child("friends");
   $scope.friendlist = nameSnapshot.val();
   
- // console.log(friendlist);
-  
-});
+	});
 
-
-
-		  });
+	  });
 		});
 
 		
@@ -1584,6 +1580,90 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 
+// load friends profile
+
+.controller('loadFProfileCtrl', function($scope ,$ionicPopup, $localStorage){
+
+	var ref = new Firebase('https://snev.firebaseio.com/profile');
+
+  var name=$localStorage.username;
+
+	var selectedprof=$localStorage.setFname;
+
+
+		 ref.orderByChild("name").equalTo(selectedprof).on("value", function(snapshot,prevChildKey) {
+		  $scope.$apply(function(){
+			$scope.myprofile = snapshot.val();
+		
+
+//load friend list
+  ref.orderByChild("name").equalTo(selectedprof).on("child_added", function(snapshot) {
+  
+  var nameSnapshot = snapshot.child("friends");
+  $scope.friendlist = nameSnapshot.val();
+  
+	});
+
+	  });
+		});
+
+		
+		 ref.orderByChild("name").equalTo(selectedprof).on("value", function(snapshot,prevChildKey) {
+		  $scope.$apply(function(){
+					$scope.myprofile = snapshot.val();
+						
+				//load friend list
+					var ref = new Firebase('https://snev.firebaseio.com/profile');
+					ref.orderByChild("name").equalTo(selectedprof).on("child_added", function(snapshot) {
+					
+					var nameSnapshot = snapshot.child("friends");
+					$scope.friendlist = nameSnapshot.val();
+					
+				
+					
+				});
+
+		  });
+		});
+
+
+	$scope.follow = function(follower) {
+	
+			ref.orderByChild("name").equalTo(follower).on("child_added", function(snapshot) {
+			var profilekey = snapshot.key();
+
+						ref.orderByChild("name").equalTo(selectedprof).on("child_added", function(mysnapshot) {
+							var userkey = mysnapshot.key();
+
+							var path='https://snev.firebaseio.com/profile/'+userkey+'/gravatar';
+							var tempref = new Firebase(path);
+							tempref.once("value", function(imagesnapshot) {
+								var userImage=imagesnapshot.val();
+
+									var reprofile= new Firebase('https://snev.firebaseio.com/profile/'+profilekey+'/friends');
+									 	reprofile.push({ 'name': $localStorage.username, 'image':userImage });//add my image
+
+						});
+
+				
+
+			// var reprofile= new Firebase('https://snev.firebaseio.com/profile/'+profilekey+'/friends');
+			// 	reprofile.push({ 'name': username, 'image':userImage });//add my image
+
+				})
+	
+			});
+
+  }
+
+
+
+
+})
+
+
+
+
 // edit profile
 
 .controller('editProfile', function($scope ,$ionicPopup, $localStorage){
@@ -1622,6 +1702,8 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 })
+
+
 
 
 
@@ -1776,19 +1858,15 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 //loading friendlist 
-.controller('friendslistCntrl', function($scope, $http, $state,$ionicPopup,$rootScope,$firebaseArray, $localStorage,$firebase) {
+.controller('friendslistCntrl', function($scope, $http, $state,$ionicPopup,$rootScope,$firebaseArray, $localStorage,$location,$firebase) {
 
  
      
   var username= $localStorage.username;
 	$scope.name=username;
 
+
   var ref = new Firebase("https://snev.firebaseio.com/profile");
-
-	console.log("ref :" +ref);
-
-
-		
 				ref.orderByChild("name").equalTo(username).on("child_added", function(mysnapshot) {
 							var userkey = mysnapshot.key();
 						
@@ -1802,6 +1880,13 @@ $scope.ToggleCompleted = function(toStatus){
 									});
 
 				})
+
+				//set selected profile
+				$scope.setFProfile = function(selectedprofz) {
+				$localStorage.setFname=selectedprofz;
+				$location.path("/friendProfile");
+				
+ 				 }
 	
 
 })

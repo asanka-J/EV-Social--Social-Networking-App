@@ -8,24 +8,24 @@
             <ion-item class="item-avatar dark" ui-sref="manageProfile">
                 <img src="img/q4xbxIIlSoWlMTQ6tllU_steve.jpg">
                <p >
-                {{name}} 
-            <ion-toggle toggle-class="toggle-balanced" ng-checked="true" name="activestatus">Active</ion-toggle>
+                <b >{{name}} </b>
+            <ion-toggle toggle-class="toggle-balanced" ng-checked="true" name="activestatus"> Status Active</ion-toggle>
             
                 </p>
             </ion-item>
-                <label class="item item-input">
-                <i class="icon ion-search placeholder-icon"></i>
-                <input type="search" placeholder="">
-            </label>
+                    
             
        
-
-            <ion-list ng-repeat="friend in friends">
-                <ion-item class="item-icon-right"><b>{{friend.name}}</b>
-                    <i class="icon ion-android-person"></i>
-                </ion-item>
-            </ion-list>
-        </ion-list>
+        
+    <ion-list show-delete="false" ng-repeat="friend in friends" can-swipe="true">
+                    <ion-item href="#">
+                          {{friend.name}}
+                        <ion-option-button class="button-assertive icon ion-android-person" ng-click="setFProfile(friend.name)">View Profile</ion-option-button>
+                         <ion-option-button class="button-light  icon ion-android-mail" ng-click="message(friend.name)"></ion-option-button>
+                    </ion-item>
+                   
+                </ion-list>
+        
             
         </ion-content>
     
