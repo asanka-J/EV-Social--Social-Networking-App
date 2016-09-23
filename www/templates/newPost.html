@@ -4,35 +4,36 @@
 
 
 
-          <h1 style="text-align: center;">Enter Your post here</h1>
+          <h1 style="text-align: center;">ADD NEW POST</h1>
         <div class="spacer" style="width: 300px; height: 65px;"></div>
        
-        <form id="newPost-form7" class="list " name="newPostForm" >
+        <form id="newPost-form7" class="list " name="newPostForm" novalidate>
             <label class="item item-input " id="newPost-input6" name="Title">
                 <input type="text" placeholder="Title " name="title" ng-model="title" required>
             </label>
-			<span style="color:red" ng-show="newPostForm.title.$error.required">Title is required</span>
+			<span style="color:red" ng-show="newPostForm.$submitted && newPostForm.title.$error.required">Title is required</span>
             <div class="spacer" style="width: 300px; height: 31px;"></div>
 
 
             <label class="item item-input " id="newPost-textarea2" name="Descrip">
                 <textarea placeholder="Description" ng-model="description" name="description" required></textarea>
             </label>
-			<span style="color:red" ng-show="newPostForm.description.$error.required">Description is required</span>
+			<span style="color:red" ng-show="newPostForm.$submitted && newPostForm.description.$error.required">Description is required</span>
 
-         <div class="container-fluid">
+        <div class="spacer" style="width: 300px; height: 31px;"></div>
      
-            <hr/>
-
-        <input type="file" name="file" class="inputimg" id="nameImg" accept="image/*">
+            
+	    <label class="item item-input " id="newPost-image" name="image">
+        <input type="file" name="file" ng-model="file" class="inputimg" id="nameImg" accept="image/*" >
+		</label>
         <br />
         
-    </div>
+ 
 
   <!-- upload end  -->
 
            <br>
-                <button id="newPost-button21" class=" btn waves-effect waves-light button-block " ng-disabled="newPostForm.$invalid" ng-click="postForm(title,description) ; uploadFile()" >Publish   <i class="material-icons right">send</i></button>
+                <button id="newPost-button21" class=" btn waves-effect waves-light button button-full button-stable " ng-click="newPostForm.$valid && postForm(title,description) ; uploadFile()" >Publish   <i class="material-icons right">send</i></button>
         </form>
 
         </div>
