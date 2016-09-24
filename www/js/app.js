@@ -24,12 +24,18 @@ angular.module('app', ['ionic','ngCordovaOauth','ngStorage','ngMessages','angula
 	
 	if (window.cordova) {
     cordova.plugins.diagnostic.isLocationEnabled(function(enabled) {
-         {alert("Enable GPS");
-		cordova.plugins.diagnostic.switchToLocationSettings();}
+						if (enabled){}
+                        else {
+                          alert("Enable GPS");
+                          cordova.plugins.diagnostic.switchToLocationSettings();
+
+                        }
     }, function(error) {
         alert("The following error occurred: " + error);
     });
 	}
+	
+	
 
   });
 

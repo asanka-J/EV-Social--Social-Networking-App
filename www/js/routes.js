@@ -21,7 +21,8 @@ angular.module('app.routes', [])
     url: '/home',
     views: {
       'menuContent': {
-        templateUrl: 'templates/home.html'
+        templateUrl: 'templates/home.html',
+		controller: 'homeController'
       }
     }
   })
@@ -40,8 +41,8 @@ angular.module('app.routes', [])
       url: '/forgot',
 	   views: {
         'menuContent': {
-		templateUrl: 'templates/register.html',
-		controller:'registerController'
+		templateUrl: 'templates/forgot.html',
+		controller:'forgotController'
         }
       }
     })

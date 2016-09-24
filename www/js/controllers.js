@@ -1,11 +1,33 @@
 'Use Strict';
 angular.module('app.controllers', [])
 
-.controller('AppCtrl', function($scope,$location,Auth) {
+.controller('AppCtrl', function($scope,$location,Auth,$localStorage,$window) {
+	
+$localStorage.useremail="";
+$scope.hideMe=true;
+
+//var timesRun = 0;
+var interval = setInterval(function(){
+    //timesRun += 1;
+    if($localStorage.useremail !== ""){
+        clearInterval(interval);
+    }
+	var admin=$localStorage.useremail;
+   if(admin=="admin@gmail.com"){
+		$scope.hideMe=false;
+		console.log($localStorage.useremail);
+	}
+	else
+		$scope.hideMe=true;
+}, 1000);
+	
+	
 	
   $scope.logOut = function () {
 	Auth.logout();
+	console.log($localStorage.useremail);
 			$location.path("/app/login");
+			$window.location.reload(true);
 			
   }
 
@@ -24,6 +46,8 @@ angular.module('app.controllers', [])
         });
       }
     };
+	
+	
 })
 
 .controller('homeController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils) {
@@ -77,10 +101,13 @@ angular.module('app.controllers', [])
 															$localStorage.userkey = userkey;
 
 																Utils.hide();
-
-														$state.go('app.home');
-															
-
+																
+														if($localStorage.useremail=="admin@gmail.com")
+														{$state.go('app.adminHomepage');}
+														
+														else
+														{$state.go('app.home');}
+														
 														})
 														.catch(function(error) {
 															console.error("Error:", error);
@@ -126,7 +153,7 @@ angular.module('app.controllers', [])
 
 							 }
 							 
-	 $ionicSideMenuDelegate.canDragContent(false)
+	 $ionicSideMenuDelegate.canDragContent(false);
 
 })
 
@@ -1925,44 +1952,7 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 // Asanka end
-/************/
-//Make Appointment
- .controller ('makeAppointmentCtrl' , function($scope, $http, $state,$ionicPopup) {
-	$scope.makeAppointmentForm = function(cname, tele, vRegNum, station) {
-		var makeAppoRef1 = new Firebase('https://snev.firebaseio.com/make_apointments');
-		var makeAppoRef1 = makeAppoRef1.push();
-		
-		//pass the data to DB ---------------------------------------------------------------
-     var noticeID = makeAppoRef1.key();
-       makeAppoRef1.set({ 'cname': cname,   'tele': tele , 'vRegNum': vRegNum});
-       var path = makeAppoRef1.toString();
 
-		//alert successfully add
-		var alertPopup = $ionicPopup.alert({
-		title: 'Successful! <i class="ion-checkmark-round"></i>',
-		template:'You have Successfuly added the notice' 
-		});
-
-         $scope.cname="";
-			
-         $scope.tele="";
-		 $scope.vRegNum="";
-		 $scope.date="";
-			
-
-	}
-		//Clear the fields.------------------------------------------------
-		$scope.makeAppointmentForm2 = function(cname, tele, vRegNum) {
-  		$scope.cname="";
-			
-         $scope.tele="";
-		 $scope.vRegNum="";
-		 $scope.date="";
-		};
- })
-
-
-/************/
 //Make Appointment
  .controller ('makeAppointmentCtrl' , function($scope, $http, $state,$ionicPopup) {
 	$scope.makeAppointmentForm = function(cname, tele, vRegNum, station) {
@@ -2042,11 +2032,6 @@ $scope.ToggleCompleted = function(toStatus){
 
            });
 
-
-              var alertPopup = $ionicPopup.alert({
-              title: 'Successful! <i class="ion-checkmark-round"></i>',
-              template:'You have Successfuly Updated'
-             	 });
          });
 })
 
