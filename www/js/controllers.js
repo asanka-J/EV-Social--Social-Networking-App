@@ -274,9 +274,26 @@ angular.module('app.controllers', [])
     };
 })
 
-.controller('stationDetailCtrl', function($scope,$ionicPopup,$cordovaLaunchNavigator,$location,$localStorage) {
+.controller('stationDetailCtrl', function($scope,$ionicPopup,$cordovaLaunchNavigator,$location,$localStorage,$ionicModal) {
 	
-	
+		 $ionicModal.fromTemplateUrl('my-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+  
+  
+  $scope.openModal = function() {
+    $scope.modal.show();
+  };
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+  // Cleanup the modal when we're done with it!
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
 
 	var data = $localStorage.stationData;
 		if(data=='')
@@ -878,6 +895,7 @@ $scope.ToggleCompleted = function(toStatus){
 								 var data = snapshot.val();
 								 $localStorage.stationData=data;
 								  $localStorage.stationDataID=id;
+								   stationinfoWindow.close();
 								 $location.path("/app/stationDetail");
 								 window.location.assign("#/app/stationDetail");
 							});
@@ -906,6 +924,7 @@ $scope.ToggleCompleted = function(toStatus){
 								 var data = snapshot.val();
 								  $localStorage.stationData=data;
 								  $localStorage.stationDataID=id;
+								   stationinfoWindow.close();
 								 $location.path("/app/stationDetail");
 								 window.location.assign("#/app/stationDetail");
 							});
@@ -975,6 +994,12 @@ $scope.ToggleCompleted = function(toStatus){
 						};
 						
             });
+			
+				$scope.$on('$ionicView.afterEnter', function(){
+				if ( angular.isDefined( $scope.map ) ) {
+					google.maps.event.trigger($scope.map, 'resize');
+				}
+			  });
 
 
 })
