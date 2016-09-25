@@ -1,25 +1,7 @@
 'Use Strict';
 angular.module('app.controllers', [])
 
-.controller('AppCtrl', function($scope,$location,Auth,$localStorage,$window) {
-	
-$localStorage.useremail="";
-$scope.hideMe=true;
-
-//var timesRun = 0;
-var interval = setInterval(function(){
-    //timesRun += 1;
-    if($localStorage.useremail !== ""){
-        clearInterval(interval);
-    }
-	var admin=$localStorage.useremail;
-   if(admin=="admin@gmail.com"){
-		$scope.hideMe=false;
-		console.log($localStorage.useremail);
-	}
-	else
-		$scope.hideMe=true;
-}, 1000);
+.controller('AppCtrl', function($scope,$location,Auth,$localStorage) {
 	
 	
 	
@@ -27,7 +9,7 @@ var interval = setInterval(function(){
 	Auth.logout();
 	console.log($localStorage.useremail);
 			$location.path("/app/login");
-			$window.location.reload(true);
+
 			
   }
 
@@ -101,12 +83,8 @@ var interval = setInterval(function(){
 															$localStorage.userkey = userkey;
 
 																Utils.hide();
-																
-														if($localStorage.useremail=="admin@gmail.com")
-														{$state.go('app.adminHomepage');}
-														
-														else
-														{$state.go('app.home');}
+
+														$state.go('app.home');
 														
 														})
 														.catch(function(error) {
