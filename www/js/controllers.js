@@ -7,10 +7,7 @@ angular.module('app.controllers', [])
 	
   $scope.logOut = function () {
 	Auth.logout();
-	console.log($localStorage.useremail);
 			$location.path("/app/login");
-
-			
   }
 
 })
