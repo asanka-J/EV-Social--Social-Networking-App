@@ -782,14 +782,20 @@ $scope.ToggleCompleted = function(toStatus){
 	
         var options = {timeout: 10000, enableHighAccuracy: true};
 			
+         var latlngfound=false;
+
         $cordovaGeolocation.getCurrentPosition(options).then(function(position){
 			$localStorage.userLatitude=position.coords.latitude;
 			$localStorage.userLongitude=position.coords.longitude;
+			 latlngfound=true;
 			}, function(error){
             console.log("Could not get location");
-			$localStorage.userLatitude="7.80896312";
-			$localStorage.userLongitude="80.13977051";
         });
+		if(latlngfound==false)
+		{
+			$localStorage.userLatitude="6.9271";
+			$localStorage.userLongitude="79.8612";
+		}
 
             var nlatLng = new google.maps.LatLng($localStorage.userLatitude, $localStorage.userLongitude);
 
