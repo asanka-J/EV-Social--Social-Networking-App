@@ -164,6 +164,41 @@ angular.module('app.controllers', [])
 
 //isuru start
 
+.controller('chargingRecordsCtrl', function($scope,MonthPicker) {
+
+	$scope.labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"];
+  $scope.data = [
+    [65, 59, 80, 81, 56, 55, 40,28, 48, 40, 19, 86, 27]
+  ];
+  $scope.onClick = function (points, evt) {
+    console.log(points, evt);
+  };
+  $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }];
+  $scope.options = {
+    scales: {
+      yAxes: [
+        {
+          id: 'y-axis-1',
+          type: 'linear',
+          display: true,
+          position: 'left'
+        }
+      ]
+    }
+  };
+  
+   MonthPicker.init({});
+        $scope.buttonTap = function() {
+            MonthPicker.show(function(res) {
+                console.log(res);
+				$scope.res=res;
+            });
+        }
+  
+})
+
+
+
 .controller('StationCtrl', function($scope,$firebase,$ionicPopup) {
 	
 // Adding new station
@@ -445,22 +480,13 @@ angular.module('app.controllers', [])
                         var station_status = snapshot.val();
 						if(station_status.user_id==uid){
 							
-							var onComplete = function(error) {
-							  if (error) {
-								console.log('Synchronization failed');
-							  } else {
-								$ionicPopup.alert({
-										title: 'Enabled on my way ! ',
-									});
-							  }
-							};
 							
 							//updating the status by 1 by geeting the unique key
 							status_id=snapshot.key();
 							
 							var onWay=station_status.on_myWay+1;	
 							 var statusRef = new Firebase("https://snev.firebaseio.com/user_status");
-						     statusRef.child(status_id).update({on_myWay: onWay,time:Firebase.ServerValue.TIMESTAMP}, onComplete);
+						     statusRef.child(status_id).update({on_myWay: onWay,time:Firebase.ServerValue.TIMESTAMP});
 
 							
 							
@@ -482,22 +508,13 @@ angular.module('app.controllers', [])
 						
 						if(station_status.user_id==uid){
 							
-							var onComplete = function(error) {
-							  if (error) {
-								console.log('Synchronization failed');
-							  } else {
-								$ionicPopup.alert({
-										title: 'Disable on my way!',
-									});
-							  }
-							};
 							
 							//updating the status by 1 by geting the unique key
 							status_id=snapshot.key();
 							
 							var onWay=station_status.on_myWay-1;	
 							 var statusRef = new Firebase("https://snev.firebaseio.com/user_status");
-						     statusRef.child(status_id).update({on_myWay: onWay}, onComplete);
+						     statusRef.child(status_id).update({on_myWay: onWay});
 
 							
 							
@@ -526,15 +543,6 @@ angular.module('app.controllers', [])
                         var station_status = snapshot.val();
 						if(station_status.user_id==uid){
 							
-							var onComplete = function(error) {
-							  if (error) {
-								console.log('Synchronization failed');
-							  } else {
-								$ionicPopup.alert({
-										title: 'Enabled in queue! ',
-									});
-							  }
-							};
 							
 							//updating the status by 1 by geeting the unique key
 							status_id=snapshot.key();
@@ -542,9 +550,8 @@ angular.module('app.controllers', [])
 							
 							var inQu=station_status.in_theQueue+1;	
 							 var statusRef = new Firebase("https://snev.firebaseio.com/user_status");
-						     statusRef.child(status_id).update({in_theQueue: inQu,time:Firebase.ServerValue.TIMESTAMP}, onComplete);
+						     statusRef.child(status_id).update({in_theQueue: inQu,time:Firebase.ServerValue.TIMESTAMP});
 
-							
 							
 						}
 						
@@ -564,24 +571,14 @@ angular.module('app.controllers', [])
 						
 						if(station_status.user_id==uid){
 							
-							var onComplete = function(error) {
-							  if (error) {
-								console.log('Synchronization failed');
-							  } else {
-								$ionicPopup.alert({
-										title: 'Disable in queue!',
-									});
-							  }
-							};
 							
 							//updating the status by 1 by geting the unique key
 							status_id=snapshot.key();
 							
 							var inQu=station_status.in_theQueue-1;	
 							 var statusRef = new Firebase("https://snev.firebaseio.com/user_status");
-						     statusRef.child(status_id).update({in_theQueue: inQu}, onComplete);
-
-							
+						     statusRef.child(status_id).update({in_theQueue: inQu});
+	
 							
 						}
 						
@@ -609,15 +606,6 @@ angular.module('app.controllers', [])
                         var station_status = snapshot.val();
 						if(station_status.user_id==uid){
 							
-							var onComplete = function(error) {
-							  if (error) {
-								console.log('Synchronization failed');
-							  } else {
-								$ionicPopup.alert({
-										title: 'Enabled Charging! ',
-									});
-							  }
-							};
 							
 							//updating the status by 1 by geeting the unique key
 							status_id=snapshot.key();
@@ -625,9 +613,7 @@ angular.module('app.controllers', [])
 							
 							var charge=station_status.charging+1;	
 							 var statusRef = new Firebase("https://snev.firebaseio.com/user_status");
-						     statusRef.child(status_id).update({charging: charge,time:Firebase.ServerValue.TIMESTAMP}, onComplete);
-
-							
+						     statusRef.child(status_id).update({charging: charge,time:Firebase.ServerValue.TIMESTAMP});
 							
 						}
 						
@@ -647,25 +633,15 @@ angular.module('app.controllers', [])
 						
 						if(station_status.user_id==uid){
 							
-							var onComplete = function(error) {
-							  if (error) {
-								console.log('Synchronization failed');
-							  } else {
-								$ionicPopup.alert({
-										title: 'Disable Charging!',
-									});
-							  }
-							};
 							
 							//updating the status by 1 by geting the unique key
 							status_id=snapshot.key();
 							
 							var charge=station_status.charging-1;	
 							 var statusRef = new Firebase("https://snev.firebaseio.com/user_status");
-						     statusRef.child(status_id).update({charging: charge}, onComplete);
+						     statusRef.child(status_id).update({charging: charge});
 
-							
-							
+
 						}
 						
 				 }, function (errorObject) {
@@ -675,10 +651,6 @@ angular.module('app.controllers', [])
 			  $scope.watchStatus();
 		  }
 		  
-		  
-		  
-		   
-
 
 }
 
@@ -697,16 +669,44 @@ $scope.ToggleCompleted = function(toStatus){
                         var station_status = snapshot.val();
 						if(station_status.user_id==uid){
 							
-							var onComplete = function(error) {
-							  if (error) {
-								console.log('Synchronization failed');
-							  } else {
-								$ionicPopup.alert({
-										title: 'Enabled Completed! ',
-									});
-							  }
-							};
-							
+
+							 // Triggered on a button click, or some other target
+							var onComplete = function() {
+							  $scope.data = {};
+
+							  // An elaborate, custom popup
+							  var myPopup = $ionicPopup.show({
+								template: '<input type="text" ng-model="data.val" ng-pattern="/^[0-9]{1,4}$/"  >',
+								title: 'Enter Your Cost on Charging',
+								subTitle: 'Numbers only',
+								scope: $scope,
+								buttons: [
+								  { text: 'Cancel' },
+								  {
+									text: '<b>Save</b>',
+									type: 'button-positive',
+									onTap: function(e) {
+									  if (!$scope.data.val) {
+										//don't allow the user to close unless he enters val 
+										e.preventDefault();
+									  }
+									 
+									  else {
+										  
+										   var charRef = new Firebase("https://snev.firebaseio.com/charge_history");
+										   charRef.push({user_id: uid,station_name: $scope.name,cost: $scope.data.val, time:Firebase.ServerValue.TIMESTAMP}), 
+										   function(error) {
+												console.log("Error:adding first time", error);
+											};
+						     
+									  }
+									}
+								  }
+								]
+							  });
+  
+							 };
+							 
 							//updating the status by 1 by geeting the unique key
 							status_id=snapshot.key();
 							
@@ -714,6 +714,9 @@ $scope.ToggleCompleted = function(toStatus){
 							var comp=station_status.completed+1;	
 							 var statusRef = new Firebase("https://snev.firebaseio.com/user_status");
 						     statusRef.child(status_id).update({completed: comp,time:Firebase.ServerValue.TIMESTAMP}, onComplete);
+							 
+							 
+							
 
 							
 							
@@ -735,25 +738,13 @@ $scope.ToggleCompleted = function(toStatus){
 						
 						if(station_status.user_id==uid){
 							
-							var onComplete = function(error) {
-							  if (error) {
-								console.log('Synchronization failed');
-							  } else {
-								$ionicPopup.alert({
-										title: 'Disable Completed!',
-									});
-							  }
-							};
-							
 							//updating the status by 1 by geting the unique key
 							status_id=snapshot.key();
 							
 							var comp=station_status.completed-1;	
 							 var statusRef = new Firebase("https://snev.firebaseio.com/user_status");
-						     statusRef.child(status_id).update({completed: comp}, onComplete);
-
-							
-							
+						     statusRef.child(status_id).update({completed: comp});
+	
 						}
 						
 				 }, function (errorObject) {
@@ -1152,9 +1143,6 @@ $scope.ToggleCompleted = function(toStatus){
 })
 
 
-.controller('chargingRecordsCtrl', function($scope) {
-
-})
 
 
  //asanaka  start

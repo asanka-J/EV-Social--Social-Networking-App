@@ -1,3 +1,25 @@
-<ion-view title="Charging Records" id="page21">
-    <ion-content padding="true" class="has-header"></ion-content>
+<ion-view>
+  <ion-nav-title>Charging History</ion-nav-title>
+    <ion-content padding="true" class="has-header">
+
+  
+  <div class="list" >
+
+  <div class="item item-icon-right" style="color:#CC4545;" ng-click="buttonTap()">
+   Date Picker
+      <i class="icon ion-calendar"></i>
+  </div>
+
+</div>
+<h2>{{res.year}}</h2>
+	
+	<canvas id="line" class="chart chart-line" chart-data="data"
+chart-labels="labels" chart-series="series" chart-options="options"
+chart-dataset-override="datasetOverride" chart-click="onClick"
+</canvas>
+
+
+
+
+	</ion-content>
 </ion-view>
