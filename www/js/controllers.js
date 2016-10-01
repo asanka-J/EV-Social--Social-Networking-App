@@ -1219,52 +1219,65 @@ $scope.ToggleCompleted = function(toStatus){
 .controller('postCtrl', function($scope ,$ionicPopup, $localStorage){
 	var ref = new Firebase('https://snev.firebaseio.com/posts');
 	 var ref2 = new Firebase('https://snev.firebaseio.com/comments');
+	  var username=$localStorage.username;
 
-
-	 		$scope.addlike = function(title) {
-
-	 			var title1=title;
-
-					//get key of child equals to ==title
-				
-					  ref.orderByChild("title").equalTo(title1).on("child_added", function(snapshot) {
-					  var value=snapshot.key();
-						var data = snapshot.val();
-						var noofl=data.noOfLikes;
-
-
-             	var onComplete = function(error) {
+	 //alert if sucessful
+								var checkLike = function(error) {
 									if (error) {
 										 var alertPopup = $ionicPopup.alert({
-                                 title: 'Successful! <i class="ion-checkmark-round"></i>',
-                                 template:'Synchronization failed'
-                              	 });
-															
+                                 title: 'Successful! <i class="ion-checkmark-round"></i>',template:'Synchronization failed'
+                              	 });				
 									} else {
-											
-                               var alertPopup = $ionicPopup.alert({
-                                 title: 'Successful! <i class="ion-checkmark-round"></i>',
-                                 template:'You have Successfuly Liked the post'
+											 var alertPopup = $ionicPopup.alert({
+                                 title: 'Successful! <i class="ion-checkmark-round"></i>', template:'You have Successfuly Liked the post'
                               	 });
 									}
 								};
-									
 
-							var postsreflike = new Firebase('https://snev.firebaseio.com/posts');
+							var checkDisLike = function(error) {
+									if (error) {
+										 var alertPopup = $ionicPopup.alert({
+                                 title: 'Successful! <i class="ion-checkmark-round"></i>',template:'Synchronization failed'
+                              	 });				
+									} else {
+											 var alertPopup = $ionicPopup.alert({
+                                 title: 'Successful! <i class="ion-checkmark-round"></i>', template:'You have Successfuly disliked the post'
+                              	 });
+									}
+								};
+							var checkReport = function(error) {
+									if (error) {
+										 var alertPopup = $ionicPopup.alert({
+                                 title: 'Successful! <i class="ion-checkmark-round"></i>',template:'Synchronization failed'
+                              	 });				
+									} else {
+											 var alertPopup = $ionicPopup.alert({
+                                 title: 'Successful! <i class="ion-checkmark-round"></i>', template:'You have Successfuly Reported the post'
+                              	 });
+									}
+								};
 
+	 		$scope.addlike = function(title) {
+				var title1=title;
 
-												// Modify the 'noOfLikes  but leave other data unchanged
-										postsreflike.child(value).update({ noOfLikes: noofl+1},onComplete);
+					//get key of child equals to ==title
+				 ref.orderByChild("title").equalTo(title1).on("child_added", function(snapshot) {
+					  var value=snapshot.key();
+						var data = snapshot.val();
+						var noofl=data.noOfLikes;
+						var postsreflike = new Firebase('https://snev.firebaseio.com/posts');
+
+							// Modify the 'noOfLikes  but leave other data unchanged
+										postsreflike.child(value).update({ noOfLikes: noofl+1},checkLike);
 
 						});
-
-          };
+					};
 
 
 		 $scope.adddislike = function(title1) {
 
 
-	         var username=$localStorage.username;
+	        
 		 					//get key of child equals to ==title
 		 					  var ref = new Firebase("https://snev.firebaseio.com/posts");
 		 				   	ref.orderByChild("title").equalTo(title1).on("child_added", function(snapshot) {
@@ -1273,36 +1286,14 @@ $scope.ToggleCompleted = function(toStatus){
 		 						var noofl=data.noOfDisLikes;
 
 		 										var postsrefdislike = new Firebase('https://snev.firebaseio.com/posts');
-
-		 										
-
-								var onComplete = function(error) {
-									if (error) {
-										 var alertPopup = $ionicPopup.alert({
-                                 title: 'Successful! <i class="ion-checkmark-round"></i>',
-                                 template:'Synchronization failed'
-                              	 });
-															
-									} else {
-											
-                               var alertPopup = $ionicPopup.alert({
-                                 title: 'Successful! <i class="ion-checkmark-round"></i>',
-                                 template:'You have Successfuly disliked the post'
-                              	 });
-									}
-								};
-									postsrefdislike.child(value).update({ noOfDisLikes: noofl+1}, onComplete);
-
-
-													 
+									postsrefdislike.child(value).update({ noOfDisLikes: noofl+1}, checkDisLike);
 		 						});
 		 };
 
 
      // report a post
   	 $scope.report = function(title1) {
-
-          var username=$localStorage.username;
+          
 
   		 				 //get key of child equals to ==title
   		 					 var ref = new Firebase("https://snev.firebaseio.com/posts");
@@ -1311,42 +1302,26 @@ $scope.ToggleCompleted = function(toStatus){
   		 					 var data = snapshot.val();
   		 					 var noof2=data.noOfReports;
 
-
-                   var alertPopup = $ionicPopup.alert({
-                   title: 'Successful! <i class="ion-checkmark-round"></i>',
-                   template:'You have Successfuly Reported'
-                	 });
   		 								
-  		 									 ref.child(value).update({ noOfReports: noof2+1});
+  		 									 ref.child(value).update({ noOfReports: noof2+1},checkReport);
 	        });
 
 	    };
 
-
-
-
-		ref2.on("value", function(snapshot) {
-		  $scope.$apply(function(){
-			$scope.comments = snapshot.val();
-
-		  });
-		});
 })
 
 
 
 // loading post
 
-.controller("myPostHistorry", function($scope, $firebaseArray) {
+.controller("myPostHistorry", function($scope, $firebaseArray,$localStorage) {
 
 
   var ref = new Firebase("https://snev.firebaseio.com/posts");
-	  
-	 ref.orderByChild("username").equalTo("Asanka").on("child_added", function(snapshott,prevChildKey) {
-		
-		$scope.imgss=snapshott.val();
-	
-		})
+	var username= $localStorage.username;
+
+		var query = ref.orderByChild('username').equalTo(username);
+	$scope.imgs = $firebaseArray(query);	
 
 })
 
@@ -1356,6 +1331,8 @@ $scope.ToggleCompleted = function(toStatus){
 .controller("base64Ctrl", function($scope, $firebaseArray) {
 
   var img = new Firebase("https://snev.firebaseio.com/posts");
+
+
   $scope.imgs = $firebaseArray(img);
 
 })
@@ -1364,7 +1341,7 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 //adding a post 
-.controller('newPostController', function($scope, $http, $state,$ionicPopup,$rootScope,$firebaseArray, $localStorage,$firebase) {
+.controller('newPostController', function($scope, $http, $state,$ionicPopup,$firebaseArray, $localStorage,$firebase) {
    $scope.postForm = function(title,description){
      
       	 var username= $localStorage.username;
@@ -1476,7 +1453,7 @@ $scope.ToggleCompleted = function(toStatus){
 .controller('newselect', function($scope ,$ionicPopup,$location,$window,$localStorage) {
 
 	$scope.setSelectedPost = function(title1) {
-    window.localStorage.clear();
+   
 			$localStorage.settitle=title1;
   //window.localStorage.setItem("settitle",title1);
 
@@ -1487,27 +1464,34 @@ $scope.ToggleCompleted = function(toStatus){
 
 
   // get selected post deatils ; load comments and posts
-  .controller('getSelectedpost', function($scope ,$ionicPopup,$window,$localStorage){
+  .controller('getSelectedpost', function($scope ,$firebaseArray,$ionicPopup,$window,$localStorage){
 			
 	var SelectdP=$localStorage.settitle;
+	console.log("selected post :" +SelectdP);
 
   	var ref = new Firebase('https://snev.firebaseio.com/posts');
     var ref2 = new Firebase('https://snev.firebaseio.com/comments');
 
 
-         ref2.orderByChild("title").equalTo(SelectdP).on("value", function(snapshot,prevChildKey) {
-           $scope.mycomments = snapshot.val();
-           	//console.log(snapshot.val());
-            });
+        //  ref2.orderByChild("title").equalTo(SelectdP).on("value", function(snapshot,prevChildKey) {
+        //    $scope.mycomments = snapshot.val();
+        //    	//console.log(snapshot.val());
+        //     });
+
+		var query = ref2.orderByChild('title').equalTo(SelectdP);
+	$scope.mycomments = $firebaseArray(query);
 
 
-  		  ref.orderByChild("title").equalTo(SelectdP).on("value", function(snapshot,prevChildKey) {
-  		  $scope.$apply(function(){
-  			$scope.myposts = snapshot.val();
-  		//	console.log(prevChildKey.key());
+  		//   ref.orderByChild("title").equalTo(SelectdP).on("value", function(snapshot,prevChildKey) {
+  		//   $scope.$apply(function(){
+  		// 	$scope.myposts = snapshot.val();
+  		// //	console.log(prevChildKey.key());
 
-  		        });
-	       });
+  		//         });
+	    //    });
+
+				 		var query = ref.orderByChild('title').equalTo(SelectdP);
+						$scope.myposts = $firebaseArray(query);
 
   })
 
@@ -1747,7 +1731,7 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 //adding a follower 
-.controller('followController', function($scope, $http, $state,$ionicPopup,$rootScope,$firebaseArray, $localStorage,$firebase) {
+.controller('followController', function($scope, $http, $state,$ionicPopup,$firebaseArray, $localStorage,$firebase) {
 
  
      
@@ -1788,7 +1772,7 @@ $scope.ToggleCompleted = function(toStatus){
 
 //Edit profile controller
 
-.controller('editProfileController', function($scope, $http, $state,$ionicPopup,$rootScope,$firebaseArray, $localStorage,$firebase) {
+.controller('editProfileController', function($scope, $http, $state,$ionicPopup,$firebaseArray, $localStorage,$firebase) {
    $scope.postForm = function(title,description){
      
       	 var username= $localStorage.username;
@@ -1896,7 +1880,7 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 //loading friendlist 
-.controller('friendslistCntrl', function($scope, $http, $state,$ionicPopup,$rootScope,$firebaseArray, $localStorage,$location,$firebase) {
+.controller('friendslistCntrl', function($scope, $http, $state,$ionicPopup,$firebaseArray, $localStorage,$location,$firebase) {
 
  
      
