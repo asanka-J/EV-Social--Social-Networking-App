@@ -774,21 +774,28 @@ $scope.ToggleCompleted = function(toStatus){
         var options = {timeout: 10000, enableHighAccuracy: true};
 			
          var latlngfound=false;
+		 
+		    $scope.GpsLoc = function () {
+					$cordovaGeolocation.getCurrentPosition(options).then(function(position){
+					$localStorage.userLatitude=position.coords.latitude;
+					$localStorage.userLongitude=position.coords.longitude;
+					 var nlatLng = new google.maps.LatLng($localStorage.userLatitude, $localStorage.userLongitude);
+					 latlngfound=true;
+					}, function(error){
+					console.log("Could not get location");
+					});
+			};
+			$scope.GpsLoc();
 
-        $cordovaGeolocation.getCurrentPosition(options).then(function(position){
-			$localStorage.userLatitude=position.coords.latitude;
-			$localStorage.userLongitude=position.coords.longitude;
-			 latlngfound=true;
-			}, function(error){
-            console.log("Could not get location");
-        });
+        
 		if(latlngfound==false)
 		{
 			$localStorage.userLatitude="6.9271";
 			$localStorage.userLongitude="79.8612";
+			 var nlatLng = new google.maps.LatLng($localStorage.userLatitude, $localStorage.userLongitude);
 		}
 
-            var nlatLng = new google.maps.LatLng($localStorage.userLatitude, $localStorage.userLongitude);
+           
 
             var mapOptions = {
                 center: nlatLng,
@@ -976,6 +983,10 @@ $scope.ToggleCompleted = function(toStatus){
 						 $scope.me = function () {	 
 						 if(me)
 						 {
+							 if(latlngfound==false)
+								{
+									$scope.GpsLoc();
+								}
 							  
 							marker.setMap($scope.map);//setting marker me
 							$scope.map.setCenter(nlatLng);
