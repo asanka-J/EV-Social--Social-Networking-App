@@ -424,6 +424,27 @@ angular.module('app.routes', [])
 
 
   //
+ //shopping list start here branna....................................................................................................
+  .state('app.vehiclepart', {
+    url: '/vehiclepart',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/vehicleParts.html',
+        controller: 'vehiclepartsController'
+      }
+    } 
+  })
+
+  .state('app.vehiclepartNew', {
+    url: '/vehiclepartNew/:part',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/vehiclePartsNew.html',
+        controller: 'vehiclepartsControllerNew',
+        controllerAs: 'ctrl'
+      }
+    } 
+  })
 
 
 

@@ -1,5 +1,16 @@
 'Use Strict';
 angular.module('app.controllers', [])
+//shopping list part start here...................................................................................................................................
+
+.controller('vehiclepartsController', function($scope) {
+
+})
+
+.controller('vehiclepartsControllerNew', function($stateParams) {
+	vm = this;
+	vm.parts=[$stateParams.part];
+})
+
 
 .controller('AppCtrl', function($scope,$location,Auth,$localStorage) {
 	
