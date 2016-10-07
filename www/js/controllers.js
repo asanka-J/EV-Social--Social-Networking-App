@@ -95,9 +95,8 @@ angular.module('app.controllers', [])
 														$state.go('app.home');
 														
 														})
-														.catch(function(error) {
-															console.error("Error:", error);
-														});
+														
+														
 												});
 
 												}, function(err) {
@@ -261,7 +260,7 @@ angular.module('app.controllers', [])
 		    $scope.static = {};
 		    $scope.showAlert();
 			var key=newfb.key();
-			
+			yyy
 			var firebaseObj = new Firebase("https://snev.firebaseio.com/user_status");
 			
 			firebaseObj.push({user_id: "",station_id: key,on_myWay: 0, in_theQueue: 0,charging:0,
@@ -1575,8 +1574,10 @@ $scope.ToggleCompleted = function(toStatus){
 													var userImage=imagesnapshot.val();
 
 														var reprofile= new Firebase('https://snev.firebaseio.com/profile/'+profilekey+'/friends');
-															reprofile.push({ 'name': $localStorage.username, 'image':userImage });//add my image
-
+													
+													
+														
+																	reprofile.push({ 'name': $localStorage.username, 'image':userImage });//add my image
 											});
 									})
 								});
@@ -1646,7 +1647,7 @@ $scope.ToggleCompleted = function(toStatus){
 
 // edit profile
 
-.controller('editProfile', function($scope ,$ionicPopup, $localStorage,$firebaseArray){
+.controller('editProfile', function($scope ,$ionicPopup, $localStorage,$firebaseArray,$location){
 
 	var ref = new Firebase('https://snev.firebaseio.com/profile');
   var username=$localStorage.username;
@@ -1663,6 +1664,8 @@ $scope.ToggleCompleted = function(toStatus){
         title: 'Successful! <i class="ion-checkmark-round"></i>',
         template:'You have Successfuly Updated'
          });
+
+		$location.path('/app/profile');  
 
   	};
 
@@ -1695,8 +1698,8 @@ $scope.ToggleCompleted = function(toStatus){
 							var userImage=tempref.val();
 
 			var reprofile= new Firebase('https://snev.firebaseio.com/profile/'+profilekey+'/friends');
-				reprofile.push({ 'name': username, 'image':userImage });//add my image
-
+			reprofile.push({ 'name': username, 'image':userImage });//add my image	   
+    
 				})
 	
 			});
@@ -1839,6 +1842,19 @@ $scope.ToggleCompleted = function(toStatus){
 				console.log("set profile");
 				
  				 }
+
+									//set selected profile
+				$scope.message = function(selectedprofz) {
+				$localStorage.setFname=selectedprofz;
+				$location.path("/app/UserMessages");
+				console.log("UserMessages");
+				
+ 				 }
+
+
+
+
+
 	})
 
 

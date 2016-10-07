@@ -14,14 +14,14 @@ angular.module('messages.controllers', [ 'ionic', 'angularMoment',"firebase"])
     $scope.toUser = {
       _id: '534b8e5aaa5e7afc1b23e69b',
       pic: 'http://ionicframework.com/img/docs/venkman.jpg',
-      username: 'Venkman'
+      username: 'Other user'
     }
 
     // this could be on $rootScope rather than in $stateParams
     $scope.user = {
       _id: '534b8fb2aa5e7afc1b23e69c',
       pic: 'http://ionicframework.com/img/docs/mcfly.jpg',
-      username: 'Marty'
+      username:'Me',
     };
 
     $scope.input = {
@@ -230,7 +230,7 @@ angular.module('messages.controllers', [ 'ionic', 'angularMoment',"firebase"])
       return {
         userId: '534b8e5aaa5e7afc1b23e69b',
         date: new Date(),
-        text: ' quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+        text: ' Test reply'
       };
     }
 
