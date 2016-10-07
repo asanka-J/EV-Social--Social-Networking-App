@@ -34,7 +34,7 @@
   </div>
 
   <div class="item item-body">
-    <img class="full-image" src="https://suncountryhighway.com/Content/Layouts/Web/images/carousel/main_feature_ev60.jpg">
+    <img class="full-image" src="img/station-img.jpg">
     <p class="lightgreen">Port: <strong>{{port}}</strong></p>
 	<p class="lightgreen">Open: <strong>{{(hours!=''?hours +" hours":"Not Provided")}}</strong></p>
 	<p class="lightgreen">Cost: <strong>LKR {{cost}}/KWH</strong></p>
@@ -84,11 +84,7 @@
 	
   </ion-content>
   <ion-footer-bar class="bar-stable">
-    <div class="buttons">
-      <div class="button button-clear" ng-disabled="loading" ng-click="map()">
-        <i class="icon ion-map"></i> Maps
-      </div>
-    </div>
+   
     <h1 class="title"></h1>
     <div class="buttons">
       <div class="button button-clear" ng-disabled="loading" ng-click="report()">
