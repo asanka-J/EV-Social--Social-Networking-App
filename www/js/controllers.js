@@ -1540,7 +1540,9 @@ $scope.ToggleCompleted = function(toStatus){
 			});
 		});
 
-		
+									
+
+
 						ref.orderByChild("name").equalTo(name).on("value", function(snapshot,prevChildKey) {
 							$scope.$apply(function(){
 									$scope.myprofile = snapshot.val();
@@ -1558,6 +1560,15 @@ $scope.ToggleCompleted = function(toStatus){
 
 							});
 						});
+
+
+							// $scope.msg = function() {
+							// 		//	$localStorage.setFname=selectedprofz;
+							// 			$location.path("/app/UserMessages");
+							// 			console.log("UserMessages");
+										
+							// 			}
+
 
 
 						$scope.follow = function(follower) {
