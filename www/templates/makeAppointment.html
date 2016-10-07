@@ -10,30 +10,29 @@
 		<div>
 			<label class="item item-input item-stacked-label">
 				<span class="input-label">Customer Name</span>
-				<input type="text" placeholder="name" name="cname" ng-model="cname" required>
-				<span style="color:red" ng-show="makeAppointment.cname.$error.required">*This field is required!</span> <!-- catch the error -->
+				<input type="text" placeholder="name" name="cname" ng-model="cname" ng-pattern="/[A-Za-z]$/"required>
+				<span style="color:red" ng-show="makeAppointment.cname.$error.required">*This field is required!</span> 
+				<span style="color:red" ng-show="makeAppointment.cname.$error.pattern">*Characters Only!</span> <!-- catch the error --> 
 			</label>
   
 			<label class="item item-input item-stacked-label">  
 				<span class="input-label">Contact Number</span>
-				<input type="tel" placeholder="mobile" name="tele" ng-model="tele" ng-pattern="/^[0-9]{1,10}$/" ng-minlength="10" ng-maxlength="10"required>
-				<span ng-show="makeAppointment.tele.$error.pattern">Not a valid phone number!</span>
+				<input type="tel" placeholder="mobile" name="tele" ng-model="tele" ng-pattern="/^[0-9]{1,10}$/" required>
+				<span style="color:red" ng-show="makeAppointment.tele.$error.pattern">Not a valid phone number!</span>
 				<span style="color:red" ng-show="makeAppointment.tele.$error.required">*This field is required!</span>
 			
 			</label>
   
 			<label class="item item-input item-stacked-label">  
 				<span class="input-label">Vehicle Reg Number</span>
-				<input type="text" placeholder="vehical reg number" name="vRegNum" ng-model="vRegNum" ng-minlength="10" ng-maxlength="10" required>
+				<input type="text" placeholder="vehical reg number" name="vRegNum" ng-model="vRegNum"  ng-maxlength="8" required>
 			<!-- catch the error -->
 				<span style="color:red" ng-show="makeAppointment.vRegNum.$error.required">*This field is required!</span>
-				<span style="color:red" ng-show="makeAppointment.vRegNum.$error.minlength">length is 10  
-				</span>
-				<span style="color:red" ng-show="makeAppointment.vRegNum.$error.maxlength">length is 10  
-				</span>
+				<!-- <span style="color:red" ng-show="makeAppointment.vRegNum.$error.minlength">length is 10</span> -->
+				<span style="color:red" ng-show="makeAppointment.vRegNum.$error.maxlength">length is 8</span>
 			</label>
   
-		<!-- <label class="item item-input item-select">
+		<label class="item item-input item-select">
 		<div class="input-label">
 		Station
 		</div>
@@ -47,7 +46,7 @@
 		<label class="item item-input">
 		<span class="input-label">Date</span>
 		<input type="date" name="date">
-		</label> -->
+		</label>
 	
 		</div>
 	

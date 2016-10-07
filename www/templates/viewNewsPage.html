@@ -2,24 +2,26 @@
      <ion-content padding="true" class="has-header">
 
     <div ng-controller="viewNewsPageCtrl">
-
-      <ion-list>
-    <ion-item  ng-repeat="post in posts" class="item-icon-right item-remove-animate">
-        <!-- <div class="item item-divider"> <div class="padding"> </div></div>
-        <div class="item item-avatar"> -->
-		<div class="card">
-        <h2><b>Notice </b></h2>
-        <br>
-        <div class="item item-text-wrap"><b>Topic </b>:<br> {{post.topic}}</div>
-        <div class="item item-text-wrap"><b>Notice </b>:<br>  {{post.notice}}</div>
+     <ion-content > 
+          
+		   <ion-list>
+    <ion-item  ng-repeat="post in posts | orderBy: '-date'" class="item-icon-right item-remove-animate" >
         
-        <!-- <h2>{{post.gravatar}}</h2> -->
-        <!-- <div><button class="button button-assertive" ng-click="remove($index)">Delete</button></div> -->
-  
-        </div>
+		
+			<h2><b>Notice </b></h2>
+			<br>
+
+			<div class="item item-text-wrap"><br><b>{{post.topic}}</b><br>
+				<b>{{post.date| date:'d MMM yyyy hh:mm:ss a'}}</b></div>
+			<div class="item item-text-wrap"><br> {{post.notice}}</div>
+		
+		
+
+	</div>
 
      </ion-item>
-     </ion-list>
 
+   </ion-list>
+   
     </ion-content>
 </ion-view>

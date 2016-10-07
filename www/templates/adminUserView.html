@@ -1,21 +1,77 @@
+
 <ion-view title="Users" id="ad_user_page">
     <!-- <ion-content padding="true" class="has-header"> -->
-    <ion-content ng-controller="adminUserRecordsCtrl">
-    <ion-list>
-    <ion-item  ng-repeat="post in posts" class="item-icon-right item-remove-animate">
-        <div class="item item-divider"> <div class="padding"> </div></div>
-        <div class="item item-avatar">
-        <h2>User Details</h2>
-        <br>
-        <h2>Email : {{post.email}}</h2>
-        <h2>ID : {{post.id}}</h2>
-        <h2>Registered Date : {{post.registered_in}}</h2>
-        <!-- <h2>{{post.gravatar}}</h2> -->
-        <div><button class="button button-assertive" ng-click = "showAlert()">Delete</button></div>
+	
+	<ion-content padding="true" class="has-header">
+    	 <div class="item">
   
-        </div>
+<ion-list border ="40"></ion-list>
+<!-- <img class="full-image" src="img/Stages-of-Baby-Development.jpg" size="300">  -->
 
-     </ion-item>
-     </ion-list>
+  
+
+
+<div ng-controller="finecrud">
+
+<div class="list card">
+<div id="mainHolder" style="overflow: auto; max-height: 400px;">
+<table class="table" border="2" width=100% text align="center">
+                    <thead>
+                    
+
+                   <tr> <th bgcolor="e6f3ff" text align="center">|Name</th><th>&nbsp;</th>
+                   <th bgcolor="e6f3ff"  >|Mobile</th><th>&nbsp;</th>
+                   <th bgcolor="#e6f3ff" text align="center">|Action</th>
+                    </thead>
+                    <tbody>  
+				
+                    <tr ng-repeat="fine in fines">
+                         <td  text align="center"> {{fine.name}}  </td><td>&nbsp;</td>
+                         <td  text align="center">    {{fine.mobile}}</td><td>&nbsp;</td>
+                        
+                        <td  text align="center"><button class="btn btn-primary" ng-click="showfine(fine)"align="center" > <i class="ion-edit"></i></button>&nbsp;
+                        <button class="btn btn-primary" ng-click="deletefine(fine) "align="center"> <i class="ion-trash-a"></i></button>&nbsp;
+                        </td></tr>
+						</div>
+                    </tbody>
+                </table>
+				
+
+              
+</div>
+</div>
+
+
+<form ng-submit="editFormSubmit()">
+
+                        <label class="item item-input">
+                        <span class="input-label"> <b>Name </b></span>
+                        <input type="text" name="name" ng-model="name" >
+                        </label>                                
+                        <label class="item item-input">
+                        <span class="input-label"> <b>Mobile</b></span>
+                        <input type="text" name="mobile" ng-model="mobile" />
+                        </label>
+                        <label class="item item-input">
+                        <span class="input-label"> <b>Licence PLate</b></span>
+                        <input type="text" name="licence_plate" ng-model="licence_plate" >
+                        </label>
+						<label class="item item-input">
+                        <span class="input-label"> <b>Vehical Name</b></span>
+                        <input type="text" name="vehicle_name" ng-model="vehicle_name" >
+                        </label>
+						<label class="item item-input">
+                        <span class="input-label"> <b>E-mail</b></span>
+                        <input type="text" name="email" ng-model="email" >
+                        </label>
+						
+
+  
+                 <input type="submit" class="button button-block button-energized" value="Edit Record" /> 
+</form>
+
+ </div>
+
+ 
     </ion-content>
 </ion-view>

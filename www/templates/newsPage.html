@@ -9,31 +9,29 @@
       <div>
         <label class="item item-input item-stacked-label">
         <span class="input-label" >Topic</span>
-        <input type="text" placeholder="topic" name="topic" ng-model="topic" required >
+        <input type="text" placeholder="topic" name="topic" ng-model="topic" ng-pattern="/^[a-zA-Z!@#$%^&*()_-\s]*$/" required >
         <span style="color:red" ng-show="newNotice.topic.$error.required">*required</span>
+		<span style="color:red" ng-show="newNotice.topic.$error.pattern">Text only</span>
+		<!-- <input type="text" placeholder="topic" name="topic" ng-model="topic" required > -->
         </label>
       
-        <!-- <label class="item item-input item-stacked-label">  
-        <span class="input-label">Date</span>
-        <input type="date" ng-model='date'>
-        </label> -->
+       
       </div>
       <div>
-      <div class="spacer" style="width: 300px; height: 31px;"></div>
+      <!-- <div class="spacer" style="width: 300px; height: 31px;"></div> -->
         <label class="item item-input item-stacked-label">
         <span class="input-label">Notice</span>
         <textarea placeholder="notice" ng-model="notice" name="notice" required>
         </textarea>
-		<span style="color:red" ng-show="newNotice.topic.$error.required">*required</span>
+		<span style="color:red" ng-show="newNotice.notice.$error.required">*required</span>
       <!-- <div> -->
         </label>
       </div>
-
-      <!-- </div> -->
-        <button class="button button-full button-positive" ng-disabled="newNotice.$invalid" ng-click="noticePostForm(topic,date,notice)">
+	   
+        <button class="button button-full button-positive" ng-disabled="newNotice.$invalid"  ng-click="noticePostForm(topic,notice)">
         Save
         </button>
-        <button class="button button-full button-assertive" ng-click="noticePostForm2(topic,date,notice)">
+        <button class="button button-full button-assertive" ng-click="noticePostForm2(topic,notice)">
         Clear
         </button>
       </div>    

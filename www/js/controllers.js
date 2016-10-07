@@ -1926,63 +1926,198 @@ $scope.ToggleCompleted = function(toStatus){
 
 })
 
-//view station records
-.controller('adminStationRecordsCtrl', function($scope) {
+.controller('finecrud',  function($scope,$firebaseArray,$rootScope,$ionicPopup){
+	
+	$scope.editFormSubmit = function() {
+    if($scope.exampleForm.$valid)
+      console.log('saving task'); // save $scope.user object
+    else
+      console.log('Unable to save. Validation error!');
+ }
 
-    var ref = new Firebase('https://snev.firebaseio.com/Stations_Details');
-     //var ref2 = new Firebase('https://snev.firebaseio.com/comments');
+var myfine = new Firebase('https://snev.firebaseio.com/profile');
 
 
-        ref.on("value", function(snapshot) {
+$scope.fines = $firebaseArray(myfine);
+
+function clearForm(){
+	$scope.name="";
+    $scope.id="";
+    $scope.mobile="";
+    $scope.vehicle_name="";
+    $scope.licence_plate="";
+   $scope.email="";
+  
+}
+
+$scope.addFormSubmit=function(){
+
+$scope.fines.$add({
+    name:$scope.name,
+    mobile:$scope.mobile,
+    registered_in:$scope.date, 
+    
+});
+clearForm();
+}
+
+$scope.showfine=function(fine){
+$scope.id=fine.$id;
+$scope.editFormShow=true;
+$scope.addFormShow=false;
+$scope.name=fine.name;
+$scope.mobile=fine.mobile;
+$scope.licence_plate=fine.licence_plate;
+$scope.vehicle_name=fine.vehicle_name;
+$scope.email=fine.email;
+
+	
+
+}
+
+$scope.editFormSubmit = function(){
+    var id =$scope.id;
+    var child = $scope.fines.$getRecord(id); 
+	
+    child.name=$scope.name,
+    child.mobile=$scope.mobile,
+    child.licence_plate=$scope.licence_plate, 
+	child.vehicle_name=$scope.vehicle_name,
+	child.email=$scope.email;
+   
+    $scope.fines.$save(child);
+	
+	clearForm();
+}
+
+		
+$scope.deletefine = function(fine){
+    
+	 $scope.showConfirm = function() {
+	
+      var confirmPopup = $ionicPopup.confirm({
+         title: 'Warnning !!!',
+         template: 'Do you really want to delete?'
+      });
+
+      confirmPopup.then(function(res) {
+         if(res) {
+            console.log('Yes');
+			$scope.fines.$remove(fine);
+			
+			var alertPopup = $ionicPopup.alert({
+		title: 'Successfully deleted! <i class="ion-checkmark-round"></i>',
+		template:'You have Successfuly deleted the user' 
+		});
+         } else {
+            console.log('No');
+         }
+      });
+		
+   };
+    $scope.showConfirm();
+	
+    clearForm();
+}
+
+})
+
+
+.controller('adminStationRecordsCtrl', function($scope,$firebaseArray,$rootScope,$ionicPopup) {
+
+    var viewNewsRef1 = new Firebase('https://snev.firebaseio.com/Stations_Details');
+	$scope.stations = $firebaseArray(viewNewsRef1);
+	
+	viewNewsRef1.on("value", function(snapshot) {
           $scope.$apply(function(){
-            $scope.posts = snapshot.val();
-
+            $scope.stations = snapshot.val();
+						
           });
-        });
+	});
+	 $scope.del = function(station) {
+	$scope.showConfirm = function() {
+	
+      var confirmPopup = $ionicPopup.confirm({
+         title: 'Warnning !!!',
+         template: 'Do you really want to delete?'
+      });
+
+      confirmPopup.then(function(res) {
+         if(res) {
+            console.log('Yes');
+			 console.log(station);
+			 $scope.stations.remove(station);
+			//$scope.stations.$remove(station);
+			
+			var alertPopup = $ionicPopup.alert({
+		title: 'Successfully deleted! <i class="ion-checkmark-round"></i>',
+		template:'You have Successfuly deleted the user' 
+		});
+         } else {
+            console.log('No');
+         }
+      });
+		
+   };
+    $scope.showConfirm();
+      console.log('asdasd');
+	};
+		
 })
 
 //user view notices------------------------------------------------------------------
-.controller('viewNewsPageCtrl', function($scope) {
-	 var viewNewsRef1 = new Firebase('https://snev.firebaseio.com/notice');
+.controller('viewNewsPageCtrl', function ($scope,$firebaseArray, $ionicSlideBoxDelegate) {
 
-	 	viewNewsRef1.on("value", function(snapshot) {
-           $scope.$apply(function(){
-             $scope.posts = snapshot.val();
+var viewNewsRef1 = new Firebase('https://snev.firebaseio.com/notice');
 
-           });
+		 
+    $scope.posts = $firebaseArray(viewNewsRef1);
+  $scope.myTitle = 'Notice';
 
-         });
+
+  $scope.groups = [];
+  for (var i = 0; i < 10; i++) {
+    $scope.groups[i] = {
+      name: i,
+      items: []
+    };
+    for (var j = 0; j < 2; j++) {
+      $scope.groups[i].items.push(i + '-' + j);
+    }
+  }
+  $scope.currentSlide = 0;
+  $ionicSlideBoxDelegate.slide(0);
+				$ionicSlideBoxDelegate.update();
+
 })
-
-
 // admin create notice----------------------------------------------------------------------
 .controller('noticeController', function($scope, $http, $state,$ionicPopup) {
-  $scope.noticePostForm = function(topic,date,notice) {
+  $scope.noticePostForm = function(topic,notice,date,date) {
 
     var noticeRef1 = new Firebase('https://snev.firebaseio.com/notice');
      var noticeRef1 = noticeRef1.push();
-
-
-//pass the data to DB ---------------------------------------------------------------
+	 
+	//pass the data to DB ---------------------------------------------------------------
      var noticeID = noticeRef1.key();
-       noticeRef1.set({ 'topic': topic,   'date':date ,'notice': notice  });
+	 
+       noticeRef1.set({ 'topic': topic,   'notice': notice, 'date':Firebase.ServerValue.TIMESTAMP});
        var path = noticeRef1.toString();
 
-
-   var alertPopup = $ionicPopup.alert({
-     title: 'Successful! <i class="ion-checkmark-round"></i>',
-     template:'You have Successfuly added the notice'
-  	 });
-
+		//alert successfully add  0
+		var alertPopup = $ionicPopup.alert({
+		title: 'Successful! <i class="ion-checkmark-round"></i>',
+		template:'You have Successfuly added the notice' 
+		});
 
          $scope.topic="";
-         $scope.date="";
-         $scope.notice="";
+		 $scope.notice="";
+		// $scope.date="";
+			
 
-//----------------------------------------------------------------------------------
+	
+
 
   };
-
 //End create notice-------------------------------------------------------------------------
 
 //Cleare the fields.------------------------------------------------

@@ -1,19 +1,20 @@
 <ion-view title="Stations" id="ad_station_page">
     <ion-content ng-controller="adminStationRecordsCtrl">
     <ion-list>
-    <ion-item  ng-repeat="post in posts" class="item-icon-right item-remove-animate">
+    <ion-item  ng-repeat="station in stations" class="item-icon-right item-remove-animate">
         <div class="item item-divider"> <div class="padding"> </div></div>
         <div class="item item-avatar">
         <h2>Station Details</h2>
         <br>
-        <h2>Name : {{post.name}}</h2>
-        <h2>Address : {{post.address}}</h2>
-        <h2>Contact : {{post.contact}}</h2>
-        <h2>Description : {{post.description}}</h2>
+        <h2>Name : {{station.name}}</h2>
+        <h2>Address : {{station.address}}</h2>
+        <h2>Contact : {{station.contact}}</h2>
+        <h2>Description : {{station.description}}</h2>
         <!-- <h2>{{post.gravatar}}</h2> -->
-        <div><button class="button button-assertive">Delete</button></div>
+        <div><button class="button button-assertive" ng-click="del(station)">Delete</button>
+		</div>
   
-        </div>
+        
 
      </ion-item>
      </ion-list>
