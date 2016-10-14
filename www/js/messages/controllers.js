@@ -64,6 +64,7 @@ angular.module('messages.controllers', [ 'ionic', 'angularMoment',"firebase"])
     $scope.$on('$ionicView.beforeLeave', function() {
       if (!$scope.input.message || $scope.input.message === '') {
         localStorage.removeItem('userMessage-' + $scope.toUser._id);
+       // alert("leaving");
       }
     });
 

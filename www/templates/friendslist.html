@@ -7,20 +7,20 @@
            <ion-list>
 
 
-            <ion-item class="item-avatar dark" ui-sref="app.manageProfile" ng-controller="loadProfDetails">
+            <ion-item class="item-avatar dark"  ng-controller="loadProfDetails">
                 <div ng-repeat="myprofile in myprofile">
                     <img src="{{myprofile.gravatar}}">
                <p >
                 <b >{{myprofile.name}} </b>
-                <ion-toggle toggle-class="toggle-balanced" ng-checked="true" name="activestatus"> Status Active</ion-toggle>
+                
               </p>
                </div>
             </ion-item>
-                    
+                 <ion-toggle toggle-class="toggle-balanced" ng-checked="true" name="activestatus"> Status Active</ion-toggle>   
             
        
         
-    <ion-list show-delete="false" ng-repeat="friend in friends" can-swipe="true">
+              <ion-list show-delete="false" ng-repeat="friend in friends" can-swipe="true">
                     <ion-item href="#">
                           {{friend.name}}
                         <ion-option-button class="button-assertive icon ion-android-person" ng-click="setFProfile(friend.name)">View Profile</ion-option-button>
