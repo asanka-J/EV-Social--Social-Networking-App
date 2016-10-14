@@ -1502,6 +1502,23 @@ $scope.ToggleCompleted = function(toStatus){
   })
 
 
+//  loadProfileDetails controller
+.controller('loadProfDetails', function($scope ,$ionicPopup,$window,$localStorage) {
+		
+	var ref = new Firebase('https://snev.firebaseio.com/profile');
+  var name=$localStorage.username;
+
+	 ref.orderByChild("name").equalTo(name).on("value", function(snapshot,prevChildKey) {
+	
+		  $scope.$apply(function(){
+		   	$scope.myprofile = snapshot.val();
+			
+			});
+		});
+
+  })
+
+
 // loading profile
 
 .controller('Loadprofile', function($scope ,$ionicPopup, $localStorage){
@@ -1513,15 +1530,7 @@ $scope.ToggleCompleted = function(toStatus){
 	
 		  $scope.$apply(function(){
 		   	$scope.myprofile = snapshot.val();
-
-						//load friend list
-						// ref.orderByChild("name").equalTo(name).on("child_added", function(snapshot) {
-							
-						// 	var nameSnapshot = snapshot.child("friends");
-						// 	$scope.friendlist = nameSnapshot.val();
-						// });
-
-						
+			
 			});
 		});
 
@@ -1633,8 +1642,6 @@ $scope.ToggleCompleted = function(toStatus){
 			});
 
   }
-
-
 
 })
 
@@ -1822,12 +1829,14 @@ $scope.ToggleCompleted = function(toStatus){
 
 
   var ref = new Firebase("https://snev.firebaseio.com/profile");
-			
+
 			
 				ref.orderByChild("name").equalTo(username).on("child_added", function(mysnapshot) {
 							var userkey = mysnapshot.key();
 										var reprofile= new Firebase('https://snev.firebaseio.com/profile/'+userkey+'/friends');
+											var profile= new Firebase('https://snev.firebaseio.com/profile/'+userkey);
 										$scope.friends = $firebaseArray(reprofile);
+											$scope.myprofile = $firebaseArray(profile);
 
 				})
 
@@ -1835,7 +1844,7 @@ $scope.ToggleCompleted = function(toStatus){
 				$scope.setFProfile = function(selectedprofz) {
 				$localStorage.setFname=selectedprofz;
 				$location.path("/app/friendProfile");
-				console.log("set profile");
+			//	console.log("set profile");
 				
  				 }
 
@@ -2077,7 +2086,7 @@ var viewNewsRef1 = new Firebase('https://snev.firebaseio.com/notice');
 })
 // admin create notice----------------------------------------------------------------------
 .controller('noticeController', function($scope, $http, $state,$ionicPopup) {
-  $scope.noticePostForm = function(topic,notice,date,date) {
+  $scope.noticePostForm = function(topic,notice,date) {
 
     var noticeRef1 = new Firebase('https://snev.firebaseio.com/notice');
      var noticeRef1 = noticeRef1.push();

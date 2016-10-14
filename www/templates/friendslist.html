@@ -5,13 +5,16 @@
          <ion-content ng-controller="friendslistCntrl" padding="true" class="has-header">
              
            <ion-list>
-            <ion-item class="item-avatar dark" ui-sref="app.manageProfile">
-                <img src="img/q4xbxIIlSoWlMTQ6tllU_steve.jpg">
+
+
+            <ion-item class="item-avatar dark" ui-sref="app.manageProfile" ng-controller="loadProfDetails">
+                <div ng-repeat="myprofile in myprofile">
+                    <img src="{{myprofile.gravatar}}">
                <p >
-                <b >{{name}} </b>
-            <ion-toggle toggle-class="toggle-balanced" ng-checked="true" name="activestatus"> Status Active</ion-toggle>
-            
-                </p>
+                <b >{{myprofile.name}} </b>
+                <ion-toggle toggle-class="toggle-balanced" ng-checked="true" name="activestatus"> Status Active</ion-toggle>
+              </p>
+               </div>
             </ion-item>
                     
             
