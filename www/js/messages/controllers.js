@@ -1,4 +1,4 @@
-angular.module('messages.controllers', [ 'ionic', 'angularMoment',"firebase"])
+angular.module('messages.controllers', [ 'ionic',"firebase"])
 
 
 .controller('UserMessagesCtrl', ['$scope', '$rootScope', '$state',
@@ -6,22 +6,25 @@ angular.module('messages.controllers', [ 'ionic', 'angularMoment',"firebase"])
   '$ionicPopup', '$ionicScrollDelegate', '$timeout', '$interval',
   function($scope, $rootScope, $state, $stateParams, MockService,
     $ionicActionSheet,
-    $ionicPopup, $ionicScrollDelegate, $timeout, $interval, $firebaseArray) {
+    $ionicPopup, $ionicScrollDelegate, $timeout, $interval,$localStorage, $firebaseArray) {
 
 	var refChat=new Firebase('https://snev.firebaseio.com/privateChat');
 	
+  
+
+
     // mock acquiring data via $stateParams
     $scope.toUser = {
       _id: '534b8e5aaa5e7afc1b23e69b',
       pic: 'http://ionicframework.com/img/docs/venkman.jpg',
-      username: 'Other user'
+      username: 	localStorage.sendTo
     }
 
     // this could be on $rootScope rather than in $stateParams
     $scope.user = {
       _id: '534b8fb2aa5e7afc1b23e69c',
       pic: 'http://ionicframework.com/img/docs/mcfly.jpg',
-      username:'Me',
+      username:localStorage.sendTo,
     };
 
     $scope.input = {
@@ -100,7 +103,7 @@ angular.module('messages.controllers', [ 'ionic', 'angularMoment',"firebase"])
     $scope.$watch('input.message', function(newValue, oldValue) {
    
       if (!newValue) newValue = '';
-      localStorage['userMessage-' + $scope.toUser._id] = newValue;
+         localStorage['userMessage-' + $scope.toUser._id] = newValue;
     });
 
     $scope.sendMessage = function(sendMessageForm) {

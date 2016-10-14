@@ -2,7 +2,7 @@
 
 angular.module('messages.module', [
 	'messages.controllers',
-  'messages.routes',
+  'messages.routes','ngStorage'
 
 ])
 
