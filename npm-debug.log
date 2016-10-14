@@ -1,0 +1,66 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   'angular-momentjs',
+1 verbose cli   '--save' ]
+2 info using npm@2.14.4
+3 info using node@v4.1.2
+4 verbose install initial load of C:\Users\Asanka\Desktop\EV_Final release\chat init\EVsocialf\package.json
+5 warn package.json EVSocial@1.1.1 No repository field.
+6 warn package.json EVSocial@1.1.1 No README data
+7 warn package.json EVSocial@1.1.1 No license field.
+8 verbose readDependencies loading dependencies from C:\Users\Asanka\Desktop\EV_Final release\chat init\EVsocialf\package.json
+9 silly cache add args [ 'angular-momentjs', null ]
+10 verbose cache add spec angular-momentjs
+11 silly cache add parsed spec Result {
+11 silly cache add   raw: 'angular-momentjs',
+11 silly cache add   scope: null,
+11 silly cache add   name: 'angular-momentjs',
+11 silly cache add   rawSpec: '',
+11 silly cache add   spec: '*',
+11 silly cache add   type: 'range' }
+12 silly addNamed angular-momentjs@*
+13 verbose addNamed "*" is a valid semver range for angular-momentjs
+14 silly addNameRange { name: 'angular-momentjs', range: '*', hasData: false }
+15 silly mapToRegistry name angular-momentjs
+16 silly mapToRegistry using default registry
+17 silly mapToRegistry registry https://registry.npmjs.org/
+18 silly mapToRegistry uri https://registry.npmjs.org/angular-momentjs
+19 verbose addNameRange registry:https://registry.npmjs.org/angular-momentjs not in flight; fetching
+20 verbose request uri https://registry.npmjs.org/angular-momentjs
+21 verbose request no auth needed
+22 info attempt registry request try #1 at 1:09:06 PM
+23 verbose request id 4f1a1134f78294fd
+24 http request GET https://registry.npmjs.org/angular-momentjs
+25 info retry will retry, error on last attempt: Error: connect EACCES 151.101.8.162:443
+26 info attempt registry request try #2 at 1:09:17 PM
+27 http request GET https://registry.npmjs.org/angular-momentjs
+28 info retry will retry, error on last attempt: Error: connect EACCES 151.101.8.162:443
+29 info attempt registry request try #3 at 1:10:17 PM
+30 http request GET https://registry.npmjs.org/angular-momentjs
+31 verbose stack Error: connect EACCES 151.101.8.162:443
+31 verbose stack     at Object.exports._errnoException (util.js:849:11)
+31 verbose stack     at exports._exceptionWithHostPort (util.js:872:20)
+31 verbose stack     at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1060:14)
+32 verbose cwd C:\Users\Asanka\Desktop\EV_Final release\chat init\EVsocialf
+33 error Windows_NT 10.0.14393
+34 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "angular-momentjs" "--save"
+35 error node v4.1.2
+36 error npm  v2.14.4
+37 error code EACCES
+38 error errno EACCES
+39 error syscall connect
+40 error Error: connect EACCES 151.101.8.162:443
+40 error     at Object.exports._errnoException (util.js:849:11)
+40 error     at exports._exceptionWithHostPort (util.js:872:20)
+40 error     at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1060:14)
+40 error  { [Error: connect EACCES 151.101.8.162:443]
+40 error   code: 'EACCES',
+40 error   errno: 'EACCES',
+40 error   syscall: 'connect',
+40 error   address: '151.101.8.162',
+40 error   port: 443,
+40 error   parent: 'EVSocial' }
+41 error Please try running this command again as root/Administrator.
+42 verbose exit [ 1, true ]

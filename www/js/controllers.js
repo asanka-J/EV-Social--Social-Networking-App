@@ -1906,7 +1906,8 @@ $scope.ToggleCompleted = function(toStatus){
 				$scope.message = function(selectedprofz) {
 				$localStorage.setFname=selectedprofz;
 				localStorage['sendTo']=selectedprofz ;
-				localStorage['from']=username;
+			//	loaclStorage['userId']=$localStorage.uid;
+				localStorage['fromUser']=username;
 				$location.path("/app/UserMessages");
 				console.log("UserMessages");
 				

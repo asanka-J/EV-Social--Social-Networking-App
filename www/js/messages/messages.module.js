@@ -2,7 +2,7 @@
 
 angular.module('messages.module', [
 	'messages.controllers',
-  'messages.routes','ngStorage'
+  'messages.routes','ngStorage','ngMessages',"firebase"
 
 ])
 
