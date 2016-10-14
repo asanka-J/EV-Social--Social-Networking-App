@@ -11,14 +11,24 @@
   </div>
 
 </div>
-<h2>{{res.year}}</h2>
+<h2>{{year}} Cost</h2>
 	
+	<div>
 	<canvas id="line" class="chart chart-line" chart-data="data"
 chart-labels="labels" chart-series="series" chart-options="options"
 chart-dataset-override="datasetOverride" chart-click="onClick"
 </canvas>
-
-
+</div>
+<h3>{{cmonth}}</h3>
+ <ion-list show-delete="false" can-swipe="true" ng-repeat="item in items">
+                    <ion-item>
+					<p><span style="font-size:medium;font-weight: bold;">{{item.station_name}}</span></p>&nbsp;
+				<span style="font-size:small;">{{item.time | date:'shortTime'}}</span>
+                        <span style="float:right">Cost Rs {{item.cost}}</span>
+                        <ion-option-button ng-click=onItemDelete(item.id) class="button-assertive icon ion-trash-a"></ion-option-button>
+                    </ion-item>
+ 
+                </ion-list>
 
 
 	</ion-content>

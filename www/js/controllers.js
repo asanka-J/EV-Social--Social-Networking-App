@@ -174,21 +174,76 @@ angular.module('app.controllers', [])
 
 //isuru start
 
-.controller('chargingRecordsCtrl', function($scope,MonthPicker) {
+.controller('chargingRecordsCtrl', function($scope,MonthPicker,$localStorage,$ionicPopup) {
 
 	$scope.labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"];
   $scope.data = [
     [65, 59, 80, 81, 56, 55, 40,28, 48, 40, 19, 86, 27]
   ];
-
   
+  var date = new Date();
+$scope.year = date.getFullYear();
+$scope.cmonthNum = date.getMonth();
+
+var month = new Array();
+month[0] = "January";
+month[1] = "February";
+month[2] = "March";
+month[3] = "April";
+month[4] = "May";
+month[5] = "June";
+month[6] = "July";
+month[7] = "August";
+month[8] = "September";
+month[9] = "October";
+month[10] = "November";
+month[11] = "December";
+$scope.cmonth = month[$scope.cmonthNum];
+
+
    MonthPicker.init({});
         $scope.buttonTap = function() {
             MonthPicker.show(function(res) {
-                console.log(res);
 				$scope.res=res;
+				$scope.year=res.year;
+				$scope.cmonth = month[res.month];
+				$scope.cmonthNum=res.month;
+				monthlyReport();
             });
         }
+		var uid = $localStorage.userkey;
+		
+		var monthlyReport = function() {
+				var firebaseObj = new Firebase("https://snev.firebaseio.com/charge_history");
+				  firebaseObj.orderByChild("user_id").equalTo(uid).on("value", function(snapshot) {
+				 
+                      $scope.items = [];
+					 var list = [];
+						snapshot.forEach(function(userHisSnapshot) {
+							 var userHistory =userHisSnapshot.val();
+							 var myDate = new Date(userHistory.time);
+									if(myDate.getMonth()==$scope.cmonthNum)
+									{userHistory.id=userHisSnapshot.key();
+									list.push(userHistory);}
+							
+						});	
+						 $scope.items = list.reverse(); 
+				  });
+		};
+		monthlyReport();
+		
+		 $scope.onItemDelete = function(taskid){
+		$ionicPopup.confirm({
+			title: 'Confirm Delete',
+			content: 'Are you sure you want to delete?'
+		}).then(function(res){
+			if(res){
+				 var ref = new Firebase("https://snev.firebaseio.com/charge_history");
+				 ref.child(taskid).remove();
+				monthlyReport();
+			}
+		});
+	};
   
 })
 
@@ -245,7 +300,6 @@ angular.module('app.controllers', [])
 		    $scope.static = {};
 		    $scope.showAlert();
 			var key=newfb.key();
-			yyy
 			var firebaseObj = new Firebase("https://snev.firebaseio.com/user_status");
 			
 			firebaseObj.push({user_id: "",station_id: key,on_myWay: 0, in_theQueue: 0,charging:0,
