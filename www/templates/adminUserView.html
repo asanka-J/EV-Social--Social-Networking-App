@@ -43,32 +43,41 @@
 </div>
 
 
-<form ng-submit="editFormSubmit()">
+<form ng-submit="editFormSubmit()" name="edituser" novalidate>
 
-                        <label class="item item-input">
+                        <label class="item item-input item-stacked-label">
                         <span class="input-label"> <b>Name </b></span>
-                        <input type="text" name="name" ng-model="name" >
+                        <input type="text" name="name" ng-model="name" ng-pattern="/^[a-zA-Z!@#$%^&*()_-\s]*$/" required >
+						<span style="color:red" ng-show="edituser.name.$error.pattern">Text only</span>
                         </label>                                
-                        <label class="item item-input">
+                        <label class="item item-input item-stacked-label">
                         <span class="input-label"> <b>Mobile</b></span>
-                        <input type="text" name="mobile" ng-model="mobile" />
+                        <input type="text" name="mobile" ng-model="mobile" ng-pattern="/^[0-9]{10,10}$/"/>
+						<span style="color:red" ng-show="edituser.mobile.$error.pattern">Mobile number include only numbers and length should be 10!</span>
                         </label>
-                        <label class="item item-input">
+                        <label class="item item-input item-stacked-label">
                         <span class="input-label"> <b>Licence PLate</b></span>
                         <input type="text" name="licence_plate" ng-model="licence_plate" >
                         </label>
-						<label class="item item-input">
+						<label class="item item-input item-stacked-label">
                         <span class="input-label"> <b>Vehical Name</b></span>
                         <input type="text" name="vehicle_name" ng-model="vehicle_name" >
                         </label>
-						<label class="item item-input">
+						<label class="item item-input item-stacked-label">
                         <span class="input-label"> <b>E-mail</b></span>
-                        <input type="text" name="email" ng-model="email" >
+                        <input type="text" name="email" ng-model="email" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" required>
+						<span style="color:red" ng-show="edituser.email.$error.pattern">Enter valid email address!</span>
                         </label>
 						
 
   
-                 <input type="submit" class="button button-block button-energized" value="Edit Record" /> 
+                 <!-- <input type="submit" class="button button-block button-energized" value="Edit Record" />  -->
+				 <button class="button button-full button-positive" ng-disabled="edituser.$invalid"  >
+        Save
+        </button>
+		<button class="button button-full button-assertive" ng-click="clearform()">
+        Clear
+        </button>
 </form>
 
  </div>
