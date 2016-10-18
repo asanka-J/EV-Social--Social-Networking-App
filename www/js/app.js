@@ -5,7 +5,7 @@
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
 'Use Strict';
-angular.module('app', ['ionic','ngCordovaOauth','chart.js','ionic-monthpicker','ngStorage','ngMessages','angular.filter', 'app.controllers',  'app.routes', 'app.services', 'app.directives','ngCordova','firebase','angular-md5', 'app.configs','app.util','app.auth'])
+angular.module('app', ['ionic','ngCordovaOauth','chart.js','ionic-monthpicker','ngStorage','ngMessages','angular.filter', 'app.controllers',  'app.routes', 'app.services', 'app.directives','ngCordova','firebase','angular-md5', 'app.configs','app.util','app.auth','messages.module'])
 
 .constant('FURL', 'https://snev.firebaseio.com/')
 .run(function($ionicPlatform, $rootScope, $ionicLoading, $location, CONFIG) {
