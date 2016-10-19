@@ -18,9 +18,10 @@
 
 </div>
 
-
+ <ion-content ng-controller="base64Ctrl" padding="true" style="background: url(img/postbackground.jpg) no-repeat center;background-size:cover;" class="manual-ios-statusbar-padding">
+   
   <!--<ion-content ng-controller="loadPostCtrl">-->
-   <ion-content ng-controller="base64Ctrl">
+  
 
 	 <div class="padding"> </div>
      
@@ -28,16 +29,16 @@
       <!--<ion-item  ng-repeat="post in loadposts " class="item-icon-right item-remove-animate">-->
         <div ng-repeat="post in imgs | toArray | orderBy: '-timeStamp'" class="col-xs-12 col-sm-6 col-md-3">
 
-        <div class="item item-divider"> <div class="padding"> </div></div>
+        <div class="item item-divider" style=" opacity:0;"> <div class="padding"> </div></div>
 
 
-				<div class="item item-avatar">
+				<div style=" background-color: #3299CC;" class="item item-avatar">
                 <img src="https://blog.madmimi.com/wp-content/uploads/2014/06/gary_gravatar.png">
                 <h2>{{post.username}}</h2>
 
                 <p>{{post.timeStamp | date:'d MMM yyyy'}}</p>
               
-                </div>
+       </div>
 
               <div class="item item-body">
                 <b>  <h2>{{post.title}}</h2> </b>

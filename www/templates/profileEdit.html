@@ -7,72 +7,74 @@
      <div ng-repeat="myprofile in myprofile">
         
      
-     
-      <div id="profile-bg"></div>
+     <ion-content padding="true" style="background: url(img/3761907.jpg) no-repeat center;background-size:cover;" class="manual-ios-statusbar-padding">
+   
       <div id="content">
+          
         <div id="profile-info">
              <img id="profile-image" src="{{myprofile.gravatar}}">
-            
-            
-            <button class="button" ng-click="doSomething()">
-        | Change profile pic |</button><br> 
-            <input id="profile-name"  style=" width: 33.33%;
-    text-align: center;" name="name" ng-model="name" placeholder="{{myprofile.name}}" >
-           
-			    
-				   
-            
-   
+                  
+	    <label class="item item-input " id="newPost-image" name="image">
+        <input type="file" name="file" style=" width: 33.33%;  text-align: center;"  ng-model="file" class="inputimg" id="nameImg" accept="image/*" >
+		</label>
+        
+            <label id="profile-uname"  style="  text-align: center;" name="uname" ng-model="uname" >Username :&thinsp; {{myprofile.name}}</label>
+        
         </div>
        </div>
-<form>
-         <label class="item item-input item-stacked-label">
-				<span class="input-label">Description :</span>
-				<textarea  rows="5" name="description" ng-model="description" placeholder="{{myprofile.description}}" ></textarea>
-				</label>
+   <!--$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$-->
+             
+  <div class="list card">
 
-         <div>
-       
-
-          <ion-item>
-            <ion-label stacked>First name</ion-label>
-            <input id="fname" style="width: 75%; " name="fname" ng-model="fname" placeholder="{{myprofile.name}}" >
-          </ion-item>
-          <ion-item>
-            <ion-label stacked>Second name</ion-label>
-            <input id="sname"  style="width: 75%;" name="sname" ng-model="sname" placeholder="{{myprofile.sname}}" >
-          </ion-item>
-          
-            <ion-label stacked>Contact No</ion-label>
-             <input id="contact"  style="width: 75%;"  name="contact" ng-model="contact" placeholder="{{myprofile.contact}}" >
-          </ion-item>
-
-      
-          
-           <div class="list card">
-              <ion-item>
-                  <ion-label stacked>Home town </ion-label> 
-                  <div style="margin: 0px; line-height: 250px; background-color: rgb(232, 235, 239); text-align: center;">
-                   <img src="img/location.jpg" width="100%" height="250px">
-                  </div>
-              </ion-item>
-          </div>
-          </div>
-
-          </div>
-
-              <div ng-controller="editProfile">
-                 
-                 <button class="button button-full button-positive"   ng-click="updateProfile(description,fname,sname,email,contact)">  UPDATE   </button>
-                </div>
-          
+       <form id="profile" class="list " name="newPostForm" novalidate>
             
-</form>
-                  <div class = "button button-block padding"></div>
-                  <div class = "button button-block padding"></div>
-                  <div class = "button button-block padding"></div>
-                
-  
+ 
+            <label class="item item-input " id="newPost-textarea2" name="Descrip">  <label >Description &thinsp;&thinsp;&thinsp;&thinsp;&thinsp;</label>
+                <textarea placeholder="{{myprofile.descriptiion}}" style="  background-color:#f8f9f9;" ng-model="description" name="description" required></textarea>
+            </label>
+			<span style="color:red" ng-show="newPostForm.$submitted && newPostForm.description.$error.required">Description is required</span>
+           
+
+             <label class="item item-input "   id="newPost-input6" name="firstName"><label >first Name &thinsp;&thinsp;&thinsp;&thinsp;&thinsp;&thinsp;</label>
+              <input type="text" style="  background-color:#f8f9f9;" placeholder="{{myprofile.fname}}" name="firstName" ng-model="firstName" required>
+            </label>
+            <span style="color:red" ng-show="newPostForm.$submitted && newPostForm.firstName.$error.required">Description is required</span>
+
+            <label class="item item-input " id="newPost-input6" name="SecondName"><label >SecondName &thinsp;</label>
+              <input type="text" style="  background-color:#f8f9f9;" placeholder="{{myprofile.sname}} " name="SecondName" ng-model="SecondName" required>
+            </label>
+             <span style="color:red" ng-show="newPostForm.$submitted && newPostForm.SecondName.$error.required">Description is required</span>
+
+            <label class="item item-input " id="newPost-input6" name="contactNo"><label >contact No &thinsp;&thinsp;&thinsp;&thinsp;&thinsp;</label>
+              <input type="text" style="  background-color:#f8f9f9;" placeholder="{{myprofile.cnumber}}" name="contactNo" ng-model="contactNo" required>
+            </label>
+             <span style="color:red" ng-show="newPostForm.$submitted && newPostForm.contactNo.$error.required">Second Name is required</span>
+            
+		
+            
+          
+          <div  class="list card" ng-controller="StationCtrl">
+              <label >Change Home town </label>
+            <div id="addmap" lat="6.9271" lng="79.8612" zoom="9" addmap>
+         </div>
+		
+<!--
+        <div class="spacer" style="width: 300px; height: 31px;"></div>
+     -->
+        <br />
+ 
+                <button id="newPost-button21" class=" btn waves-effect waves-light button button-full button-stable " ng-click="newPostForm.$valid && postForm(description,contactNo,SecondName,firstName) ; uploadFile()" >Publish   <i class="material-icons right">send</i></button>
+                 <div class = "button button-block padding"></div>
+     
+      </div>
+   
+        </form>
+     </div>
+   <!--$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$-->
+    </div>
+
+                 
+
     </ion-content>
 
 
@@ -89,3 +91,7 @@
 
 
  <link rel="stylesheet" href="css/socialNetwork/profile.css">    <!-- comment css -->
+ <script src='http://fezvrasta.github.io/bootstrap-material-design/dist/js/material.min.js'></script>
+ 
+<link rel='stylesheet prefetch' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
+

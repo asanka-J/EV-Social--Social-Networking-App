@@ -21,8 +21,6 @@ angular.module('app', ['ionic','ngCordovaOauth','chart.js','ionic-monthpicker','
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
    }
-	
-
   });
 
 });

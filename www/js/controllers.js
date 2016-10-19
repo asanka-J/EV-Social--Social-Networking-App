@@ -1699,15 +1699,23 @@ $scope.ToggleCompleted = function(toStatus){
 
 })
 
-
-
+//loadProfileDDetails anywhere
+.controller('loadProfileDetails', function($scope ,$ionicPopup, $localStorage,$firebaseArray){
+ var userToBeLoaded=$localStorage.username;
+	var ref = new Firebase('https://snev.firebaseio.com/profile');
+  var username=$localStorage.username;
+	  	var query1 = ref.orderByChild('name').equalTo(username);
+					$scope.myprofile = $firebaseArray(query1);	
+})
 
 // edit profile
+//zzzzzzzzzzzzzz
 
 .controller('editProfile', function($scope ,$ionicPopup, $localStorage,$firebaseArray,$location){
 
 	var ref = new Firebase('https://snev.firebaseio.com/profile');
   var username=$localStorage.username;
+	
 
 //update profile
 	$scope.updateProfile = function(description,fname,sname,contact) {
@@ -1725,6 +1733,77 @@ $scope.ToggleCompleted = function(toStatus){
 		$location.path('/app/profile');  
 
   	};
+		
+		// #######################################################################
+				$scope.postForm = function(description,contactNo,SecondName,firstName){
+										
+												var username= $localStorage.username;
+											
+										var messageListRef = new Firebase('https://snev.firebaseio.com/profile');
+										var newMessageRef = messageListRef.push();
+										
+								
+
+									var img = new Firebase("https://snev.firebaseio.com/posts");
+									$scope.imgs = $firebaseArray(img);
+
+									var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];
+										$scope.uploadFile = function() {
+										var sFileName = $("#nameImg").val();
+										if (sFileName.length > 0) {
+											var blnValid = false;
+											for (var j = 0; j < _validFileExtensions.length; j++) {
+												var sCurExtension = _validFileExtensions[j];
+												if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+													blnValid = true;
+													var filesSelected = document.getElementById("nameImg").files;
+													if (filesSelected.length > 0) {
+														var fileToLoad = filesSelected[0];
+
+														var fileReader = new FileReader();
+
+															fileReader.onload = function(fileLoadedEvent) {
+															var textAreaFileContents = document.getElementById(
+																"textAreaFileContents"
+															);
+
+
+															$scope.imgs.$add({
+																		timeStamp: Firebase.ServerValue.TIMESTAMP,
+																		image: fileLoadedEvent.target.result,
+																		title: title,
+																		description: description ,
+																		username:username,
+																		noOfLikes: 0,
+																		noOfDisLikes: 0 ,
+																		noOfReports: 0 
+											
+															});
+														};
+
+														fileReader.readAsDataURL(fileToLoad);
+													}
+													break;
+												}
+											}
+
+											if (!blnValid) {
+												alert('File is not valid');
+												return false;
+											}
+										}
+
+										return true;
+									}
+
+							//image Upload controller end
+
+
+											
+
+						};
+			
+		//########################################################################
 
 //load profile
 		     	var query1 = ref.orderByChild('name').equalTo(username);
