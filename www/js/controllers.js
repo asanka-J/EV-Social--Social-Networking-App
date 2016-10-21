@@ -175,15 +175,52 @@ angular.module('app.controllers', [])
 //isuru start
 
 .controller('chargingRecordsCtrl', function($scope,MonthPicker,$localStorage,$ionicPopup) {
+	
+var uid = $localStorage.userkey;//getting current user
 
-	$scope.labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"];
-  $scope.data = [
-    [65, 59, 80, 81, 56, 55, 40,28, 48, 40, 19, 86, 27]
-  ];
-  
   var date = new Date();
 $scope.year = date.getFullYear();
 $scope.cmonthNum = date.getMonth();
+
+var JanCost=0; var FebCost=0; var MarCost=0; var AprCost=0; var MayCost=0; var JunCost=0;
+var JulCost=0; var AugCost=0; var SepCost=0; var OctCost=0; var NovCost=0; var DecCost=0;
+
+
+	var ref = new Firebase("https://snev.firebaseio.com/charge_history");
+	
+		var yearlyReport = function() {
+				  ref.orderByChild("user_id").equalTo(uid).on("value", function(snapshot) {
+					  var userHistory=snapshot.val();
+					 snapshot.forEach(function(userHisSnapshot) {
+							 var userHistory =userHisSnapshot.val();
+							  var myDate = new Date(userHistory.time);//geting date from timeStamp
+							   var ncost=parseInt(userHistory.cost, 10);
+							  
+						 if(myDate.getFullYear()==$scope.year){
+								   
+							  if(myDate.getMonth()==0){JanCost=JanCost+ncost;}; 
+							  if(myDate.getMonth()==1){FebCost=FebCost+ncost;}; 
+							  if(myDate.getMonth()==2){MarCost=MarCost+ncost;};
+							  if(myDate.getMonth()==3){AprCost=AprCost+ncost;};
+							  if(myDate.getMonth()==4){MayCost=MayCost+ncost;}; 
+							  if(myDate.getMonth()==5){JunCost=JunCost+ncost;}; 
+							  if(myDate.getMonth()==6){JulCost=JulCost+ncost;};
+							  if(myDate.getMonth()==7){AugCost=AugCost+ncost;};
+							  if(myDate.getMonth()==8){SepCost=SepCost+ncost;};
+							  if(myDate.getMonth()==9){OctCost=OctCost+ncost;};
+							  if(myDate.getMonth()==10){NovCost=NovCost+ncost;};
+							  if(myDate.getMonth()==11){DecCost=DecCost+ncost;};
+						  }
+						});	
+							$scope.labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"];
+							  $scope.data = [
+								[JanCost,FebCost,MarCost,AprCost,MayCost,JunCost,JulCost,AugCost,SepCost,OctCost,NovCost,DecCost]
+							  ];
+							  
+							
+				  }); 
+		};
+		yearlyReport();
 
 var month = new Array();
 month[0] = "January";
@@ -208,14 +245,14 @@ $scope.cmonth = month[$scope.cmonthNum];
 				$scope.year=res.year;
 				$scope.cmonth = month[res.month];
 				$scope.cmonthNum=res.month;
-				monthlyReport();
+				monthlyReport();	  
+				    yearlyReport();
             });
         }
-		var uid = $localStorage.userkey;
+		
 		
 		var monthlyReport = function() {
-				var firebaseObj = new Firebase("https://snev.firebaseio.com/charge_history");
-				  firebaseObj.orderByChild("user_id").equalTo(uid).on("value", function(snapshot) {
+				  ref.orderByChild("user_id").equalTo(uid).on("value", function(snapshot) {
 				 
                       $scope.items = [];
 					 var list = [];
@@ -238,7 +275,6 @@ $scope.cmonth = month[$scope.cmonthNum];
 			content: 'Are you sure you want to delete?'
 		}).then(function(res){
 			if(res){
-				 var ref = new Firebase("https://snev.firebaseio.com/charge_history");
 				 ref.child(taskid).remove();
 				monthlyReport();
 			}
@@ -396,16 +432,18 @@ $scope.cmonth = month[$scope.cmonthNum];
 			$scope.website=data.website;
 
 
-		$scope.launchNavigator = function() {
-			 
-
-		var destination = [data.latitude,data.longitude];
-		$cordovaLaunchNavigator.navigate(destination).then(function() {
-		  console.log("Navigator launched");
-		}, function (err) {	  
-		  $location.path('/app/stationDirection');
-		});
-	
+			$scope.launchNavigator = function() {
+			 if (window.cordova) {
+			var destination = [data.latitude,data.longitude];
+				$cordovaLaunchNavigator.navigate(destination).then(function() {
+				  console.log("Navigator launched");
+				}, function (err) {	 //if fails google navigator 
+				  console.log("Error in launching");
+				  $location.path('/app/stationDirection');
+				});
+			} else {//if on browser
+			 $location.path('/app/stationDirection');
+				}
 	  };
 	  
 	//funtions to call device features like dialer,email and web browser
@@ -821,30 +859,18 @@ $scope.ToggleCompleted = function(toStatus){
 	
 	
         var options = {timeout: 10000, enableHighAccuracy: true};
-			
-         var latlngfound=false;
-		 
-		    $scope.GpsLoc = function () {
-					$cordovaGeolocation.getCurrentPosition(options).then(function(position){
-					$localStorage.userLatitude=position.coords.latitude;
-					$localStorage.userLongitude=position.coords.longitude;
-					 var nlatLng = new google.maps.LatLng($localStorage.userLatitude, $localStorage.userLongitude);
-					 latlngfound=true;
-					}, function(error){
-					console.log("Could not get location");
-					});
-			};
-			$scope.GpsLoc();
-
-        
-		if(latlngfound==false)
-		{
-			$localStorage.userLatitude="6.9271";
-			$localStorage.userLongitude="79.8612";
-			 var nlatLng = new google.maps.LatLng($localStorage.userLatitude, $localStorage.userLongitude);
-		}
-
-           
+		
+				$cordovaGeolocation.getCurrentPosition(options).then(function(position){
+								$localStorage.userLatitude=position.coords.latitude;
+								$localStorage.userLongitude=position.coords.longitude;
+								}, function(error){
+								console.log("Could not get location");
+								});
+      
+			var userLatitude="6.9271";
+			var userLongitude="79.8612";
+			 var nlatLng = new google.maps.LatLng(userLatitude,userLongitude);
+		
 
             var mapOptions = {
                 center: nlatLng,
@@ -1032,14 +1058,18 @@ $scope.ToggleCompleted = function(toStatus){
 						 $scope.me = function () {	 
 						 if(me)
 						 {
-							 if(latlngfound==false)
-								{
-									$scope.GpsLoc();
-								}
-							  
-							marker.setMap($scope.map);//setting marker me
-							$scope.map.setCenter(nlatLng);
-							$scope.map.setZoom(zoom + 5);
+					
+								$cordovaGeolocation.getCurrentPosition(options).then(function(position){
+								$localStorage.userLatitude=position.coords.latitude;
+								$localStorage.userLongitude=position.coords.longitude;
+								 var nlatLng = new google.maps.LatLng($localStorage.userLatitude,$localStorage.userLongitude);
+								$scope.map.setCenter(nlatLng);
+								marker.setPosition(nlatLng);//setting marker position
+								marker.setMap($scope.map);//setting marker me
+								$scope.map.setZoom(zoom + 5);
+								}, function(error){
+								console.log("Could not get location");
+								});
 							me=false;
 						 }
 						 
