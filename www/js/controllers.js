@@ -1580,31 +1580,24 @@ $scope.ToggleCompleted = function(toStatus){
 	var ref = new Firebase('https://snev.firebaseio.com/profile');
   var name=$localStorage.username;
 
-	 ref.orderByChild("name").equalTo(name).on("value", function(snapshot,prevChildKey) {
+	 ref.orderByChild("name").equalTo(name).once("value", function(snapshot) {
 	
-		  $scope.$apply(function(){
 		   	$scope.myprofile = snapshot.val();
-				 
-			});
+		
 		});
-
+									//load specific items
 										ref.orderByChild("name").equalTo(name).on("child_added", function(snapshot) {
 													console.log(snapshot.key());
 													userkey = snapshot.key();
-													
+														
 													var obj = $firebaseObject(ref.child(userkey));
 
 													obj.$loaded()
 														.then(function(data) {
 														
-														
 															$localStorage.useremail = obj.email;
 															$localStorage.mobileno=obj.mobile;
-														
 															$localStorage.userkey = userkey;
-
-																console.log(obj.name);
-														
 														})
 														
 														
@@ -1642,18 +1635,38 @@ $scope.ToggleCompleted = function(toStatus){
 
 											ref.orderByChild("name").equalTo($localStorage.username).on("child_added", function(mysnapshot) {
 												var userkey = mysnapshot.key();
-
+														
 												var path='https://snev.firebaseio.com/profile/'+userkey+'/gravatar';
 												var tempref = new Firebase(path);
 												tempref.once("value", function(imagesnapshot) {
 													var userImage=imagesnapshot.val();
-
-														var reprofile= new Firebase('https://snev.firebaseio.com/profile/'+profilekey+'/friends');
-													
-													
+												 
+													var reprofile= new Firebase('https://snev.firebaseio.com/profile/'+profilekey+'/friends');
+																	
+									//load specific items
+										reprofile.orderByChild("name").equalTo($localStorage.username).once("value", function(snapshot) {
+										
+													userkey = snapshot.val();
+											
+													if(userkey==null){
+														reprofile.push({ 'name': $localStorage.username, 'image':userImage }).then(alert("sucessfully added"));//add my image
+															$location.path('/app/profile');  
+													}else{
+														alert("Already exists");
+															$location.path('/app/profile');  
+													}
 														
-																	reprofile.push({ 'name': $localStorage.username, 'image':userImage });//add my image
-											});
+												});
+
+
+												//loadFriendlist
+															ref.orderByChild("name").equalTo(name).on("child_added", function(snapshot) {
+																var nameSnapshot = snapshot.child("friends");
+																	$scope.friendlist = nameSnapshot.val();
+														});
+													
+									
+									});
 									})
 								});
 						}
