@@ -10,7 +10,7 @@
         <label class="item item-input item-stacked-label">
         <span class="input-label" >Topic</span>
         <input type="text" placeholder="topic" name="topic" ng-model="topic" ng-pattern="/^[a-zA-Z!@#$%^&*()_-\s]*$/" required >
-        <span style="color:red" ng-show="newNotice.topic.$error.required">*required</span>
+        <span style="color:red" ng-show="newNotice.$submitted && newNotice.topic.$error.required">*required</span>
 		<span style="color:red" ng-show="newNotice.topic.$error.pattern">Text only</span>
 		<!-- <input type="text" placeholder="topic" name="topic" ng-model="topic" required > -->
         </label>
@@ -23,12 +23,12 @@
         <span class="input-label">Notice</span>
         <textarea placeholder="notice" ng-model="notice" name="notice" required>
         </textarea>
-		<span style="color:red" ng-show="newNotice.notice.$error.required">*required</span>
+		<span style="color:red" ng-show="newNotice.$submitted && newNotice.notice.$error.required">*required</span>
       <!-- <div> -->
         </label>
       </div>
 	   
-        <button class="button button-full button-positive" ng-disabled="newNotice.$invalid"  ng-click="noticePostForm(topic,notice)">
+        <button class="button button-full button-positive" ng-click="newNotice.$valid && noticePostForm(topic,notice)">
         Save
         </button>
         <button class="button button-full button-assertive" ng-click="noticePostForm2(topic,notice)">

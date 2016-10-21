@@ -1,42 +1,67 @@
 
 <ion-view title="Users" id="ad_user_page">
-    <!-- <ion-content padding="true" class="has-header"> -->
-	
+   
 	<ion-content padding="true" class="has-header">
-    	 <div class="item">
+    	<!doctype html>
+<html lang="en" ng-app="app">
+  <head>
+ <meta charset="utf-8">
+    
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+	
+	<script src="lib/angular/angular.js"></script>
+	<script src="lib/dirPagination.js"></script>
+	<script src="app/app.js"></script>
+	
+  </head>
+  <body>
+  <div class="item">
+		<div class="item">
   
 <ion-list border ="40"></ion-list>
-<!-- <img class="full-image" src="img/Stages-of-Baby-Development.jpg" size="300">  -->
+
 
   
 
 
 <div ng-controller="finecrud">
-
+<form class="form-inline">
+        <div class="form-group">
+            <label >Search</label>
+            <input type="text" ng-model="search" class="table" placeholder="Search">
+        </div>
+    </form>
 <div class="list card">
 <div id="mainHolder" style="overflow: auto; max-height: 400px;">
-<div style="height: 200px;  overflow-y: scroll;">
+<div style="height: 200px; width:100% overflow-y: scroll;">
+
+
 <table class="table" border="2" width=100% text align="center" >
                     <thead>
                     
 
-                   <tr> <th bgcolor="e6f3ff" text align="center">|Name</th><th>&nbsp;</th>
-                   <th bgcolor="e6f3ff"  >|Mobile</th><th>&nbsp;</th>
-                   <th bgcolor="#e6f3ff" text align="center">|Action</th>
+                   <tr> <th bgcolor="e6f3ff" >Name</th><th>&nbsp;</th>
+                   <th bgcolor="e6f3ff"  >Mobile</th><th>&nbsp;</th>
+                   <th bgcolor="#e6f3ff" >Action</th>
+				   </tr>
                     </thead>
                     <tbody>  
 				
-                    <tr ng-repeat="fine in fines">
-                         <td  text align="center"> {{fine.name}}  </td><td>&nbsp;</td>
-                         <td  text align="center">    {{fine.mobile}}</td><td>&nbsp;</td>
+                    <tr ng-repeat="fine in fines|filter:search">
+	
+                         <td  > {{fine.name}}  </td><td>&nbsp;</td>
+                         <td  >    {{fine.mobile}}</td><td>&nbsp;</td>
                         
-                        <td  text align="center"><button class="btn btn-primary" ng-click="showfine(fine)"align="center" > <i class="ion-edit"></i></button>&nbsp;
+                        <td  ><button class="btn btn-primary" ng-click="showfine(fine)"align="center" > <i class="ion-edit"></i></button>&nbsp;
                         <button class="btn btn-primary" ng-click="deletefine(fine) "align="center"> <i class="ion-trash-a"></i></button>&nbsp;
                         </td></tr>
 						</div>
+						
                     </tbody>
                 </table></div>
-				
+				<dir-pagination-controls max-size="5" direction-links="true" boundary-links="true" ></dir-pagination-controls>
 
               
 </div>
@@ -79,9 +104,10 @@
         Clear
         </button>
 </form>
-
+</div>
  </div>
-
- 
+</div>
+ </body>
+  </html>
     </ion-content>
 </ion-view>

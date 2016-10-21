@@ -2003,10 +2003,13 @@ $scope.ToggleCompleted = function(toStatus){
 // Asanka end
 
 //Make Appointment
- .controller ('makeAppointmentCtrl' , function($scope, $http, $state,$ionicPopup) {
+ .controller ('makeAppointmentCtrl' , function($scope, $http, $state,$ionicPopup,$firebaseArray) {
 	$scope.makeAppointmentForm = function(cname, tele, vRegNum, station) {
 		var makeAppoRef1 = new Firebase('https://snev.firebaseio.com/make_apointments');
 		var makeAppoRef1 = makeAppoRef1.push();
+		
+		
+			
 		
 		//pass the data to DB ---------------------------------------------------------------
      var noticeID = makeAppoRef1.key();
@@ -2019,8 +2022,7 @@ $scope.ToggleCompleted = function(toStatus){
 		template:'You have Successfuly added the notice' 
 		});
 
-         $scope.cname="";
-			
+         $scope.cname="";	
          $scope.tele="";
 		 $scope.vRegNum="";
 		 $scope.date="";
@@ -2035,6 +2037,16 @@ $scope.ToggleCompleted = function(toStatus){
 		 $scope.vRegNum="";
 		 $scope.date="";
 		};
+		 var list = [];
+		 var fb = new Firebase("https://snev.firebaseio.com/Stations_Details");
+				fb.on('value', function(snapshot){
+						snapshot.forEach(function(stationSnapshot) {
+							 var station =stationSnapshot.val();
+									list.push(station.name);
+							
+						});					 
+				});
+		$scope.names=list;
  })
 
 
