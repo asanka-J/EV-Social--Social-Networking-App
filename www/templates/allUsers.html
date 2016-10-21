@@ -1,0 +1,45 @@
+<ion-view  view-title="All Users page"  style="background-color:#DEDEED;">
+
+
+    
+         <ion-content ng-controller="loadUsers" padding="true" class="has-header">
+             
+
+        <div class="list list-inset">
+            <label class="item item-input">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="text" name="search" ng-model="search" placeholder="Search">
+            </label>
+        </div>
+
+           <ion-list>
+
+        
+               <ion-list show-delete="false" ng-repeat="friend in friends | filter : search " can-swipe="true">
+                    
+                    
+                    <ion-item href="#">
+                           <img style="border-radius:50%;width: 35px; height: 35px;" src="{{friend.gravatar}}">
+                          <label >&thinsp;&thinsp;{{friend.name}}</label>
+                        <ion-option-button class="button-assertive icon ion-android-person" ng-click="setFProfile(friend.name)">View Profile</ion-option-button>
+                         <ion-option-button class="button-light  icon ion-android-mail" ng-click="message(friend.name)">Message</ion-option-button>
+                    </ion-item>
+                   
+                </ion-list>
+        
+            
+        </ion-content>
+    
+  <ion-footer-bar align-title="left" >
+
+        <div class="button-bar" >
+       
+           <a ui-sref="app.socialNetwork" id="socialNetwork-button20"  class="button button-positive icon ion-clipboard" > Posts</a>
+           <a class="button button-positive icon ion-android-chat " ui-sref="app.friendslist">   private Message</a>
+        <a class="button button-positive icon ion-android-chat " ui-sref="app.chatroomhome">   chat room</a>
+        </div>
+
+    </ion-footer-bar>
+
+</ion-view>
+

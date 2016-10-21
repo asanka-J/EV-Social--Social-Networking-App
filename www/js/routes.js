@@ -330,6 +330,15 @@ angular.module('app.routes', [])
       }
   })
 
+  .state('app.allUsers', {
+    url: '/allUsers',
+	views: {
+        'menuContent': {
+		templateUrl: 'templates/allUsers.html',
+        }
+      }
+  })
+
   .state('app.friendProfile', {
     url: '/friendProfile',
 	views: {

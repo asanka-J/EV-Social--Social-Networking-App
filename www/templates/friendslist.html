@@ -1,12 +1,11 @@
 <ion-view  view-title="friendslist page"  style="background-color:#DEDEED;">
 
 
-    
+   
          <ion-content ng-controller="friendslistCntrl" padding="true" class="has-header">
              
-           <ion-list>
-
-
+              <button class="button button-positive" ui-sref="app.allUsers">All users</button>
+              
             <ion-item class="item-avatar dark"  ng-controller="loadProfDetails">
                 <div ng-repeat="myprofile in myprofile">
                     <img src="{{myprofile.gravatar}}">
@@ -16,13 +15,26 @@
               </p>
                </div>
             </ion-item>
+
+         <div class="list list-inset">
+            <label class="item item-input">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="text" name="search" ng-model="search" placeholder="Search">
+            </label>
+        </div>
+
+
+           <ion-list>
+
+
                  <ion-toggle toggle-class="toggle-balanced" ng-checked="true" name="activestatus"> Status Active</ion-toggle>   
             
        
         
-              <ion-list show-delete="false" ng-repeat="friend in friends" can-swipe="true">
+              <ion-list show-delete="false" ng-repeat="friend in friends | filter : search " can-swipe="true">
                     <ion-item href="#">
-                          {{friend.name}}
+                            <img style="border-radius:50%;  width: 30px; height: 30px;" src="{{friend.image}}">
+                          <label >&thinsp;&thinsp;{{friend.name}}</label>
                         <ion-option-button class="button-assertive icon ion-android-person" ng-click="setFProfile(friend.name)">View Profile</ion-option-button>
                          <ion-option-button class="button-light  icon ion-android-mail" ng-click="message(friend.name)">Message</ion-option-button>
                     </ion-item>
@@ -44,4 +56,3 @@
     </ion-footer-bar>
 
 </ion-view>
-
