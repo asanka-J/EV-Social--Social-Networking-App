@@ -60,7 +60,7 @@ angular.module('app.controllers', [])
 })
 
 
-.controller('loginController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils,$ionicSideMenuDelegate) {
+.controller('loginController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils,$ionicSideMenuDelegate,$ionicPlatform) {
   var ref = new Firebase(FURL);
 	var presence = new Firebase('https://snev.firebaseio.com/precence');
   var userkey = "";
@@ -138,7 +138,21 @@ angular.module('app.controllers', [])
 
 							 }
 							 
-	 $ionicSideMenuDelegate.canDragContent(false);
+	 	 $ionicSideMenuDelegate.canDragContent(false);
+		$ionicPlatform.registerBackButtonAction(function(event) {
+		if ($state.current.name=="app.login") { // In this condition user is prompted to exit app
+			$ionicPopup.confirm({
+				title: 'System warning',
+				template: 'are you sure you want to exit?'
+			}).then(function(res) {
+				if (res) {
+					ionic.Platform.exitApp();
+				}
+			});
+		} else {
+			history.back(); //this will force to continue to previous page
+		}
+	}, 100);
 
 })
 
