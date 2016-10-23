@@ -1,0 +1,24 @@
+<ion-modal-view style="width: 30%; height: 65%; top: 20%; left: 35%;">
+<ion-header-bar class="bar-balanced bar bar-header">
+	<i class="ion ion-close-circled" ng-click="partsCart.hide()"></i>
+  <h4 style="margin-left:130px;">Order</h4>
+</ion-header-bar>
+<ion-content scroll="false">
+<ion-list>
+<h4 align="center">You can buy your parts manually within a one week.</h4>
+<h3 align="center" ng-if="selectedParts.length < 1">There are no parts in the order.</h3>
+<ion-scroll style="height:45vh;" ng-if="selectedParts.length > 0">
+  <ion-item ng-repeat="part in selectedParts">
+      <div class="row">
+      	<img class="col col-10" height="50px" width="80px" ng-src="{{part.image}}">
+      	<div class="col">
+      		<h4>Part Name: {{part.name}}</h4>
+      		<h6>Part Description: {{part.description}}</h6>
+      		<h6>Part Price: {{part.price}}</h6>
+      	</div>
+      </div>
+  </ion-item>
+  </ion-scroll>
+</ion-list>
+</ion-content>
+</ion-modal-view>
