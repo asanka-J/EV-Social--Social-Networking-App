@@ -1652,7 +1652,10 @@ $scope.ToggleCompleted = function(toStatus){
 														reprofile.push({ 'name': $localStorage.username, 'image':userImage }).then(alert("sucessfully added"));//add my image
 															$location.path('/app/profile');  
 													}else{
-														alert("Already exists");
+													
+														 reprofile.remove(function(error) {
+																alert(error ? "Uh oh!" : "Successfully unfriend");
+														});
 															$location.path('/app/profile');  
 													}
 														
