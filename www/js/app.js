@@ -8,7 +8,7 @@
 angular.module('app', ['ionic','ngCordovaOauth','chart.js','ionic-monthpicker','ngStorage','ngMessages','angular.filter', 'app.controllers',  'app.routes', 'app.services', 'app.directives','ngCordova','firebase','angular-md5', 'app.configs','app.util','app.auth','messages.module'])
 
 .constant('FURL', 'https://snev.firebaseio.com/')
-.run(function($ionicPlatform, $rootScope, $ionicLoading, $location, CONFIG) {
+.run(function($ionicPlatform, $rootScope, $ionicLoading, $location, CONFIG ,$ionicPopup,$cordovaNetwork) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -21,6 +21,40 @@ angular.module('app', ['ionic','ngCordovaOauth','chart.js','ionic-monthpicker','
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
    }
+   
+     $rootScope.$on('$cordovaNetwork:offline', function() {
+			 $ionicPopup.confirm({
+                        title: "Internet Disconnected",
+                        content: "Connect your phone to mobile network or wireless internet connection"
+                    })
+                    .then(function(result) {
+                        if(!result) {
+                            ionic.Platform.exitApp();
+								}
+							});
+		});
+
+      
+    	if (window.cordova) {
+		
+		cordova.plugins.diagnostic.isGpsLocationEnabled(function(enabled){
+			if(!enabled){
+		 $ionicPopup.confirm({
+                        title: "Enable GPS",
+                        content: "Click ok for change gps settings"
+                    })
+                    .then(function(result) {
+                        if(result) {
+                            cordova.plugins.diagnostic.switchToLocationSettings();
+								}
+							});
+				}
+			}, function(error){
+				console.error("The following error occurred: "+error);
+			});
+	
+	}
+	
   });
 
 });

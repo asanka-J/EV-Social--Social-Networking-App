@@ -1,0 +1,20 @@
+<ion-modal-view style="width: 30%; height: 65%; top: 20%; left: 35%;">
+<ion-header-bar class="bar-balanced bar bar-header">
+	<i class="ion ion-close-circled" ng-click="partsAdd.hide()"></i>
+	<h4 style="margin-left:70px;">Add New Parts</h4>
+</ion-header-bar>
+<ion-content>
+<form name="myForm" ng-submit="addNewPart(partDetail)" style="margin-left:100px;">
+	<span class="input-label">Part Name</span>
+	<input type="text" ng-model="partDetail.partName" placeholder="Part Name" required>
+	<span class="input-label">Part Description</span>
+	<input type="text" ng-model="partDetail.partDescription" placeholder="Part Description" required>
+	<span class="input-label">Part Price</span>
+	<input type="number" ng-model="partDetail.partPrice" placeholder="Part Price" required>
+	<span class="input-label">Part Image</span>
+	<input type="file" id="partImage" class="inputimg" accept="image/*" required><pre>
+	<!-- <button ng-click="addNewPart(partImage)" class="button button-block button-positive"> -->
+	<input padding-bottom="20px" type="submit" value="Add" class="button" style="background: #0099CC;color: white;">
+</form>
+</ion-content>
+</ion-modal-view>

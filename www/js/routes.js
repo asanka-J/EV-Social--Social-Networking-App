@@ -439,7 +439,8 @@ angular.module('app.routes', [])
     views: {
       'menuContent': {
         templateUrl: 'templates/vehicleParts.html',
-        controller: 'vehiclepartsController'
+        controller: 'vehiclepartsController',
+        controllerAs: 'ctrl'
       }
     } 
   })
@@ -455,6 +456,7 @@ angular.module('app.routes', [])
     } 
   })
 
+  
   
 
 

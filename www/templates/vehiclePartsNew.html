@@ -1,14 +1,28 @@
-<ion-view title="">
-
-
-  <ion-content overflow-scroll="true" padding="true" class="has-header">
-    <ion-list >
-    <ion-item ng-repeat="part in ctrl.parts">
-    {{part}}
-    </ion-item>
+<ion-view title="Parts">
+<ion-nav-buttons side="right" >
+	<i class="ion ion-android-add-circle" 
+ng-click="partsAdd.show()">&nbsp;</i>
+	
+<i class="ion ion-briefcase" ng-click="partsCart.show()">
+ {{selectedParts.length || 0}}</i>
+</ion-nav-buttons>
+  <ion-content>
+    <ion-list>
+  
+    <ion-item ng-repeat="part in parts"  ng-click="addTOCart(part)">
+  
+    <div class="row">
+      	<img class="col col-10" height="80px" width="80px" ng-src="{{part.image || 'img/download.png'}}">
+      	<div class="col">
+      		<h2>Part Name: {{part.name}}</h2>
+      		<h3>Part Description: {{part.description}}</h3>
+      		<h3>Part Price: Rs {{part.price}} /=</h3>
+      	</div>
+      	<ion-checkbox class="button button-clear" ng-model="part.isCart"></ion-checkbox>
+      </div>
+	  </ion-item>
     </ion-list>
   </ion-content>
-
 </ion-view>
 
 
