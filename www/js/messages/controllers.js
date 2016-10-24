@@ -346,23 +346,23 @@ function getMockMessages() {
 
 
 
-// configure moment relative time
-moment.locale('en', {
-  relativeTime: {
-    future: "in %s",
-    past: "%s ago",
-    s: "%d sec",
-    m: "a minute",
-    mm: "%d minutes",
-    h: "an hour",
-    hh: "%d hours",
-    d: "a day",
-    dd: "%d days",
-    M: "a month",
-    MM: "%d months",
-    y: "a year",
-    yy: "%d years"
-  }
-});
+// // configure moment relative time
+// moment.locale('en', {
+//   relativeTime: {
+//     future: "in %s",
+//     past: "%s ago",
+//     s: "%d sec",
+//     m: "a minute",
+//     mm: "%d minutes",
+//     h: "an hour",
+//     hh: "%d hours",
+//     d: "a day",
+//     dd: "%d days",
+//     M: "a month",
+//     MM: "%d months",
+//     y: "a year",
+//     yy: "%d years"
+//   }
+// });
 
   
