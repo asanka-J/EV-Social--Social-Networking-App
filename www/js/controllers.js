@@ -2183,11 +2183,12 @@ $scope.ToggleCompleted = function(toStatus){
 			
 				ref.orderByChild("name").equalTo(username).on("child_added", function(mysnapshot) {
 							var userkey = mysnapshot.key();
+							
 										var reprofile= new Firebase('https://snev.firebaseio.com/profile/'+userkey+'/friends');
 											var profile= new Firebase('https://snev.firebaseio.com/profile/'+userkey);
 										$scope.friends = $firebaseArray(reprofile);
 											$scope.myprofile = $firebaseArray(profile);
-											alert("this one");
+										
 
 				})
 

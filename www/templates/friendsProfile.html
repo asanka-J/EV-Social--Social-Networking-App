@@ -1,5 +1,5 @@
 
-<ion-view  view-title="profile page">
+<ion-view  view-title="Friends profile page">
 
   
     <ion-content has-header="true" ng-controller="loadFProfileCtrl">
@@ -15,10 +15,9 @@
 
             <div class="post-time">
               
-           
-           <button class="button button-outline button-positive" ui-sref="app.profileEdit" id="profileEdit-button">
-            <i class="icon ion-edit"></i> Edit profile
-          </button>
+         
+
+          <p>Member since {{myprofile.registered_in}}</p>
       
             </div>
             
@@ -29,26 +28,34 @@
             <!--<button class="button" ng-click="doSomething()">
         | Change profile pic |</button>-->
 
-          <h3 id="profile-name" ng-model="name">{{myprofile.name}}</h3>
-            
-        <div class="button-bar" id="page2-button-bar5">
+          <h3 id="profile-name" ng-model="name">User Name : {{myprofile.name}}</h3>
+            <!--<h3 id="profile-name" ng-model="registeredIn">registered date : {{myprofile.registered_in}}</h3>
+            -->
+     
+          
+        </div>
+           <div class="button-bar" id="page2-button-bar5">
        
              <button class="button button-positive  button-block icon ion-android-contacts" id="page2-button33"  ng-click="follow(myprofile.name)">  Follow</button>
        
-           <button class="button button-positive  button-block icon ion-email"  id="page2-button34" ng-click="msg(myprofile.name)">  message</button>
+           <button class="button button-positive  button-block icon ion-email" ng-click="msg(myprofile.name)" id="page2-button34">  message</button>
+             <button class="button button-positive  button-block" ng-click="call()">
+                    Call  <i class="icon ion-android-call"></i>
+                    </button>
+                  
+                  <button class="button button-positive  button-block" ng-click="mail()">
+                    E-mail 
+                    <i class="icon ion-ios-email"></i>
+                  </button> 
+         
 
-        </div>
 
         </div>
        </div>
-
+           
        
-          <span id="profile-description"  class="item item-text-wrap">psum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
+          <span id="profile-description"  class="item item-text-wrap">{{myprofile.description}}psum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
              type specimen book. </span>
-        
-
-    
-        
          </div>
 
             
@@ -66,15 +73,11 @@
       </div>
 
 
-      <div class="list card">
-         <ion-label stacked>LOCATION</ion-label>   
-       <div style="margin: 0px; line-height: 250px; background-color: rgb(232, 235, 239); text-align: center;">
-            <img src="img/location.jpg" width="75%" height="100%">
-        </div>
-
-      </div>
+          <div  class="list card" ng-controller="StationCtrl">
+              <label >Home town </label>
+            <div id="addmap" lat="6.9271" lng="79.8612" zoom="9" addmap>
+         </div>
       
-
 
   </div>
   
@@ -84,11 +87,11 @@
     
   <ion-footer-bar align-title="left" >
 
-      <div class="button-bar" >
-        <a id="socialNetwork-button20"  class="button button-positive icon ion-clipboard" ui-sref="app.socialnetwork">    Posts</a>
-        <a class="button button-positive icon ion-android-chat " ui-sref="app.friendslist">   My friends</a>
+        <div class="button-bar" >
+       
+           <a ui-sref="app.socialNetwork" id="socialNetwork-button20"  class="button button-positive icon ion-clipboard" > Posts</a>
         <a class="button button-positive icon ion-android-chat " ui-sref="app.chatroomhome">   chat room</a>
-      </div>
+        </div>
 
     </ion-footer-bar>
 
