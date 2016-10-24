@@ -8,8 +8,15 @@
 angular.module('app', ['ionic','ngCordovaOauth','chart.js','ionic-monthpicker','ngStorage','ngMessages','angular.filter', 'app.controllers',  'app.routes', 'app.services', 'app.directives','ngCordova','firebase','angular-md5', 'app.configs','app.util','app.auth','messages.module'])
 
 .constant('FURL', 'https://snev.firebaseio.com/')
-.run(function($ionicPlatform, $rootScope, $ionicLoading, $location, CONFIG ,$ionicPopup,$cordovaNetwork) {
+.run(function($ionicPlatform, $rootScope, $ionicLoading, $location, CONFIG ,$ionicPopup,$cordovaNetwork,VechileFactory) {
+	
   $ionicPlatform.ready(function() {
+	  
+	  	VechileFactory.getVechilePartTypes()//shop load branavi
+			.then(function(parts) {
+				$rootScope.vechileParts = parts;
+					 });
+	  
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
 

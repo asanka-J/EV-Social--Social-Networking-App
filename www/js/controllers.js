@@ -168,12 +168,9 @@ angular.module('app.controllers', [])
 	
 })
 
-.controller('homeController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils,VechileFactory,$rootScope) {
+.controller('homeController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils) {
 	
-	VechileFactory.getVechilePartTypes()
-			.then(function(parts) {
-				$rootScope.vechileParts = parts;
-					 });
+
 	
   var ref = new Firebase(FURL);
 	 var presence = new Firebase('https://snev.firebaseio.com/precence');
