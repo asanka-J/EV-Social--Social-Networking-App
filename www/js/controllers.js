@@ -2,12 +2,8 @@
 angular.module('app.controllers', [])
 //shopping list part start here...................................................................................................................................
 
-.controller('vehiclepartsController', function(VechileFactory, $ionicModal, $rootScope,$scope,$rootScope) {
+.controller('vehiclepartsController', function($ionicModal, $rootScope,$scope) {
 	
-	VechileFactory.getVechilePartTypes()
-			.then(function(parts) {
-				$rootScope.vechileParts = parts;
-					 });
 	
 	
 	$scope.parts = [];
@@ -172,7 +168,13 @@ angular.module('app.controllers', [])
 	
 })
 
-.controller('homeController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils) {
+.controller('homeController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils,VechileFactory,$rootScope) {
+	
+	VechileFactory.getVechilePartTypes()
+			.then(function(parts) {
+				$rootScope.vechileParts = parts;
+					 });
+	
   var ref = new Firebase(FURL);
 	 var presence = new Firebase('https://snev.firebaseio.com/precence');
 
@@ -1012,15 +1014,8 @@ $scope.ToggleCompleted = function(toStatus){
 	
         var options = {timeout: 10000, enableHighAccuracy: true};
 		
-				$cordovaGeolocation.getCurrentPosition(options).then(function(position){
-								$localStorage.userLatitude=position.coords.latitude;
-								$localStorage.userLongitude=position.coords.longitude;
-								}, function(error){
-								console.log("Could not get location");
-								});
-      
-			var userLatitude="6.9271";
-			var userLongitude="79.8612";
+			var userLatitude="7.831180";
+			var userLongitude="80.213107";
 			 var nlatLng = new google.maps.LatLng(userLatitude,userLongitude);
 		
 
@@ -1214,9 +1209,9 @@ $scope.ToggleCompleted = function(toStatus){
 								$cordovaGeolocation.getCurrentPosition(options).then(function(position){
 								$localStorage.userLatitude=position.coords.latitude;
 								$localStorage.userLongitude=position.coords.longitude;
-								 var nlatLng = new google.maps.LatLng($localStorage.userLatitude,$localStorage.userLongitude);
-								$scope.map.setCenter(nlatLng);
-								marker.setPosition(nlatLng);//setting marker position
+								 var ulatLng = new google.maps.LatLng($localStorage.userLatitude,$localStorage.userLongitude);
+								$scope.map.setCenter(ulatLng);
+								marker.setPosition(ulatLng);//setting marker position
 								marker.setMap($scope.map);//setting marker me
 								$scope.map.setZoom(zoom + 5);
 								}, function(error){
@@ -1834,10 +1829,7 @@ $scope.ToggleCompleted = function(toStatus){
 														reprofile.push({ 'name': $localStorage.username, 'image':userImage }).then(alert("sucessfully added"));//add my image
 															$location.path('/app/profile');  
 													}else{
-													
-														 reprofile.remove(function(error) {
-																alert(error ? "Uh oh!" : "Successfully unfriend");
-														});
+														alert("Already exists");
 															$location.path('/app/profile');  
 													}
 														
