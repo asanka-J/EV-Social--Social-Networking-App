@@ -1742,9 +1742,9 @@ $scope.ToggleCompleted = function(toStatus){
 .controller('loadProfDetails', function($scope ,$ionicPopup,$window,$localStorage) {
 		
 	var ref = new Firebase('https://snev.firebaseio.com/profile');
-  var name=$localStorage.username;
+ var key=$localStorage.userkey;
 
-	 ref.orderByChild("name").equalTo(name).on("value", function(snapshot,prevChildKey) {
+	ref.orderByKey().equalTo(key).on("value", function(snapshot,prevChildKey) {
 	
 		  $scope.$apply(function(){
 		   	$scope.myprofile = snapshot.val();
@@ -1760,9 +1760,9 @@ $scope.ToggleCompleted = function(toStatus){
 .controller('Loadprofile', function($scope ,$ionicPopup, $localStorage,$location,$firebaseArray,$firebaseObject){
 
 	var ref = new Firebase('https://snev.firebaseio.com/profile');
-  var name=$localStorage.username;
+  var key=$localStorage.userkey;
 
-	 ref.orderByChild("name").equalTo(name).once("value", function(snapshot) {
+	 ref.orderByKey().equalTo(key).once("value", function(snapshot) {
 	
 		   	$scope.myprofile = snapshot.val();
 		
