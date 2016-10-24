@@ -2,12 +2,21 @@
 angular.module('app.controllers', [])
 //shopping list part start here...................................................................................................................................
 
-.controller('vehiclepartsController', function(VechileFactory, $ionicModal, $rootScope,$scope) {
+.controller('vehiclepartsController', function(VechileFactory, $ionicModal, $rootScope,$scope,$rootScope) {
+	
+	VechileFactory.getVechilePartTypes()
+			.then(function(parts) {
+				$rootScope.vechileParts = parts;
+					 });
+	
+	
 	$scope.parts = [];
 
 	angular.forEach($rootScope.vechileParts, function(key, part) {
 		$scope.parts.push(part);
 	});
+	
+						
 })
 
 .controller('vehiclepartsControllerNew', function($rootScope,$scope,$state,VechileFactory,$ionicModal, Auth, $stateParams) {
@@ -115,9 +124,29 @@ angular.module('app.controllers', [])
 })
 
 
-.controller('AppCtrl', function($scope,$location,Auth,$localStorage) {
+.controller('AppCtrl', function($scope,$location,Auth,$localStorage,$state) {
 	
-	
+		$scope.hideMe=true;
+
+	$scope.$on('$ionicView.beforeEnter', function() {
+		
+			if ($state.current.name=="app.home" || $state.current.name=="app.adminHomepage") {
+				var interval = setInterval(function(){
+
+				   
+					var admin=$localStorage.useremail;
+				   if(admin=="admin@gmail.com"){
+						$scope.hideMe=false;
+						clearInterval(interval);
+					}
+					else{
+						$scope.hideMe=true;
+					clearInterval(interval);
+					}
+				}, 1000);
+		
+			}
+		});
 	
   $scope.logOut = function () {
 	Auth.logout();
@@ -163,7 +192,7 @@ angular.module('app.controllers', [])
 })
 
 
-.controller('loginController', function (VechileFactory,$rootScope,$scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils,$ionicSideMenuDelegate,$ionicPlatform) {
+.controller('loginController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils,$ionicSideMenuDelegate,$ionicPlatform) {
   var ref = new Firebase(FURL);
 	var presence = new Firebase('https://snev.firebaseio.com/precence');
   var userkey = "";
@@ -194,14 +223,18 @@ angular.module('app.controllers', [])
 												$localStorage.userkey = userkey;
 
 												Utils.hide();
-                        VechileFactory.getVechilePartTypes()
-                          .then(function(parts) {
-                            $rootScope.vechileParts = parts;
-                            $state.go('app.home');
-                          });
-												})
+												
+                       
+												if($localStorage.useremail=="admin@gmail.com")
+														{$state.go('app.adminHomepage');}
 														
+														else
+														{$state.go('app.home');}
 														
+														})
+														.catch(function(error) {
+															console.error("Error:", error);
+														});	
 												});
 
 												}, function(err) {

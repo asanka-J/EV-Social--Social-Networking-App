@@ -8,7 +8,7 @@
 angular.module('app', ['ionic','ngCordovaOauth','chart.js','ionic-monthpicker','ngStorage','ngMessages','angular.filter', 'app.controllers',  'app.routes', 'app.services', 'app.directives','ngCordova','firebase','angular-md5', 'app.configs','app.util','app.auth','messages.module'])
 
 .constant('FURL', 'https://snev.firebaseio.com/')
-.run(function($ionicPlatform, $rootScope, $ionicLoading, $location, CONFIG ,$ionicPopup) {
+.run(function($ionicPlatform, $rootScope, $ionicLoading, $location, CONFIG ,$ionicPopup,$cordovaNetwork) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -22,9 +22,8 @@ angular.module('app', ['ionic','ngCordovaOauth','chart.js','ionic-monthpicker','
       StatusBar.styleDefault();
    }
    
-   if(window.Connection) {
-          if(navigator.connection.type == Connection.NONE) {
-                    $ionicPopup.confirm({
+     $rootScope.$on('$cordovaNetwork:offline', function() {
+			 $ionicPopup.confirm({
                         title: "Internet Disconnected",
                         content: "Connect your phone to mobile network or wireless internet connection"
                     })
@@ -33,8 +32,7 @@ angular.module('app', ['ionic','ngCordovaOauth','chart.js','ionic-monthpicker','
                             ionic.Platform.exitApp();
 								}
 							});
-						}
-					}
+		});
 
       
     	if (window.cordova) {
