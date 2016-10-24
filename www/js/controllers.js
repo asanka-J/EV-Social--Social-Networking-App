@@ -163,7 +163,7 @@ angular.module('app.controllers', [])
 })
 
 
-.controller('loginController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils,$ionicSideMenuDelegate,$ionicPlatform) {
+.controller('loginController', function (VechileFactory,$rootScope,$scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils,$ionicSideMenuDelegate,$ionicPlatform) {
   var ref = new Firebase(FURL);
 	var presence = new Firebase('https://snev.firebaseio.com/precence');
   var userkey = "";
@@ -191,13 +191,15 @@ angular.module('app.controllers', [])
 												$localStorage.licenceplate=obj.licence_plate;
 												$localStorage.mobileno=obj.mobile;
 												$localStorage.uregdate=obj.registered_in;
-															$localStorage.userkey = userkey;
+												$localStorage.userkey = userkey;
 
-																Utils.hide();
-
-														$state.go('app.home');
-														
-														})
+												Utils.hide();
+                        VechileFactory.getVechilePartTypes()
+                          .then(function(parts) {
+                            $rootScope.vechileParts = parts;
+                            $state.go('app.home');
+                          });
+												})
 														
 														
 												});
