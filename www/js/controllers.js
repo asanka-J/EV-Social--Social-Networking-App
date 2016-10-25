@@ -538,6 +538,7 @@ $scope.cmonth = month[$scope.cmonthNum];
 		   google.maps.event.addListener(map, 'click', function(event) {
 			marker.setPosition(event.latLng);
 			scope.$parent.station.latitude = event.latLng.lat();
+		
 		    scope.$parent.station.longitude =event.latLng.lng();
 		    scope.$apply();
         });
@@ -2024,122 +2025,56 @@ $scope.ToggleCompleted = function(toStatus){
 //load profile
 		     	var query1 = ref.orderByChild('name').equalTo(username);
 					$scope.myprofile = $firebaseArray(query1);	
-					alert("this one");
+			//		alert("this one");
 
 })
 
 
-
-// //adding a follower 
-// .controller('followController', function($scope, $http, $state,$ionicPopup,$firebaseArray, $localStorage,$firebase) {
-
- 
-     
-//       	 var username= $localStorage.username;
-
-//   var ref = new Firebase("https://snev.firebaseio.com/profile");
-
-
-//   	$scope.follow = function(follower) {
-	
-// 			ref.orderByChild("name").equalTo(follower).on("child_added", function(snapshot) {
-// 			var profilekey = snapshot.key();
-
-// 						ref.orderByChild("name").equalTo(username).on("child_added", function(mysnapshot) {
-// 							var userkey = mysnapshot.key();
-// 							var tempref = new Firebase('https://snev.firebaseio.com/profile/'+userkey+'/gravatar' );
-// 							var userImage=tempref.val();
-
-// 			var reprofile= new Firebase('https://snev.firebaseio.com/profile/'+profilekey+'/friends');
-// 			reprofile.push({ 'name': username, 'image':userImage });//add my image	   
-    
-// 				})
-	
-// 			});
-
-	
-//   }
-
-// })
+//new edit profile with map 
 
 
 
-//Edit profile controller
+.directive('addmapq', function() {
+    return {
+        restrict: 'A',
+        link:function(scope, element, attrs){
 
-.controller('editProfileController', function($scope, $http, $state,$ionicPopup,$firebaseArray, $localStorage,$firebase) {
-   $scope.postForm = function(title,description){
-     
-      	 var username= $localStorage.username;
-				
-    
-  var ref = new Firebase("https://snev.firebaseio.com");
+          var zValue = scope.$eval(attrs.zoom);
+          var lat = scope.$eval(attrs.lat);
+          var lng = scope.$eval(attrs.lng);
 
-  var img = new Firebase("https://snev.firebaseio.com/profile");
-  $scope.imgs = $firebaseArray(img);
 
-  var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];
-  	$scope.uploadFile = function() {
-    var sFileName = $("#nameImg").val();
-    if (sFileName.length > 0) {
-      var blnValid = false;
-      for (var j = 0; j < _validFileExtensions.length; j++) {
-        var sCurExtension = _validFileExtensions[j];
-        if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
-          blnValid = true;
-          var filesSelected = document.getElementById("nameImg").files;
-          if (filesSelected.length > 0) {
-            var fileToLoad = filesSelected[0];
+          var myLatlng = new google.maps.LatLng(lat,lng),
+          mapOptions = {
+              zoom: zValue,
+              center: myLatlng,
+			   mapTypeId: google.maps.MapTypeId.ROADMAP
+          },
+          map = new google.maps.Map(element[0],mapOptions),
+          marker = new google.maps.Marker({
+			    position: myLatlng,
+			    map: map,
+				icon: 'img/station.png',
+			    draggable:true
+		  });
 
-            var fileReader = new FileReader();
+		  google.maps.event.addListener(marker, 'dragend', function(evt){
+		   // scope.$parent.station.latitude = evt.latLng.lat();
+		  //  scope.$parent.station.longitude = evt.latLng.lng();
+		    scope.$apply();
+		  });
+		  
+		   google.maps.event.addListener(map, 'click', function(event) {
+			marker.setPosition(event.latLng);
+		//	scope.$parent.station.latitude = event.latLng.lat();
+			alert(event.latLng.lat());
+		    //scope.$parent.station.longitude =event.latLng.lng();
+		    scope.$apply();
+        });
 
-            fileReader.onload = function(fileLoadedEvent) {
-              var textAreaFileContents = document.getElementById(
-                "textAreaFileContents"
-              );
 
-		   $scope.imgs.$add({
-                		timeStamp: Firebase.ServerValue.TIMESTAMP,
-                		image: fileLoadedEvent.target.result,
-								 	   title: title,
-									   description: description ,
-										 username:username,
-										 noOfLikes: 0,
-										 noOfDisLikes: 0 ,
-										 noOfReports: 0 
-      
-              });
-            };
-
-            fileReader.readAsDataURL(fileToLoad);
-          }
-          break;
         }
-      }
-
-      if (!blnValid) {
-        alert('File is not valid');
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  $scope.deleteimg = function(imgid) {
-    var r = confirm("Do you want to remove this image ?");
-    if (r == true) {
-      $scope.imgs.forEach(function(childSnapshot) {
-        if (childSnapshot.$id == imgid) {
-            $scope.imgs.$remove(childSnapshot).then(function(ref) {
-              ref.key() === childSnapshot.$id; // true
-            });
-        }
-      });
-    }
-  }//image Upload controller end
-				 $scope.title="";
-         $scope.description="";
-      };
+    };
 })
 
 
