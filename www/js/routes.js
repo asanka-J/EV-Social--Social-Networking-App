@@ -232,7 +232,7 @@ angular.module('app.routes', [])
 	views: {
         'menuContent': {
     templateUrl: 'templates/posts.html',
-    controller: 'postsCtrl'
+   
         }
       }
   })

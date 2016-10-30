@@ -16,7 +16,7 @@
 
 
 				<div class="item item-avatar">
-                <img src="">
+                <img ng-src="">
                 <h2>{{post.username}}</h2>
 
                 <p>{{post.timeStamp | date:'d MMM yyyy'}}</p>
@@ -36,15 +36,10 @@
                   <a href="#" class="subdued">{{post.noOfLikes}} Like</a>
                   <a href="#" class="subdued">{{post.noOfDisLikes}} disLike</a>
                   <a href="#" class="subdued">{{post.noOfReports}} times reported</a>
-                  <a href="#" class="subdued">5 Comments</a>
+                  <a href="#" class="subdued">{{post.noOfcomments}} Comments</a>
                 </p>
 
-            <div ng-controller="postCtrl">
-              <button  ng-click=addlike(post.title) class="styl ion-thumbsup " ></button>
-              <button  ng-click=adddislike(post.title) class="styl ion-thumbsdown " ></button>
-              <button  ng-click=report(post.title) class="styl ion-flag " ></button>
-
-            </div>
+           
 
 </div>
 
@@ -53,6 +48,7 @@
 
     <div ng-controller="newselect">
       <button ui-sref="app.viewpost" ng-click=setSelectedPost(post.title) style=" padding: 5px 20px; background: #0099CC; border: none;color: white;">View Comments</button>
+       <button ui-sref="" ng-click=deleteSelectedPost(post.title) style=" padding: 5px 20px; background: #b60909; border: none;color: white;">X Delete Post</button>
     </div>
 
 

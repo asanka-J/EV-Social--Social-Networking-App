@@ -1677,7 +1677,8 @@ $scope.ToggleCompleted = function(toStatus){
 										 noOfLikes: 0,
 										 noOfDisLikes: 0 ,
 										 noOfReports: 0,
-										userimage:userImg
+										userimage:userImg,
+										noOfcomments:0
       
               });
             };
@@ -1727,11 +1728,13 @@ $scope.ToggleCompleted = function(toStatus){
 			
 				var user=$localStorage.username	;
 				 var userImg=$localStorage.userimage;
+				 $scope.userImgg=userImg;
 				var postRef = new Firebase('https://snev.firebaseio.com/posts');
 
  					postRef.orderByChild("title").equalTo(title1).on("child_added", function(snapshot) {
 					  var value=snapshot.key();
 						var data = snapshot.val();
+						var noOfCommentss=data.noOfcomments;
 						
 						var postsreflike = new Firebase('https://snev.firebaseio.com/posts');
 						var selectPostRef=postsreflike.child(value).child("comments");
@@ -1744,6 +1747,8 @@ $scope.ToggleCompleted = function(toStatus){
 																	'title':title1,
 																	'userimage':userImg
 											});
+
+											postsreflike.child(value).update({ noOfcomments: noOfCommentss+1});
 					 });
   };
 
@@ -1753,7 +1758,7 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 //get selected post and store
-.controller('newselect', function($scope ,$ionicPopup,$location,$window,$localStorage) {
+.controller('newselect', function($scope ,$ionicPopup,$location,$window,$localStorage,$state) {
 
 	$scope.setSelectedPost = function(title1) {
    
@@ -1852,7 +1857,6 @@ $scope.ToggleCompleted = function(toStatus){
 							
 				
 		//load friend list
-											
 						ref.orderByChild("name").equalTo(name).on("child_added", function(snapshot) {
 											
 			    			var nameSnapshot = snapshot.child("friends");
@@ -1864,10 +1868,10 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 
-															//set selected profile
-				$scope.msg = function(selectedprofz) {
+															
+				$scope.msg = function(selectedprofz) {//set selected profile
 
-			$localStorage.setFname=selectedprofz;
+				$localStorage.setFname=selectedprofz;
 				localStorage['sendTo']=selectedprofz ;
 			//	loaclStorage['userId']=$localStorage.uid;
 				localStorage['fromUser']=name;
@@ -1891,6 +1895,8 @@ $scope.ToggleCompleted = function(toStatus){
 							else
 								window.open('mailto:' +$localStorage.useremail, '_system');
 					};
+
+
 
 
 						$scope.follow = function(follower) {
@@ -1929,25 +1935,22 @@ $scope.ToggleCompleted = function(toStatus){
 																myfunct();
 												});
 
-
-											
-												function myfunct(){ 	//loadFriendlist custom function.
-												
-													ref.orderByChild("name").equalTo(name).on("child_added", function(snapshot) {
-																var nameSnapshot = snapshot.child("friends");
-																	$scope.friendlist = nameSnapshot.val();
-																console.log(nameSnapshot);
-														});
-													}
-															
-													
+		
 									
 									});
 									})
 								});
 						}
 
-//yyyy    calling function
+
+													function myfunct(){ 	//loadFriendlist custom function.
+												
+													ref.orderByChild("name").equalTo(name).on("child_added", function(snapshot) {
+																var nameSnapshot = snapshot.child("friends");
+																	$scope.friendlist = nameSnapshot.val();
+															//	console.log(nameSnapshot);
+														});
+													}
 						
 	
 })

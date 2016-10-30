@@ -13,7 +13,7 @@
 
 
 				<div class="item item-avatar">
-                <img src="{{post.userimage}}">
+                <img ng-src="{{post.userimage}}">
                 <h2>{{post.username}}</h2>
 
                 <p>November 05, 2016</p>
@@ -21,12 +21,14 @@
                 </div>
 
               <div class="item item-body">
-                <img height="250" width="100" class="full-image" src={{post.image}}>
+                <img height="250" width="100" class="full-image" ng-src={{post.image}}>
                 <p>
                 {{post.description}} </p>
                 <p>
                   <a href="#" class="subdued">{{post.noOfLikes}} Like</a>
-                  <a href="#" class="subdued">5 Comments</a>
+                  <a href="#" class="subdued">{{post.noOfDisLikes}} disLike</a>
+                  <a href="#" class="subdued">{{post.noOfReports}} times reported</a>
+                  <a href="#" class="subdued">{{post.noOfcomments}} Comments</a>
                 </p>
                 <!-- //like dislike report -->
                 <!--<div ng-controller="postCtrl">
@@ -39,7 +41,7 @@
                 <div class="comment-form"  ng-controller="cmntController" >    <!-- new comment Form -->
                   <!-- Comment Avatar -->
                   <div class="comment-avatar">
-                    <img src="http://lorempixel.com/200/200/people">
+                    <img ng-src="{{userImgg}}">
                   </div>
 
                     <form class="form" name="form" >
@@ -73,7 +75,7 @@
                        <div class="comment-footer">
                          <div class="comment-info">
                            <span class="comment-author">
-                             <a href="mailto:ximme13@somedomain.io">{{comment.username}}</a>
+                             <a href="#">{{comment.username}}</a>
                            </span>
                            <span class="comment-date">{{comment.Cdate | date:'d MMM yyyy'}}</span>
                          </div>

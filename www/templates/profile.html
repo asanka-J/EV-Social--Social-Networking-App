@@ -67,7 +67,7 @@
            <div class="container">
 	                <div id="gallery row clearfix">
 			              <div class="gallery-item" ng-repeat="friend in friendlist">
-                      <img src="{{friend.image}}" style="height: 75%""  />
+                      <img ng-src="{{friend.image}}" style="height: 75%""  />
                       <p>{{friend.name}}</P>
                     </div>
                   </div><!-- /.gllery -->
@@ -93,6 +93,7 @@
         <div class="button-bar" >
        
            <a ui-sref="app.socialNetwork" id="socialNetwork-button20"  class="button button-positive icon ion-clipboard" > Posts</a>
+           <a class="button button-positive icon ion-android-chat " ui-sref="app.friendslist">   private Message</a>
         <a class="button button-positive icon ion-android-chat " ui-sref="app.chatroomhome">   chat room</a>
         </div>
 
