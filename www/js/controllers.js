@@ -212,9 +212,10 @@ angular.module('app.controllers', [])
 													obj.$loaded()
 														.then(function(data) {
 														
+													
 												$localStorage.username = obj.name;
 												$localStorage.useremail = obj.email;
-												$localStorage.userimage = obj.image;
+												$localStorage.userimage = obj.gravatar;
 												$localStorage.vehiclename=obj.vehicle_name;
 												$localStorage.licenceplate=obj.licence_plate;
 												$localStorage.mobileno=obj.mobile;
@@ -1440,7 +1441,7 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 //post controller
-.controller('postCtrl', function($scope ,$ionicPopup, $localStorage){
+.controller('postCtrl', function($scope ,$ionicPopup, $localStorage,$firebaseArray){
 	var ref = new Firebase('https://snev.firebaseio.com/posts');
 	 var ref2 = new Firebase('https://snev.firebaseio.com/comments');
 	  var username=$localStorage.username;
@@ -1454,6 +1455,18 @@ $scope.ToggleCompleted = function(toStatus){
 									} else {
 											 var alertPopup = $ionicPopup.alert({
                                  title: 'Successful! <i class="ion-checkmark-round"></i>', template:'You have Successfuly Liked the post'
+                              	 });
+									}
+								};
+
+									var rcheckLike = function(error) {
+									if (error) {
+										 var alertPopup = $ionicPopup.alert({
+                                 title: 'Successful! <i class="ion-checkmark-round"></i>',template:'Synchronization failed'
+                              	 });				
+									} else {
+											 var alertPopup = $ionicPopup.alert({
+                                 title: 'Successful! <i class="ion-checkmark-round"></i>', template:'You have Successfuly Removed Like from the post'
                               	 });
 									}
 								};
@@ -1483,54 +1496,108 @@ $scope.ToggleCompleted = function(toStatus){
 
 	 		$scope.addlike = function(title) {
 				var title1=title;
-
-					//get key of child equals to ==title
-				 ref.orderByChild("title").equalTo(title1).on("child_added", function(snapshot) {
+						//get key of child equals to ==title
+						 ref.orderByChild("title").equalTo(title1).on("child_added", function(snapshot) {
 					  var value=snapshot.key();
 						var data = snapshot.val();
 						var noofl=data.noOfLikes;
 						var postsreflike = new Firebase('https://snev.firebaseio.com/posts');
+						var likedRef=postsreflike.child(value).child("liked");
+												
+									//load specific items to check existing
+										likedRef.orderByChild("user").equalTo($localStorage.username).once("value", function(snapshot) {
+											userkey = snapshot.val();
+										
+											if(userkey==null){
+														postsreflike.child(value).update({ noOfLikes: noofl+1},checkLike);
+														likedRef.push({user:username});
+													
+											}else{
+												
+													likedRef.orderByChild("user").equalTo($localStorage.username).once("child_added", function(dsnapshot) {
+														var value1=dsnapshot.key();
 
-							// Modify the 'noOfLikes  but leave other data unchanged
-										postsreflike.child(value).update({ noOfLikes: noofl+1},checkLike);
+														likedRef.child(value1).remove();		
+														postsreflike.child(value).update({ noOfLikes: noofl-1},rcheckLike);
 
+													});
+
+												}
+													
+												});
 						});
 					};
 
 
-		 $scope.adddislike = function(title1) {
+				$scope.adddislike= function(title) {
+				var title1=title;
+						//get key of child equals to ==title
+						 ref.orderByChild("title").equalTo(title1).on("child_added", function(snapshot) {
+					  var value=snapshot.key();
+						var data = snapshot.val();
+						var noofl=data.noOfDisLikes;
+						var postsreflike = new Firebase('https://snev.firebaseio.com/posts');
+						var likedRef=postsreflike.child(value).child("Disliked");
+												
+									//load specific items to check existing
+										likedRef.orderByChild("user").equalTo($localStorage.username).once("value", function(snapshot) {
+											userkey = snapshot.val();
+										
+											if(userkey==null){
+														postsreflike.child(value).update({ noOfDisLikes: noofl+1},checkDisLike);
+														likedRef.push({user:username});
+													
+											}else{
+													
+													likedRef.orderByChild("user").equalTo($localStorage.username).once("child_added", function(dsnapshot) {
+														var value1=dsnapshot.key();
 
+														likedRef.child(value1).remove();		
+														postsreflike.child(value).update({ noOfDisLikes: noofl-1},rcheckLike);
 
-	        
-		 					//get key of child equals to ==title
-		 					  var ref = new Firebase("https://snev.firebaseio.com/posts");
-		 				   	ref.orderByChild("title").equalTo(title1).on("child_added", function(snapshot) {
-		 					  var value=snapshot.key();
-		 						var data = snapshot.val();
-		 						var noofl=data.noOfDisLikes;
+													});
 
-		 										var postsrefdislike = new Firebase('https://snev.firebaseio.com/posts');
-									postsrefdislike.child(value).update({ noOfDisLikes: noofl+1}, checkDisLike);
-		 						});
-		 };
+												}
+													
+												});
+						});
+					};
 
+					
+ 					$scope.report = function(title) {
+			     	var title1=title;
+						//get key of child equals to ==title
+						 ref.orderByChild("title").equalTo(title1).on("child_added", function(snapshot) {
+					  var value=snapshot.key();
+						var data = snapshot.val();
+						var noofl=data.noOfReports;
+						var postsreflike = new Firebase('https://snev.firebaseio.com/posts');
+						var likedRef=postsreflike.child(value).child("reported");
+												
+									//load specific items to check existing
+										likedRef.orderByChild("user").equalTo($localStorage.username).once("value", function(snapshot) {
+											userkey = snapshot.val();
+										
+											if(userkey==null){
+														postsreflike.child(value).update({ noOfReports: noofl+1},checkReport);
+														likedRef.push({user:username});
+													
+											}else{
+													
+													likedRef.orderByChild("user").equalTo($localStorage.username).once("child_added", function(dsnapshot) {
+														var value1=dsnapshot.key();
 
-     // report a post
-  	 $scope.report = function(title1) {
-          
+														likedRef.child(value1).remove();		
+														postsreflike.child(value).update({ noOfReports: noofl-1},rcheckLike);
 
-  		 				 //get key of child equals to ==title
-  		 					 var ref = new Firebase("https://snev.firebaseio.com/posts");
-  		 				   ref.orderByChild("title").equalTo(title1).on("child_added", function(snapshot) {
-  		 					 var value=snapshot.key();
-  		 					 var data = snapshot.val();
-  		 					 var noof2=data.noOfReports;
+													});
 
-  		 								
-  		 									 ref.child(value).update({ noOfReports: noof2+1},checkReport);
-	        });
+												}
+													
+												});
+						});
+					};
 
-	    };
 
 })
 
@@ -1569,6 +1636,8 @@ $scope.ToggleCompleted = function(toStatus){
    $scope.postForm = function(title,description){
      
       	 var username= $localStorage.username;
+		   var userImg=$localStorage.userimage;
+		   
 			
 		 var messageListRef = new Firebase('https://snev.firebaseio.com/posts');
      var newMessageRef = messageListRef.push();
@@ -1600,14 +1669,15 @@ $scope.ToggleCompleted = function(toStatus){
 
 
               $scope.imgs.$add({
-                		timeStamp: Firebase.ServerValue.TIMESTAMP,
-                		image: fileLoadedEvent.target.result,
+                					timeStamp: Firebase.ServerValue.TIMESTAMP,
+                					image: fileLoadedEvent.target.result,
 								 	   title: title,
 									   description: description ,
 										 username:username,
 										 noOfLikes: 0,
 										 noOfDisLikes: 0 ,
-										 noOfReports: 0 
+										 noOfReports: 0,
+										userimage:userImg
       
               });
             };
@@ -1656,16 +1726,25 @@ $scope.ToggleCompleted = function(toStatus){
 	$scope.addComment = function(comment1,title1) {
 			
 				var user=$localStorage.username	;
-			  var messageListRef = new Firebase('https://snev.firebaseio.com/comments');
-        messageListRef.push({
-										'comment':comment1,
-										'noOfDisLikes':0,
-										'noOfLikes':0,
-										'username':user,
-										'title':title1
-										
-				 });
-   
+				 var userImg=$localStorage.userimage;
+				var postRef = new Firebase('https://snev.firebaseio.com/posts');
+
+ 					postRef.orderByChild("title").equalTo(title1).on("child_added", function(snapshot) {
+					  var value=snapshot.key();
+						var data = snapshot.val();
+						
+						var postsreflike = new Firebase('https://snev.firebaseio.com/posts');
+						var selectPostRef=postsreflike.child(value).child("comments");
+
+
+										selectPostRef.push({
+																	'comment':comment1,
+																	"Cdate" :Firebase.ServerValue.TIMESTAMP,
+																	'username':user,
+																	'title':title1,
+																	'userimage':userImg
+											});
+					 });
   };
 
 })
@@ -1691,17 +1770,22 @@ $scope.ToggleCompleted = function(toStatus){
   .controller('getSelectedpost', function($scope ,$firebaseArray,$ionicPopup,$window,$localStorage){
 			
 				var SelectdP=$localStorage.settitle;
-				console.log("selected post :" +SelectdP);
 
-					var ref = new Firebase('https://snev.firebaseio.com/posts');
-					var ref2 = new Firebase('https://snev.firebaseio.com/comments');
+			var postRef = new Firebase('https://snev.firebaseio.com/posts');
 
+ 					postRef.orderByChild("title").equalTo(SelectdP).on("child_added", function(snapshot) {
+					  var value=snapshot.key();
+						var data = snapshot.val();
+						
+						var postsreflike = new Firebase('https://snev.firebaseio.com/posts');
+						var selectPostRef=postsreflike.child(value).child("comments");
+						$scope.mycomments = $firebaseArray(selectPostRef);
 
-								var query = ref2.orderByChild('title').equalTo(SelectdP);
-								$scope.mycomments = $firebaseArray(query);
+										
+					 });
 
-									var query = ref.orderByChild('title').equalTo(SelectdP);
-									$scope.myposts = $firebaseArray(query);
+						var query = postRef.orderByChild('title').equalTo(SelectdP);
+						$scope.myposts = $firebaseArray(query);
 
   })
 
@@ -1732,7 +1816,7 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 //  loadProfileDetails controller ->used in sidemenu and loading friendlist
-.controller('loadProfDetails', function($scope ,$ionicPopup,$window,$localStorage) {
+.controller('loadProfDetails', function($scope ,$ionicPopup,$window,$localStorage,$firebaseObject) {
 		
 	var ref = new Firebase('https://snev.firebaseio.com/profile');
  var key=$localStorage.userkey;
@@ -1742,6 +1826,8 @@ $scope.ToggleCompleted = function(toStatus){
 		  $scope.$apply(function(){
 		   	$scope.myprofile = snapshot.val();
 			
+
+		
 			});
 		});
 
@@ -1758,7 +1844,7 @@ $scope.ToggleCompleted = function(toStatus){
 
 	 ref.orderByKey().equalTo(key).once("value", function(snapshot) {
 	
-		   	$scope.myprofile = snapshot.val();
+		   
 												
 		});
 							
@@ -1803,7 +1889,7 @@ $scope.ToggleCompleted = function(toStatus){
 												 
 													var reprofile= new Firebase('https://snev.firebaseio.com/profile/'+profilekey+'/friends');
 																	
-									//load specific items
+									//load specific items /check if exist
 										reprofile.orderByChild("name").equalTo($localStorage.username).once("value", function(snapshot) {
 										
 													userkey = snapshot.val();

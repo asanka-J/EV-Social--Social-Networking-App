@@ -13,7 +13,7 @@
 
 
 				<div class="item item-avatar">
-                <img src="https://www.combustioninstitute.org/resources/icon_member_male.png">
+                <img src="{{post.userimage}}">
                 <h2>{{post.username}}</h2>
 
                 <p>November 05, 2016</p>
@@ -29,12 +29,12 @@
                   <a href="#" class="subdued">5 Comments</a>
                 </p>
                 <!-- //like dislike report -->
-                <div ng-controller="postCtrl">
+                <!--<div ng-controller="postCtrl">
                   <button  ng-click=addlike(post.title) class="styl ion-thumbsup " ></button>
                   <button  ng-click=adddislike(post.title) class="styl ion-thumbsdown " ></button>
                   <button  ng-click=report(post.title) class="styl ion-flag " ></button>
 
-                </div>
+                </div>-->
 
                 <div class="comment-form"  ng-controller="cmntController" >    <!-- new comment Form -->
                   <!-- Comment Avatar -->
@@ -63,7 +63,7 @@
                    <div class="comment"  ng-repeat="comment in mycomments" class="item-icon-right item-remove-animate">
                      <!-- Comment Avatar -->
                      <div class="comment-avatar">
-                       <img src="http://lorempixel.com/200/200/people">
+                       <img ng-src="{{comment.userimage}}">
                      </div>
 
                      <!-- Comment Box -->
@@ -75,7 +75,7 @@
                            <span class="comment-author">
                              <a href="mailto:ximme13@somedomain.io">{{comment.username}}</a>
                            </span>
-                           <span class="comment-date">Jan 31, 1986 11:32:04 PM</span>
+                           <span class="comment-date">{{comment.Cdate | date:'d MMM yyyy'}}</span>
                          </div>
 
                          <div class="comment-actions">

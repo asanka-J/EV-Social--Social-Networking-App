@@ -33,7 +33,7 @@
 
 
 				<div style=" background-color: #3299CC;" class="item item-avatar">
-                <img src="https://blog.madmimi.com/wp-content/uploads/2014/06/gary_gravatar.png">
+                <img src="{{post.userimage}}">
                 <h2>{{post.username}}</h2>
 
                 <p>{{post.timeStamp | date:'d MMM yyyy'}}</p>
@@ -55,8 +55,8 @@
                 <p>
                   <a href="#" class="subdued">{{post.noOfLikes}} Like</a>
                   <a href="#" class="subdued">{{post.noOfDisLikes}} disLike</a>
-                  <a href="#" class="subdued">{{post.noOfReports}} times reported</a>
-                  <a href="#" class="subdued">5 Comments</a>
+                  <a href="#" class="subdued">{{post.noOfReports}} reported</a>
+                  <a href="#" class="subdued">{{post.noOfComments}} Comments</a>
                 </p>
 				
 				 <div  ng-controller="postCtrl" class="item tabs tabs-secondary tabs-icon-left">
