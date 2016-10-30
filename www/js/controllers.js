@@ -1843,7 +1843,9 @@ $scope.ToggleCompleted = function(toStatus){
 	 var name=$localStorage.username;
 
 	 ref.orderByKey().equalTo(key).once("value", function(snapshot) {
-	
+		$scope.myprofile = snapshot.val();
+			
+
 		   
 												
 		});
@@ -1864,22 +1866,39 @@ $scope.ToggleCompleted = function(toStatus){
 
 															//set selected profile
 				$scope.msg = function(selectedprofz) {
+
 			$localStorage.setFname=selectedprofz;
 				localStorage['sendTo']=selectedprofz ;
 			//	loaclStorage['userId']=$localStorage.uid;
 				localStorage['fromUser']=name;
 				$location.path("/app/UserMessages");
-				console.log("UserMessages");
+				//console.log("UserMessages");
 				
  				 }
+
+				    $scope.call = function () {
+							//alert($localStorage.mobileno);
+						if(	$localStorage.mobileno==null)
+							{$ionicPopup.alert({ template: 'contact not provided!!'});}
+							else
+						window.open('tel:' + $localStorage.mobileno, '_system');
+			    	};
+
+     				 $scope.mail = function () {
+						 // alert($localStorage.useremail);
+						if( $localStorage.useremail==null)
+							{$ionicPopup.alert({ template: 'Email not provided!!'});}
+							else
+								window.open('mailto:' +$localStorage.useremail, '_system');
+					};
 
 
 						$scope.follow = function(follower) {
 						
-								ref.orderByChild("name").equalTo(follower).on("child_added", function(snapshot) {
+								ref.orderByChild("name").equalTo(follower).once("child_added", function(snapshot) {
 								var profilekey = snapshot.key();
 
-											ref.orderByChild("name").equalTo($localStorage.username).on("child_added", function(mysnapshot) {
+											ref.orderByChild("name").equalTo($localStorage.username).once("child_added", function(mysnapshot) {
 												var userkey = mysnapshot.key();
 														
 												var path='https://snev.firebaseio.com/profile/'+userkey+'/gravatar';
@@ -1930,20 +1949,7 @@ $scope.ToggleCompleted = function(toStatus){
 
 //yyyy    calling function
 						
-	  $scope.call = function () {
-			
-		  if(	$localStorage.mobileno==null)
-			  {$ionicPopup.alert({ template: 'contact not provided!!'});}
-			  else
-        window.open('tel:' + $localStorage.myprofDetail.call, '_system');
-      };
-
-      $scope.mail = function () {
-		  if( $localStorage.useremail==null)
-			  {$ionicPopup.alert({ template: 'Email not provided!!'});}
-			  else
-				window.open('mailto:' +$localStorage.myprofDetail.email, '_system');
-      };
+	
 })
 
 
