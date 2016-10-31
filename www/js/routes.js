@@ -189,7 +189,7 @@ angular.module('app.routes', [])
 	views: {
         'menuContent': {
     templateUrl: 'templates/manageProfile.html',
-    controller: 'manageProfileCtrl'
+  //  controller: 'manageProfileCtrl'
         }
       }
   })

@@ -1647,6 +1647,9 @@ $scope.ToggleCompleted = function(toStatus){
   var img = new Firebase("https://snev.firebaseio.com/posts");
   $scope.imgs = $firebaseArray(img);
 
+
+
+
   var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];
   	$scope.uploadFile = function() {
     var sFileName = $("#nameImg").val();
@@ -1926,10 +1929,14 @@ $scope.ToggleCompleted = function(toStatus){
 													
 												  
 											}else{
+														reprofile.orderByChild("name").equalTo($localStorage.username).once("child_added", function(dsnapshot) {
+														var value1=dsnapshot.key();
+
+														reprofile.child(value1).remove();		
+														
+
+													});
 													
-														 reprofile.remove(function(error) {
-																// alert(error ? "Uh oh!" : "Successfully unfriend");
-														});
 
 													}
 																myfunct();
@@ -1976,38 +1983,98 @@ $scope.ToggleCompleted = function(toStatus){
 					
 				});
 
+
+				$scope.msg = function(selectedprofz) {//set selected profile
+
+				$localStorage.setFname=selectedprofz;
+				localStorage['sendTo']=selectedprofz ;
+			//	loaclStorage['userId']=$localStorage.uid;
+				localStorage['fromUser']=name;
+				$location.path("/app/UserMessages");
+				//console.log("UserMessages");
+				
+ 				 }
+
+				    $scope.call = function () {
+							//alert($localStorage.mobileno);
+						if(	$localStorage.mobileno==null)
+							{$ionicPopup.alert({ template: 'contact not provided!!'});}
+							else
+						window.open('tel:' + $localStorage.mobileno, '_system');
+			    	};
+
+     				 $scope.mail = function () {
+						 // alert($localStorage.useremail);
+						if( $localStorage.useremail==null)
+							{$ionicPopup.alert({ template: 'Email not provided!!'});}
+							else
+								window.open('mailto:' +$localStorage.useremail, '_system');
+					};
+
+
 		
 	
 
+						$scope.follow = function(follower) {
+						
+								ref.orderByChild("name").equalTo(follower).once("child_added", function(snapshot) {
+								var profilekey = snapshot.key();
 
-	$scope.follow = function(follower) {
-	
-			ref.orderByChild("name").equalTo(follower).on("child_added", function(snapshot) {
-			var profilekey = snapshot.key();
+											ref.orderByChild("name").equalTo($localStorage.username).once("child_added", function(mysnapshot) {
+												var userkey = mysnapshot.key();
+														
+												var path='https://snev.firebaseio.com/profile/'+userkey+'/gravatar';
+												var tempref = new Firebase(path);
+												tempref.once("value", function(imagesnapshot) {
+													var userImage=imagesnapshot.val();
+												 
+													var reprofile= new Firebase('https://snev.firebaseio.com/profile/'+profilekey+'/friends');
+																	
+									//load specific items /check if exist
+										reprofile.orderByChild("name").equalTo($localStorage.username).once("value", function(snapshot) {
+										
+													userkey = snapshot.val();
+											
 
-						ref.orderByChild("name").equalTo(selectedprof).on("child_added", function(mysnapshot) {
-							var userkey = mysnapshot.key();
+											if(userkey==null){
+														reprofile.push({ 'name': $localStorage.username, 'image':userImage });
+														// .then(alert("sucessfully added"));//add my image
+													
+												  
+											}else{
+														reprofile.orderByChild("name").equalTo($localStorage.username).once("child_added", function(dsnapshot) {
+														var value1=dsnapshot.key();
 
-							var path='https://snev.firebaseio.com/profile/'+userkey+'/gravatar';
-							var tempref = new Firebase(path);
-							tempref.once("value", function(imagesnapshot) {
-								var userImage=imagesnapshot.val();
+														reprofile.child(value1).remove();		
+														
 
-									var reprofile= new Firebase('https://snev.firebaseio.com/profile/'+profilekey+'/friends');
-									 	reprofile.push({ 'name': $localStorage.username, 'image':userImage });//add my image
+													});
+														
 
-						});
+													}
 
-				
+													myfunct1();
+																
+												});
 
-			// var reprofile= new Firebase('https://snev.firebaseio.com/profile/'+profilekey+'/friends');
-			// 	reprofile.push({ 'name': username, 'image':userImage });//add my image
+		
+									
+									});
+									})
+								});
 
-				})
-	
-			});
+																	function myfunct1(){ 	//loadFriendlist custom function.
+																		ref.orderByChild("name").equalTo(name).on("child_added", function(snapshot) {
+																							var nameSnapshot = snapshot.child("friends");
+																								$scope.friendlist = nameSnapshot.val();
+																						//	console.log(nameSnapshot);
+																					});	
+																	}
+						
+						}
 
-  }
+
+													
 
 })
 
@@ -2027,96 +2094,88 @@ $scope.ToggleCompleted = function(toStatus){
 
 	var ref = new Firebase('https://snev.firebaseio.com/profile');
   var username=$localStorage.username;
+
 	
+		
+
+  var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];
+
+  	$scope.uploadFile = function() {
+		
+    var sFileName = $("#nameImg").val();
+    if (sFileName.length > 0) {
+      var blnValid = false;
+      for (var j = 0; j < _validFileExtensions.length; j++) {
+        var sCurExtension = _validFileExtensions[j];
+        if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+          blnValid = true;
+          var filesSelected = document.getElementById("nameImg").files;
+          if (filesSelected.length > 0) {
+            var fileToLoad = filesSelected[0];
+
+            var fileReader = new FileReader();
+
+              fileReader.onload = function(fileLoadedEvent) {
+              var textAreaFileContents = document.getElementById(
+                "textAreaFileContents"
+              );
+
+			
+			ref.orderByChild("name").equalTo(username).on("child_added", function(snapshot) {
+        		var key=snapshot.key();
+	
+			ref.child(key).update({ gravatar:fileLoadedEvent.target.result});
+			
+			
+        });
+
+			
+            };
+
+            fileReader.readAsDataURL(fileToLoad);
+          }
+          break;
+        }
+      }
+
+      if (!blnValid) {
+        alert('File is not valid');
+        return false;
+      }
+    }
+
+    return true;
+	
+  }
+		
 
 //update profile
-	$scope.updateProfile = function(description,fname,sname,contact) {
 
+	$scope.updateProfile = function(description,contact,sname,fname,userImg,lPlate,Vname) {
+		var lng=$localStorage.profileEditLng;
+		var lat=$localStorage.profileEditLat;
+		//alert(description+contact+sname+fname+userImg+lPlate+Vname+ ""+lng+""+lat);
     	ref.orderByChild("name").equalTo(username).on("child_added", function(snapshot) {
         var key=snapshot.key();
-        	ref.child(key).update({ description:description,sname:sname,mobile:contact});
+	
+        	ref.child(key).update({ description:description,sname:sname,mobile:contact,licence_plate:lPlate,vehicle_name:Vname,hometownlng:$localStorage.profileEditLng,hometownlat:$localStorage.profileEditLat});
+
+			
         });
+
+
+	
 
         var alertPopup = $ionicPopup.alert({
         title: 'Successful! <i class="ion-checkmark-round"></i>',
         template:'You have Successfuly Updated'
          });
 
-		$location.path('/app/profile');  
+	 
 
   	};
-		
-		// #######################################################################
-				$scope.postForm = function(description,contactNo,SecondName,firstName){
-										
-												var username= $localStorage.username;
-											
-										var messageListRef = new Firebase('https://snev.firebaseio.com/profile');
-										var newMessageRef = messageListRef.push();
-										
-								
 
-									var img = new Firebase("https://snev.firebaseio.com/posts");
-									$scope.imgs = $firebaseArray(img);
-
-									var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];
-										$scope.uploadFile = function() {
-										var sFileName = $("#nameImg").val();
-										if (sFileName.length > 0) {
-											var blnValid = false;
-											for (var j = 0; j < _validFileExtensions.length; j++) {
-												var sCurExtension = _validFileExtensions[j];
-												if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
-													blnValid = true;
-													var filesSelected = document.getElementById("nameImg").files;
-													if (filesSelected.length > 0) {
-														var fileToLoad = filesSelected[0];
-
-														var fileReader = new FileReader();
-
-															fileReader.onload = function(fileLoadedEvent) {
-															var textAreaFileContents = document.getElementById(
-																"textAreaFileContents"
-															);
-
-
-															$scope.imgs.$add({
-																		timeStamp: Firebase.ServerValue.TIMESTAMP,
-																		image: fileLoadedEvent.target.result,
-																		title: title,
-																		description: description ,
-																		username:username,
-																		noOfLikes: 0,
-																		noOfDisLikes: 0 ,
-																		noOfReports: 0 
-											
-															});
-														};
-
-														fileReader.readAsDataURL(fileToLoad);
-													}
-													break;
-												}
-											}
-
-											if (!blnValid) {
-												alert('File is not valid');
-												return false;
-											}
-										}
-
-										return true;
-									}
-
-							//image Upload controller end
-
-
-											
-
-						};
-			
-		//########################################################################
-
+	
 //load profile
 		     	var query1 = ref.orderByChild('name').equalTo(username);
 					$scope.myprofile = $firebaseArray(query1);	
@@ -2129,7 +2188,7 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 
-.directive('addmapq', function() {
+.directive('addmapq', function($localStorage) {
     return {
         restrict: 'A',
         link:function(scope, element, attrs){
@@ -2162,7 +2221,9 @@ $scope.ToggleCompleted = function(toStatus){
 		   google.maps.event.addListener(map, 'click', function(event) {
 			marker.setPosition(event.latLng);
 		//	scope.$parent.station.latitude = event.latLng.lat();
-			alert(event.latLng.lat());
+			alert(event.latLng.lat() +" "+ event.latLng.lng() );
+			$localStorage.profileEditLng=event.latLng.lng();
+			$localStorage.profileEditLat=event.latLng.lat();
 		    //scope.$parent.station.longitude =event.latLng.lng();
 		    scope.$apply();
         });

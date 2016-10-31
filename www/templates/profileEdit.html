@@ -12,7 +12,7 @@
       <div id="content">
           
         <div id="profile-info">
-             <img id="profile-image" src="{{myprofile.gravatar}}">
+             <img id="profile-image" ng-src="{{myprofile.gravatar}}">
                   
 	    <label class="item item-input " id="newPost-image" name="image">
         <input type="file" name="file" style=" width: 33.33%;  text-align: center;"  ng-model="file" class="inputimg" id="nameImg" accept="image/*" >
@@ -30,13 +30,13 @@
             
  
             <label class="item item-input " id="newPost-textarea2" name="Descrip">  <label >Description &thinsp;&thinsp;&thinsp;&thinsp;&thinsp;</label>
-                <textarea placeholder="{{myprofile.descriptiion}}" style="  background-color:#f8f9f9;" ng-model="description" name="description" required></textarea>
+                <textarea placeholder="{{myprofile.description}}" style="  background-color:#f8f9f9;" ng-model="description" name="description" required></textarea>
             </label>
 			<span style="color:red" ng-show="newPostForm.$submitted && newPostForm.description.$error.required">Description is required</span>
            
 
              <label class="item item-input "   id="newPost-input6" name="firstName"><label >first Name &thinsp;&thinsp;&thinsp;&thinsp;&thinsp;&thinsp;</label>
-              <input type="text" style="  background-color:#f8f9f9;" placeholder="{{myprofile.fname}}" name="firstName" ng-model="firstName" required>
+              <input type="text" style="  background-color:#f8f9f9;" placeholder="{{myprofile.name}}" name="firstName" ng-model="firstName" required>
             </label>
             <span style="color:red" ng-show="newPostForm.$submitted && newPostForm.firstName.$error.required">Description is required</span>
 
@@ -46,30 +46,40 @@
              <span style="color:red" ng-show="newPostForm.$submitted && newPostForm.SecondName.$error.required">Description is required</span>
 
             <label class="item item-input " id="newPost-input6" name="contactNo"><label >contact No &thinsp;&thinsp;&thinsp;&thinsp;&thinsp;</label>
-              <input type="text" style="  background-color:#f8f9f9;" placeholder="{{myprofile.cnumber}}" name="contactNo" ng-model="contactNo" required>
+              <input type="text" style="  background-color:#f8f9f9;" placeholder="{{myprofile.mobile}}" name="contactNo" ng-model="contactNo" required>
             </label>
              <span style="color:red" ng-show="newPostForm.$submitted && newPostForm.contactNo.$error.required">Second Name is required</span>
+             
+              <label class="item item-input " id="newPost-input6" name="licence_plate"><label >licence_plate &thinsp;&thinsp;&thinsp;&thinsp;&thinsp;</label>
+              <input type="text" style="  background-color:#f8f9f9;" placeholder="{{myprofile.licence_plate}}" name="licence_plate" ng-model="licence_plate" required>
+            </label>
+             <span style="color:red" ng-show="newPostForm.$submitted && newPostForm.contactNo.$error.required">licence plate number is required</span>
+
+              <label class="item item-input " id="newPost-input6" name="vehicle_name"><label >vehicle model  &thinsp;&thinsp;&thinsp;&thinsp;&thinsp;</label>
+              <input type="text" style="  background-color:#f8f9f9;" placeholder="{{myprofile.vehicle_name}}" name="vehicle_name" ng-model="vehicle_name" required>
+            </label>
+             <span style="color:red" ng-show="newPostForm.$submitted && newPostForm.vehicle_name.$error.required">Secvehicle Name is required</span>
             
 		
-            
           
           <div  class="list card" >
               <label >Change Home town </label>
              <div id="addmap" lat="6.9271" lng="79.8612" zoom="10" addmapq> </div>
+          <!--<div id="addmap" lat="{{myprofile.hometownlat}}" lng="{{myprofile.hometownlng}}" zoom="10" addmapq> </div>-->
 		
 <!--
         <div class="spacer" style="width: 300px; height: 31px;"></div>
      -->
         <br />
  
-                <button id="newPost-button21" class=" btn waves-effect waves-light button button-full button-stable " ng-click="newPostForm.$valid && postForm(description,contactNo,SecondName,firstName) ; uploadFile()" >Publish   <i class="material-icons right">send</i></button>
+                <button id="newPost-button21" class=" btn waves-effect waves-light button button-full button-stable " ng-click="newPostForm.$valid && updateProfile(description,contactNo,SecondName,firstName,gravatar,licence_plate,vehicle_name) ; uploadFile()" >Publish   <i class="material-icons right">send</i></button>
                  <div class = "button button-block padding"></div>
      
       </div>
    
         </form>
      </div>
-   <!--$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$-->
+   
     </div>
 
                  

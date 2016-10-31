@@ -11,7 +11,7 @@
           
           <ion-item >
             
-            <img id="profile-image" src="{{myprofile.gravatar}}">
+            <img id="profile-image" ng-src="{{myprofile.gravatar}}">
 
             <div class="post-time">
               
@@ -76,9 +76,9 @@
       </div>
 
 
-          <div  class="list card">
+          <div  class="list card" ng-repeat="myprofile in myprofile">
               <label >Home town </label>
-            <div id="addmap" data-tap-disabled="true" lat="6.9271" lng="79.8612" zoom="9" addmap>
+            <div id="addmap" data-tap-disabled="false" lat="{{myprofile.hometownlat}}" lng="{{myprofile.hometownlng}}" zoom="9" addmap>
          </div>
       
 
