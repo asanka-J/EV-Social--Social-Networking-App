@@ -1,22 +1,18 @@
 <ion-view title="Stations" id="ad_station_page">
     <ion-content ng-controller="adminStationRecordsCtrl">
-    <ion-list>
-    <ion-item  ng-repeat="station in stations" class="item-icon-right item-remove-animate">
-        <div class="item item-divider"> <div class="padding"> </div></div>
-        <div class="item item-avatar">
-        <h2>Station Details</h2>
-        <br>
-        <h2>Name : {{station.name}}</h2>
-        <h2>Address : {{station.address}}</h2>
+    
+	 <ion-list show-delete="false" can-swipe="true" ng-repeat="station in stations">
+                    <ion-item>
+					<h2>Name : {{station.name}}</h2>
+					<h2>Address : {{station.address}}</h2>
         <h2>Contact : {{station.contact}}</h2>
         <h2>Description : {{station.description}}</h2>
-        <!-- <h2>{{post.gravatar}}</h2> -->
-        <div><button class="button button-assertive" ng-click="del(station)">Delete</button>
-		</div>
-  
-        
+                        <ion-option-button ng-click=onItemDelete(station.id) class="button-assertive icon ion-trash-a"></ion-option-button>
+						 <ion-option-button ng-click=onItemActive(station.id) class="button-possitive icon ion-trash-a"></ion-option-button>
+                    </ion-item>
+ 
+                </ion-list>
 
-     </ion-item>
-     </ion-list>
+
     </ion-content>
 </ion-view>
