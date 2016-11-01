@@ -1,6 +1,7 @@
-<ion-view title="Stations" id="ad_station_page">
+<ion-view title="Stations" id="ad_station_page" hide-back-button="true">
+ 
     <ion-content ng-controller="adminStationRecordsCtrl">
-    
+    <h2 style="text-align: center;">Stations</h2>
 	 <ion-list show-delete="false" can-swipe="true" ng-repeat="station in stations">
                     <ion-item>
 					<h2>Name : {{station.name}}</h2>
