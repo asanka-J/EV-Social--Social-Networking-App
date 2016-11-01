@@ -2445,6 +2445,14 @@ $scope.ToggleCompleted = function(toStatus){
 
 // Asanka end
 
+//report post
+.controller ('adminReportPostCtrl', function($scope, $http,$firebaseArray) {
+	var reportPostRef = new Firebase('https://snev.firebaseio.com/posts');
+	$scope.reports = $firebaseArray(reportPostRef);
+	console.log('$scope.reports');
+})
+
+
 //Make Appointment
  .controller ('makeAppointmentCtrl' , function($scope, $http, $state,$ionicPopup,$firebaseArray) {
 	$scope.makeAppointmentForm = function(cname, tele, vRegNum, station) {
