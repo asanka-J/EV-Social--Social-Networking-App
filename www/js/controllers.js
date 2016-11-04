@@ -18,7 +18,7 @@ angular.module('app.controllers', [])
 .controller('vehiclepartsControllerNew', function($rootScope,$scope,$state,VechileFactory,$ionicModal, Auth, $stateParams) {
 	$scope.selectedParts = VechileFactory.getParts();
 	$scope.partDetail = {};
-<<<<<<< HEAD
+
 		//remove
 	/*$rootScope.vechileParts = {
   "1" : {
@@ -35,9 +35,6 @@ angular.module('app.controllers', [])
   }
   }
 };*/
-=======
-		
->>>>>>> 2212f187336648f5bb9edccf61527d5b97bf36c6
 	$scope.init = function() {
 		$scope.parts = [];
 		angular.forEach($rootScope.vechileParts[$stateParams.part], function(part) {
