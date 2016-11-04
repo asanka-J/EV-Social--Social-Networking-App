@@ -18,6 +18,7 @@ angular.module('app.controllers', [])
 .controller('vehiclepartsControllerNew', function($rootScope,$scope,$state,VechileFactory,$ionicModal, Auth, $stateParams) {
 	$scope.selectedParts = VechileFactory.getParts();
 	$scope.partDetail = {};
+<<<<<<< HEAD
 		//remove
 	/*$rootScope.vechileParts = {
   "1" : {
@@ -34,6 +35,9 @@ angular.module('app.controllers', [])
   }
   }
 };*/
+=======
+		
+>>>>>>> 2212f187336648f5bb9edccf61527d5b97bf36c6
 	$scope.init = function() {
 		$scope.parts = [];
 		angular.forEach($rootScope.vechileParts[$stateParams.part], function(part) {
@@ -2507,6 +2511,14 @@ $scope.ToggleCompleted = function(toStatus){
 
 // Asanka end
 
+//report post
+.controller ('adminReportPostCtrl', function($scope, $http,$firebaseArray) {
+	var reportPostRef = new Firebase('https://snev.firebaseio.com/posts');
+	$scope.reports = $firebaseArray(reportPostRef);
+	console.log('$scope.reports');
+})
+
+
 //Make Appointment
  .controller ('makeAppointmentCtrl' , function($scope, $http, $state,$ionicPopup,$firebaseArray) {
 	$scope.makeAppointmentForm = function(cname, tele, vRegNum, station) {
@@ -2672,44 +2684,37 @@ $scope.deletefine = function(fine){
 
 .controller('adminStationRecordsCtrl', function($scope,$firebaseArray,$rootScope,$ionicPopup) {
 
-    var viewNewsRef1 = new Firebase('https://snev.firebaseio.com/Stations_Details');
-	$scope.stations = $firebaseArray(viewNewsRef1);
-	
-	viewNewsRef1.on("value", function(snapshot) {
-          $scope.$apply(function(){
-            $scope.stations = snapshot.val();
-						
-          });
-	});
-	 $scope.del = function(station) {
-	$scope.showConfirm = function() {
-	
-      var confirmPopup = $ionicPopup.confirm({
-         title: 'Warnning !!!',
-         template: 'Do you really want to delete?'
-      });
-
-      confirmPopup.then(function(res) {
-         if(res) {
-            console.log('Yes');
-			 console.log(station);
-			 $scope.stations.remove(station);
-			//$scope.stations.$remove(station);
-			
-			var alertPopup = $ionicPopup.alert({
-		title: 'Successfully deleted! <i class="ion-checkmark-round"></i>',
-		template:'You have Successfuly deleted the user' 
+    var viewStationRef = new Firebase('https://snev.firebaseio.com/Stations_Details');
+		var load=function(){
+		 viewStationRef.on("value", function(snapshot) {
+				 
+                      $scope.stations = [];
+					 var list = [];
+						snapshot.forEach(function(stationSnapshot) {
+							 var valstation=stationSnapshot.val();
+									valstation.id=stationSnapshot.key();
+									list.push(valstation);
+							
+						});	
+						 $scope.stations = list.reverse(); 
+				  });
+};
+load();
+				$scope.onItemDelete = function(taskid){
+		$ionicPopup.confirm({
+			title: 'Confirm Delete',
+			content: 'Are you sure you want to delete?'
+		}).then(function(res){
+			if(res){
+				 viewStationRef.child(taskid).remove();
+				load();
+			}
 		});
-         } else {
-            console.log('No');
-         }
-      });
-		
-   };
-    $scope.showConfirm();
-      console.log('asdasd');
 	};
-		
+	
+	
+
+	
 })
 
 //user view notices------------------------------------------------------------------

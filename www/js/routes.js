@@ -362,6 +362,16 @@ angular.module('app.routes', [])
   //   templateUrl: 'templates/adminHomepage.html',
   //   controller: 'adminHomepageCtrl'
   // })
+  .state('app.reportPosts', {
+		url: '/reportPosts',
+		views: {
+			'menuContent': {
+			templateUrl: 'templates/adminReportPosts.html',
+			controller: 'adminReportPostCtrl'
+			}
+		}
+	})
+  
 
   //admin user view
   .state('app.adminUserView', {
