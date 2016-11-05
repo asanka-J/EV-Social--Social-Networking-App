@@ -170,7 +170,7 @@ angular.module('app.controllers', [])
 			presence.orderByChild("username").equalTo($localStorage.username).on("child_added", function(snapshot) {
                         var userKey = snapshot.key();
 
-													 presence.child(userKey).set({ 'username': $localStorage.username, 'Status':'Logout','lastSeenAt':Firebase.ServerValue.TIMESTAMP });
+													 presence.child(userKey).set({ 'username': $localStorage.username, 'Status':'online','lastSeenAt':Firebase.ServerValue.TIMESTAMP });
 				 });
   
 
@@ -1592,14 +1592,45 @@ $scope.ToggleCompleted = function(toStatus){
 
 // loading post
 
-.controller("myPostHistorry", function($scope, $firebaseArray,$localStorage) {
+.controller("myPostHistorry", function($scope, $firebaseArray,$state,$ionicPopup,$localStorage) {
 
 
   var ref = new Firebase("https://snev.firebaseio.com/posts");
 	var username= $localStorage.username;
 
 		var query = ref.orderByChild('username').equalTo(username);
-	$scope.imgs = $firebaseArray(query);	
+		$scope.imgs = $firebaseArray(query);	
+
+			 $scope.deleteSelectedPost = function(selectedPost) {
+	
+						 
+							var confirmPopup = $ionicPopup.confirm({
+								title: 'Title',
+								template: 'Are you sure?'
+							});
+
+							confirmPopup.then(function(res) {
+								if(res) {
+											ref.orderByChild("title").equalTo(selectedPost).once("child_added", function(snapshot) {
+											var value=snapshot.key();
+											var data = snapshot.val();
+											
+											ref.child(value).remove().then(alert ("Sucessfully deleted"));	
+
+
+										});
+
+
+
+								} else {
+									console.log('Cancel pressed');
+								}
+							});
+		
+   						};
+
+						   
+
 
 })
 
@@ -1725,7 +1756,7 @@ $scope.ToggleCompleted = function(toStatus){
 					  var value=snapshot.key();
 						var data = snapshot.val();
 						var noOfCommentss=data.noOfcomments;
-						
+					//	alert(noOfcomments);
 						var postsreflike = new Firebase('https://snev.firebaseio.com/posts');
 						var selectPostRef=postsreflike.child(value).child("comments");
 
@@ -1736,17 +1767,22 @@ $scope.ToggleCompleted = function(toStatus){
 																	'username':user,
 																	'title':title1,
 																	'userimage':userImg
-											}).then(alert("Comment added sucessfully"));
+											}).then(postsreflike.child(value).update({ 
+												
+												noOfcomments: noOfCommentss+1})
+												
+												).then(alert("Comment added sucessfully"));
 
-											postsreflike.child(value).update({ noOfcomments: noOfCommentss+1});
+											
+											
 									
 							}else{
 								alert("Invalid comment");
 							}
-
+					$scope.comment="";
 									
 					 });
-					 $scope.comment="";
+					 
   };
 
 
@@ -1805,7 +1841,9 @@ $scope.ToggleCompleted = function(toStatus){
 											postRef.orderByChild("title").equalTo(SelectdP).on("child_added", function(snapshot) {
 											var value=snapshot.key();
 											var data = snapshot.val();
-											
+											var noOfCommentss=data.noOfcomments;
+
+		
 											var postsreflike = new Firebase('https://snev.firebaseio.com/posts');
 											var SelectedComments=postsreflike.child(value).child("comments");
 																		
@@ -1814,9 +1852,9 @@ $scope.ToggleCompleted = function(toStatus){
 																var commentKey=csnapshot.key();
 																//var data = snapshot.val();
 																
-																SelectedComments.child(commentKey).remove().then(alert ("Sucessfully deleted"));
+																SelectedComments.child(commentKey).remove();
 
-															});	
+															}).then(postsreflike.child(value).update({ noOfcomments: noOfCommentss-1})).then(alert ("Sucessfully deleted"));	
 
 
 										});
@@ -1888,8 +1926,6 @@ $scope.ToggleCompleted = function(toStatus){
 
 	 	var query = ref.orderByChild('name').equalTo(name);
 		$scope.myprofile = $firebaseArray(query);
-
-				
 				
 		//load friend list
 						ref.orderByChild("name").equalTo(name).on("child_added", function(snapshot) {
@@ -1898,9 +1934,6 @@ $scope.ToggleCompleted = function(toStatus){
 								$scope.friendlist = nameSnapshot.val();
 //								console.log(nameSnapshot.val());
 					 	});
-									
-
-
 
 /*
 	var ref = new Firebase('https://snev.firebaseio.com/profile');
@@ -1920,8 +1953,6 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 */
-
-															
 				$scope.msg = function(selectedprofz) {//set selected profile
 
 				$localStorage.setFname=selectedprofz;

@@ -25,11 +25,11 @@
 
 	 <div class="padding"> </div>
      
-    <ion-list>
+    <ion-list > 
       <!--<ion-item  ng-repeat="post in loadposts " class="item-icon-right item-remove-animate">-->
-        <div ng-repeat="post in imgs | toArray | orderBy: '-timeStamp'" class="col-xs-12 col-sm-6 col-md-3">
+        <div ng-repeat="post in imgs | toArray | orderBy: '-timeStamp'" class="col-xs-12 col-sm-6 col-md-3"  >
 
-        <div class="item item-divider" style=" opacity:0;"> <div class="padding"> </div></div>
+        <div class="item item-divider" style=" opacity:0"> <div class="padding"> </div></div>
 
 
 				<div style=" background-color: #3299CC;" class="item item-avatar">
@@ -41,7 +41,7 @@
        </div>
 
               <div class="item item-body">
-                <b>  <h2>{{post.title}}</h2> </b>
+                <b>  <h2>{{post.title}}</h2> </b><br>
 				
              		<div class="item item-divider">
 						<img height="250px" width="400px" ng-src="{{post.image}}"> 
@@ -56,13 +56,13 @@
                   <a href="#" class="subdued">{{post.noOfLikes}} Like</a>
                   <a href="#" class="subdued">{{post.noOfDisLikes}} disLike</a>
                   <a href="#" class="subdued">{{post.noOfReports}} reported</a>
-                  <a href="#" class="subdued">{{post.noOfComments}} Comments</a>
+                  <a href="#" class="subdued">{{post.noOfcomments}} Comments</a>
                 </p>
 				
 				 <div  ng-controller="postCtrl" class="item tabs tabs-secondary tabs-icon-left">
                     <a class="tab-item" href="#">
                        <button  ng-click=addlike(post.title) class="styl ion-thumbsup " ></button>
-                        Like
+                        <b>Like</b>
                     </a>
 					  <a class="tab-item" href="#">
                        <button  ng-click=adddislike(post.title) class="styl ion-thumbsdown " ></button>
