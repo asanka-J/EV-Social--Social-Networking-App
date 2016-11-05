@@ -2565,6 +2565,31 @@ load();
 		});
 	};
 	
+				$scope.onItemActive = function(taskid,state){
+					if(state=="active"){
+		$ionicPopup.confirm({
+			title: 'Confirm Deactivation',
+		}).then(function(res){
+			if(res){
+				 viewStationRef.child(taskid).update({state: "deactive"});
+				load();
+			}
+		});
+					}
+					
+					else if(state=="deactive"){
+						$ionicPopup.confirm({
+			title: 'Confirm Activation',
+		}).then(function(res){
+			if(res){
+				 viewStationRef.child(taskid).update({state: "active"});
+				load();
+			}
+		});
+					}
+		
+	};
+	
 	
 
 	
