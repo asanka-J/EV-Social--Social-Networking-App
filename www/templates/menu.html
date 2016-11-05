@@ -20,7 +20,7 @@
                     
 
 
-                <div data-componentid="image3"  ng-controller="loadProfDetails">
+                <div data-componentid="image3" >
 
 
                    <a style="display:block;"  menu-close="" ng-repeat="myprofile in myprofile"> 
@@ -28,7 +28,7 @@
                     <div id="navigation-markdown2" style="color:#000000;text-align:center;" data-componentid="markdown2">
                             <p>Welcome  {{myprofile.name}}</p>
                      </div>
-                        <img src="{{myprofile.gravatar}}" width="100%" height="170" style="display: block; margin-left: auto; margin-right: auto;">
+                        <img ng-src="{{myprofile.gravatar}}" width="100%" height="170" style="display: block; margin-left: auto; margin-right: auto;">
                     </a>
                 </div>
 
