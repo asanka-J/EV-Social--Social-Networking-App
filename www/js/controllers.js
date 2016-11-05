@@ -1960,7 +1960,7 @@ $scope.ToggleCompleted = function(toStatus){
 								if(snapshot.val().name!=$localStorage.username){
 											ref.orderByChild("name").equalTo($localStorage.username).once("child_added", function(mysnapshot) {
 												var userkey = mysnapshot.key();
-													console.log(" ---------->"+mysnapshot.val());	
+												//	console.log(" ---------->"+mysnapshot.val());	
 												var path='https://snev.firebaseio.com/profile/'+userkey+'/gravatar';
 												var tempref = new Firebase(path);
 												tempref.once("value", function(imagesnapshot) {
@@ -2425,18 +2425,14 @@ $scope.ToggleCompleted = function(toStatus){
 
 //loading friendlist 
 .controller('friendslistCntrl', function($scope, $http, $ionicPopup,$firebaseArray, $localStorage,$location) {
-
+		var username=$localStorage.username;
  var ref = new Firebase("https://snev.firebaseio.com/profile/"+$localStorage.userkey);
 var refChild=ref.child("friends");
 		$scope.myprofile = $firebaseArray(ref);
-		console.log($firebaseArray(refChild));
+	//	console.log($firebaseArray(refChild));
 		 $scope.friends = $firebaseArray(refChild);
 
   
-
-
-
-		
 
 				//set selected profile
 				$scope.setFProfile = function(selectedprofz) {
@@ -2453,7 +2449,7 @@ var refChild=ref.child("friends");
 			//	loaclStorage['userId']=$localStorage.uid;
 				localStorage['fromUser']=username;
 				$location.path("/app/UserMessages");
-				console.log("UserMessages");
+			//	console.log("UserMessages");
 				
  				 }
 
