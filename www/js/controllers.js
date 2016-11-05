@@ -106,7 +106,7 @@ angular.module('app.controllers', [])
 })
 
 
-.controller('AppCtrl', function($scope,$location,Auth,$localStorage,$state) {
+.controller('AppCtrl', function($scope,$location,Auth,$localStorage,$state,$ionicHistory,$window) {
 	
 		$scope.hideMe=true;
 
@@ -133,6 +133,9 @@ angular.module('app.controllers', [])
   $scope.logOut = function () {
 	Auth.logout();
 			$location.path("/app/login");
+			$window.localStorage.clear();
+			$ionicHistory.clearCache();
+			$ionicHistory.clearHistory();
   }
 
 })
@@ -996,8 +999,6 @@ $scope.ToggleCompleted = function(toStatus){
 
 .controller('mapCtrl', function($scope,$cordovaGeolocation,$firebase,$location, $localStorage) {
 	
-	
-        var options = {timeout: 10000, enableHighAccuracy: true};
 		
 			var userLatitude="7.831180";
 			var userLongitude="80.213107";
@@ -1190,7 +1191,7 @@ $scope.ToggleCompleted = function(toStatus){
 						 $scope.me = function () {	 
 						 if(me)
 						 {
-					
+								 var options = {timeout: 10000, enableHighAccuracy: true};
 								$cordovaGeolocation.getCurrentPosition(options).then(function(position){
 								$localStorage.userLatitude=position.coords.latitude;
 								$localStorage.userLongitude=position.coords.longitude;
