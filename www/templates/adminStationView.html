@@ -9,7 +9,7 @@
         <h2>Contact : {{station.contact}}</h2>
         <h2>Description : {{station.description}}</h2>
                         <ion-option-button ng-click=onItemDelete(station.id) class="button-assertive icon ion-trash-a"></ion-option-button>
-						 <ion-option-button ng-click=onItemActive(station.id) class="button-possitive icon ion-trash-a"></ion-option-button>
+						 <ion-option-button ng-click=onItemActive(station.id,station.state) class="button-possitive">{{station.state}}</ion-option-button>
                     </ion-item>
  
                 </ion-list>

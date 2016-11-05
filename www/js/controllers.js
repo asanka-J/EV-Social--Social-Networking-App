@@ -109,25 +109,33 @@ angular.module('app.controllers', [])
 .controller('AppCtrl', function($scope,$location,Auth,$localStorage,$state,$ionicHistory,$window) {
 	
 		$scope.hideMe=true;
+		var checkonce=true;
 
 	$scope.$on('$ionicView.beforeEnter', function() {
 		
 			if ($state.current.name=="app.home" || $state.current.name=="app.adminHomepage") {
-				var interval = setInterval(function(){
+					var interval = setInterval(function(){
 
-				   
-					var admin=$localStorage.useremail;
-				   if(admin=="admin@gmail.com"){
-						$scope.hideMe=false;
+					   
+						var admin=$localStorage.useremail;
+					   if(admin=="admin@gmail.com"){
+							$scope.hideMe=false;
+							clearInterval(interval);
+						}
+						else{
+							$scope.hideMe=true;
 						clearInterval(interval);
-					}
-					else{
-						$scope.hideMe=true;
-					clearInterval(interval);
-					}
-				}, 1000);
-		
+						}
+						
+					$scope.name=$localStorage.username;
+					$scope.gravatar=$localStorage.userimage;
+							
+						
+					}, 1000);
+				
+			
 			}
+	
 		});
 	
   $scope.logOut = function () {
@@ -137,6 +145,7 @@ angular.module('app.controllers', [])
 			$ionicHistory.clearCache();
 			$ionicHistory.clearHistory();
   }
+
 
 })
 
@@ -236,34 +245,7 @@ angular.module('app.controllers', [])
 
 	
 							
-							$scope.presencecheck = function(users){
-								 //	alert("prsence function");					
-								 		var connectedRef = new Firebase("https://snev.firebaseio.com/.info/connected");
-										connectedRef.on("value", function(snap) {
-											if (snap.val() === true) {
-													//managing presence- user				xxx
-														presence.orderByChild("username").equalTo($localStorage.username).on("value", function(snapshot) {
-																				var existstat = snapshot.exists();
-																					console.log(existstat);
-																					if(existstat==false){
-																							presence.push({ 'username': $localStorage.username, 'status': 'Online' });
-																					}else{
-																									presence.orderByChild("username").equalTo($localStorage.username).on("child_added", function(snapshot) {
-								          												var userKey = snapshot.key();
-
-																							if(snapshot.val().Status=="Logout" ){
-																									presence.child(userKey).set({  'username': $localStorage.username,'Status':'Online','lastSeenAt':Firebase.ServerValue.TIMESTAMP });
-																								}
-																				});
-																					}
-																			
-												});
-											} else {
-											//	alert(" connection error");
-											}
-										});
-
-							 }
+					
 							 
 	 	 $ionicSideMenuDelegate.canDragContent(false);
 		$ionicPlatform.registerBackButtonAction(function(event) {
@@ -2612,6 +2594,31 @@ load();
 				load();
 			}
 		});
+	};
+	
+				$scope.onItemActive = function(taskid,state){
+					if(state=="active"){
+		$ionicPopup.confirm({
+			title: 'Confirm Deactivation',
+		}).then(function(res){
+			if(res){
+				 viewStationRef.child(taskid).update({state: "deactive"});
+				load();
+			}
+		});
+					}
+					
+					else if(state=="deactive"){
+						$ionicPopup.confirm({
+			title: 'Confirm Activation',
+		}).then(function(res){
+			if(res){
+				 viewStationRef.child(taskid).update({state: "active"});
+				load();
+			}
+		});
+					}
+		
 	};
 	
 	
