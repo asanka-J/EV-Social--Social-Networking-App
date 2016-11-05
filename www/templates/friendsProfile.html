@@ -73,9 +73,9 @@
       </div>
 
 
-          <div  class="list card" ng-controller="StationCtrl">
+             <div  class="list card" ng-repeat="myprofile in myprofile">
               <label >Home town </label>
-            <div id="addmap" lat="6.9271" lng="79.8612" zoom="9" addmap>
+            <div id="addmap" data-tap-disabled="false" lat="{{myprofile.hometownlat}}" lng="{{myprofile.hometownlng}}" zoom="9" addmapq>
          </div>
       
 

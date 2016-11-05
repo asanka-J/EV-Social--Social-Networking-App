@@ -1902,7 +1902,7 @@ $scope.ToggleCompleted = function(toStatus){
   var key=$localStorage.userkey;
 	 var name=$localStorage.username;
 
-	 ref.orderByKey().equalTo(key).once("value", function(snapshot) {
+	 ref.orderByKey().equalTo(key).on("value", function(snapshot) {
 		$scope.myprofile = snapshot.val();
 			
 
