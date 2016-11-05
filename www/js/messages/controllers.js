@@ -8,23 +8,20 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
     $ionicActionSheet,
     $ionicPopup, $ionicScrollDelegate, $timeout, $interval,$localStorage, $firebaseArray) {
 
-	var refChat=new Firebase('https://snev.firebaseio.com/privateChat');
-	
-  
 
 
     // mock acquiring data via $stateParams
     $scope.toUser = {
       _id: '534b8e5aaa5e7afc1b23e69b',
       pic: 'http://ionicframework.com/img/docs/venkman.jpg',
-      username:localStorage.fromUser,
+      username:localStorage.sendTo,
     }
 
     // this could be on $rootScope rather than in $stateParams
     $scope.user = {
       _id: '534b8fb2aa5e7afc1b23e69c',
       pic: 'http://ionicframework.com/img/docs/mcfly.jpg',
-      username:localStorage.sendTo,
+      username:localStorage.fromUser,
     };
 
     $scope.input = {
@@ -40,9 +37,20 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
 
     $scope.$on('$ionicView.enter', function() {
       
+            
+          var refChat=new Firebase('https: //snev.firebaseio.com/testchat');
+          
+          
+           var a=[];
+              refChat.once('value', function(snapshot) {
+                    snapshot.forEach(function(vote) {
+                    a.push(vote.val());
+                    });
+                  
+                })
+                  $scope.messages=a;
+                  
     
-      getMessages();
-      getMessages();
       
       $timeout(function() {
         footerBar = document.body.querySelector('#userMessagesView .bar-footer');
@@ -57,6 +65,7 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
 
     $scope.$on('$ionicView.leave', function() {
       
+      alert("leaving the interface");
       // Make sure that the interval is destroyed
       if (angular.isDefined(messageCheckTimer)) {
         $interval.cancel(messageCheckTimer);
@@ -72,34 +81,7 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
       }
     });
 
-    function getMessages() {
-      // the service is mock but you would probably pass the toUser's GUID here
-      MockService.getUserMessages({
-        toUserId: $scope.toUser._id
-		
-      }).then(function(data) {
-        $scope.doneLoading = true;
-        $scope.messages = data.messages;
-		//console.log("getting messages function"+data.messages);
-	//xxxx	
-			
-		
-			/*refChat.orderByChild("id").on("child_added", function(snapshot) {
-			  console.log(snapshot.key() + " was " + snapshot.val()._id + " meters tall");
-			  $scope.messages= snapshot.val();
-			});
-			*/
-	//push
-		  
-		
-	
-		
-	
-        $timeout(function() {
-          viewScroll.scrollBottom();
-        }, 0);
-      });
-    }
+  
 
     $scope.$watch('input.message', function(newValue, oldValue) {
    
@@ -107,9 +89,9 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
          localStorage['userMessage-' + $scope.toUser._id] = newValue;
     });
 
+  
+  
     $scope.sendMessage = function(sendMessageForm) {
-
-
 
 
       var message = {
@@ -117,30 +99,23 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
         text: $scope.input.message
       };
 
-      // if you do a web service call this will be needed as well as before the viewScroll calls
-      // you can't see the effect of this in the browser it needs to be used on a real device
-      // for some reason the one time blur event is not firing in the browser but does on devices
       keepKeyboardOpen();
-      
-      //MockService.sendMessage(message).then(function(data) {
+      	var refChat=new Firebase('https: //snev.firebaseio.com/testchat');
+     
       $scope.input.message = '';
 
       message._id = new Date().getTime(); // :~)
-      message.date = new Date();
+     message.date = new Date().getTime();	
       message.sender = $scope.user.username;
       message.reciever = $scope.user.username;
       message.userId = $scope.user._id;
-      //message.pic = $scope.user.picture;
+    //  message.pic = $scope.user.picture;
 	  message.pic = "https://blog.madmimi.com/wp-content/uploads/2014/06/gary_gravatar.png";
 
       $scope.messages.push(message);
 	     refChat.push(message);
 	  
 
-
-
-  
-	  
       $timeout(function() {
         keepKeyboardOpen();
         viewScroll.scrollBottom(true);
@@ -194,7 +169,7 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
       });
     };
 
-    // this prob seems weird here but I have reasons for this in my app, secret!
+    
     $scope.viewProfile = function(msg) {
       if (msg.userId === $scope.user._id) {
         // go to your profile
@@ -364,5 +339,3 @@ function getMockMessages() {
 //     yy: "%d years"
 //   }
 // });
-
-  
