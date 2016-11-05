@@ -1882,16 +1882,17 @@ $scope.ToggleCompleted = function(toStatus){
 	var ref = new Firebase('https://snev.firebaseio.com/profile');
  var key=$localStorage.userkey;
 
-	ref.orderByKey().equalTo(key).on("value", function(snapshot,prevChildKey) {
+	ref.orderByKey().equalTo(key).once("value", function(snapshot,prevChildKey) {
 	
-		  $scope.$apply(function(){
+		  
 		   	$scope.myprofile = snapshot.val();
-			
-			});
+		
 		});
 
   })
 
+
+  
 
 // loading profile 
 
@@ -2423,27 +2424,19 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 //loading friendlist 
-.controller('friendslistCntrl', function($scope, $http, $state,$ionicPopup,$firebaseArray, $localStorage,$location,$firebase) {
+.controller('friendslistCntrl', function($scope, $http, $ionicPopup,$firebaseArray, $localStorage,$location) {
 
- 
-     
-  var username= $localStorage.username;
-	$scope.name=username;
+ var ref = new Firebase("https://snev.firebaseio.com/profile/"+$localStorage.userkey);
+var refChild=ref.child("friends");
+		$scope.myprofile = $firebaseArray(ref);
+		console.log($firebaseArray(refChild));
+		 $scope.friends = $firebaseArray(refChild);
+
+  
 
 
-  var ref = new Firebase("https://snev.firebaseio.com/profile");
 
-			
-				ref.orderByChild("name").equalTo(username).on("child_added", function(mysnapshot) {
-							var userkey = mysnapshot.key();
-							
-										var reprofile= new Firebase('https://snev.firebaseio.com/profile/'+userkey+'/friends');
-											var profile= new Firebase('https://snev.firebaseio.com/profile/'+userkey);
-										$scope.friends = $firebaseArray(reprofile);
-											$scope.myprofile = $firebaseArray(profile);
-										
-
-				})
+		
 
 				//set selected profile
 				$scope.setFProfile = function(selectedprofz) {
@@ -2469,6 +2462,10 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 	})
+
+
+
+
 
 	
 //loading loadUsers 
