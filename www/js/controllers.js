@@ -114,7 +114,6 @@ angular.module('app.controllers', [])
 	$scope.$on('$ionicView.beforeEnter', function() {
 		
 			if ($state.current.name=="app.home" || $state.current.name=="app.adminHomepage") {
-				if(checkonce){
 					var interval = setInterval(function(){
 
 					   
@@ -128,21 +127,13 @@ angular.module('app.controllers', [])
 						clearInterval(interval);
 						}
 						
-						var ref = new Firebase('https://snev.firebaseio.com/profile');
-						var key=$localStorage.userkey;
-
-						ref.orderByKey().equalTo(key).once("value", function(snapshot,prevChildKey) {
-						
-							  
-								$scope.myprofile = snapshot.val();
-							
-							});
+					$scope.name=$localStorage.username;
+					$scope.gravatar=$localStorage.userimage;
 							
 						
 					}, 1000);
 				
-						checkonce=false;
-				}
+			
 			}
 	
 		});
@@ -153,7 +144,6 @@ angular.module('app.controllers', [])
 			$window.localStorage.clear();
 			$ionicHistory.clearCache();
 			$ionicHistory.clearHistory();
-			checkonce=true;
   }
 
 
