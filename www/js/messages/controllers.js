@@ -190,6 +190,50 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
       });
     };
 
+
+    	var addMessage = function (message) {
+
+        alert("image selected");
+			message._id = new Date().getTime(); // :~)
+			message.date = new Date();
+			message.username = $scope.user.username;
+			message.userId = $scope.user._id;
+			message.pic = $scope.user.picture;
+			$scope.messages.push(message);
+		};
+
+var lastPhoto = 'img/donut.png';
+
+		$scope.sendPhoto = function () {
+			$ionicActionSheet.show({
+				buttons: [
+					{ text: 'Take Photo' },
+					{ text: 'Photo from Library' }
+				],
+				titleText: 'Upload image',
+				cancelText: 'Cancel',
+				buttonClicked: function (index) {
+					
+					var message = {
+						toId: $scope.toUser._id,
+						photo: lastPhoto
+					};
+					lastPhoto = lastPhoto === 'img/donut.png' ? 'img/woho.png' : 'img/donut.png';
+					alert(lastPhoto);
+          
+          addMessage(message);
+
+					$timeout(function () {
+					//	var message = MockService.getMockMessage();
+				//		message.date = new Date();
+					//	$scope.messages.push(message);
+					}, 2000);
+					return true;
+				}
+			});
+		};
+
+
     
     $scope.viewProfile = function(msg) {
       if (msg.userId === $scope.user._id) {

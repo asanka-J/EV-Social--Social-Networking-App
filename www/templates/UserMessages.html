@@ -40,9 +40,8 @@
               
                 <div class="chat-bubble right">
 
-                    <div class="message" ng-bind-html="message.text | nl2br" autolinker>
-                    </div>
-
+                    <div class="message" ng-bind-html="message.text | nl2br" autolinker> </div>
+                    <img  style="width:100px" ng-if="message.photo" ng-src="{{message.photo}}" ng-success="refreshScroll(scrollDown)">          
                     <div class="message-detail">
                         <span ng-click="viewProfile(message)" 
                             class="bold">{{user.username}}</span>, 
@@ -58,7 +57,7 @@
         </div>
 
              
-            <div ng-if="typing==true">
+            <div ng-if="">
                 
               <img  class="profile-pic " 
                     ng-src="https://www.zap-map.com/engine/wp-content/uploads/2014/02/screen001-9cf1943e.jpg"/>
@@ -73,16 +72,18 @@
             <label class="item-input-wrapper">
                 <textarea ng-model="input.message" value="" placeholder="Send {{toUser.username}} a message..." required minlength="1" maxlength="1500" msd-elastic></textarea>
             </label>
-            <div class="footer-btn-wrap">
-              <button class="button button-icon icon ion-android-send footer-btn" type="submit"
-                  ng-disabled="!input.message || input.message === ''">
-              </button>
-            </div>
+           <div class="footer-btn-wrap">
+        <!--<button class="button button-icon icon ion-images button-dark button-clear photo" type="button" ng-if="!input.message || input.message === ''" on-tap="sendPhoto()"></button>-->
+         <input type="file" name="file" ng-model="file" ng-if="!input.message || input.message === ''" on-tap="sendPhoto()" class="button button-icon icon ion-images button-dark button-clear photo" id="nameImg" accept="image/*" >
+		
+        <button class="button button-icon icon ion-android-send footer-btn" type="submit" ng-disabled="!input.message || input.message === ''"></button>
+        <a ng-click="refreshScroll(true, 50)" ng-show="!scrollDown" class="scrollDownBtn button button-icon icon ion-android-arrow-dropdown-circle"></a>
+      </div>
         </ion-footer-bar>
     </form>
     
 </ion-view>
 
     <link href="css/privateChat.css" rel="stylesheet">
-     <link href="css/PrivateMessagingtyping.css" rel="stylesheet">
+   
     
