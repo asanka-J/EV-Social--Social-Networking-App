@@ -75,7 +75,7 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
 
       messageCheckTimer = $interval(function() {
 
-
+        viewScroll.scrollBottom();
 
 
       }, 20000);
@@ -83,7 +83,7 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
 
     $scope.$on('$ionicView.leave', function() {
       
-      alert("leaving the interface");
+    //  alert("leaving the interface");
       // Make sure that the interval is destroyed
       if (angular.isDefined(messageCheckTimer)) {
         $interval.cancel(messageCheckTimer);
@@ -105,7 +105,7 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
    
       if (!newValue) newValue = '';
          localStorage['userMessage-' + $scope.toUser._id] = newValue;
-         
+        // alert(newValue);
     });
 
   
@@ -134,7 +134,7 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
 	  message.pic = "https://blog.madmimi.com/wp-content/uploads/2014/06/gary_gravatar.png";
 
     //  $scope.messages.push(message);
-	     refChat.push(message);
+	     refChat.push(message).then($scope.input.message="");
 	  
 
       $timeout(function() {
@@ -143,7 +143,7 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
       }, 0);
 
       $timeout(function() {
-        $scope.messages.push(MockService.getMockMessage());
+      //  $scope.messages.push(MockService.getMockMessage());
         keepKeyboardOpen();
         viewScroll.scrollBottom(true);
       }, 2000);

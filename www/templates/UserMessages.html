@@ -52,10 +52,20 @@
                 </div>
               
             </div>
-
+             
             <div class="cf"></div>
 
         </div>
+
+             
+            <div ng-if="typing==true">
+                
+              <img  class="profile-pic " 
+                    ng-src="https://www.zap-map.com/engine/wp-content/uploads/2014/02/screen001-9cf1943e.jpg"/>
+
+               
+            </div>
+
     </ion-content>
 
     <form name="sendMessageForm" ng-submit="sendMessage(sendMessageForm)" novalidate>
@@ -74,3 +84,5 @@
 </ion-view>
 
     <link href="css/privateChat.css" rel="stylesheet">
+     <link href="css/PrivateMessagingtyping.css" rel="stylesheet">
+    
