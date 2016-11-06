@@ -170,21 +170,20 @@ angular.module('app.controllers', [])
 	
 
 	
-  var ref = new Firebase(FURL);
-	 var presence = new Firebase('https://snev.firebaseio.com/precence');
+ 	var ref = new Firebase('https://snev.firebaseio.com/profile');
+
+		ref.orderByChild("name").equalTo($localStorage.username).once("child_added", function(snapshot) {
+				var keyy =snapshot.key();
+				ref.child(keyy).child("onlineOffline").set({status:"online",lastSeenAt:Firebase.ServerValue.TIMESTAMP});	
+				});
+
+
+
+
 
 		
 			//managing logout presence- user control					
 			
-			presence.orderByChild("username").equalTo($localStorage.username).on("child_added", function(snapshot) {
-                        var userKey = snapshot.key();
-
-													 presence.child(userKey).set({ 'username': $localStorage.username, 'Status':'online','lastSeenAt':Firebase.ServerValue.TIMESTAMP });
-				 });
-  
-
-
-
     $scope.username=$localStorage.username;
 })
 

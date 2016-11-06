@@ -178,6 +178,15 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
             case 1: // Delete
               // no server side secrets here :~)
               $scope.messages.splice(itemIndex, 1);
+              //**************DELETE MESSAGE *************************************
+              
+              // var redDelete=new Firebase('https: //snev.firebaseio.com/testchat');
+              //    redDelete.orderByChild("message").equalTo(message).on("child_added", function(snapshot) {
+					    //       var value=snapshot.key();
+              //       alert(value);
+              // })
+              //******************************************************************
+
               $timeout(function() {
                 viewScroll.resize();
               }, 0);

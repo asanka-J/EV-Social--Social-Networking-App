@@ -16,6 +16,9 @@
         "cordova-plugin-geolocation": {
             "PACKAGE_NAME": "com.ionicframework.sepproject560103"
         },
+        "cordova-plugin-image-picker": {
+            "PACKAGE_NAME": "com.ionicframework.sepproject560103"
+        },
         "cordova-plugin-network-information": {
             "PACKAGE_NAME": "com.ionicframework.sepproject560103"
         },
