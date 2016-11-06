@@ -9,17 +9,18 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
     $ionicPopup, $ionicScrollDelegate, $timeout, $interval,$localStorage, $firebaseArray) {
 
 
-
+      $scope.chatkey=localStorage.chatKey;
+      //alert($scope.chatkey);
     // mock acquiring data via $stateParams
     $scope.toUser = {
       _id: '534b8e5aaa5e7afc1b23e69b',
       pic: 'http://ionicframework.com/img/docs/venkman.jpg',
       username:localStorage.sendTo,
     }
-
+//alert(localStorage.fromUserKey);
     // this could be on $rootScope rather than in $stateParams
     $scope.user = {
-      _id: '534b8fb2aa5e7afc1b23e69c',
+      _id: localStorage.fromUserKey,
       pic: 'http://ionicframework.com/img/docs/mcfly.jpg',
       username:localStorage.fromUser,
     };
@@ -38,19 +39,33 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
     $scope.$on('$ionicView.enter', function() {
       
             
-          var refChat=new Firebase('https: //snev.firebaseio.com/testchat');
+         var refChat=new Firebase('https: //snev.firebaseio.com/testchat/'+$scope.chatkey);
           
           
            var a=[];
+           
+      
               refChat.once('value', function(snapshot) {
+                   // console.log(snapshot.val());
                     snapshot.forEach(function(vote) {
+                    
                     a.push(vote.val());
+                     
                     });
                   
                 })
-                  $scope.messages=a;
                   
-    
+                  $scope.messages=a;
+
+
+              refChat.orderByChild("_id")
+                .limitToLast(1)
+                .on("child_added", function(dsnapshot) {
+                    var message = dsnapshot.val();
+               $scope.messages.push(message);
+                })
+
+   
       
       $timeout(function() {
         footerBar = document.body.querySelector('#userMessagesView .bar-footer');
@@ -59,7 +74,10 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
       }, 0);
 
       messageCheckTimer = $interval(function() {
-        // here you could check for new messages if your app doesn't use push notifications or user disabled them
+
+
+
+
       }, 20000);
     });
 
@@ -87,6 +105,7 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
    
       if (!newValue) newValue = '';
          localStorage['userMessage-' + $scope.toUser._id] = newValue;
+         
     });
 
   
@@ -100,19 +119,21 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
       };
 
       keepKeyboardOpen();
-      	var refChat=new Firebase('https: //snev.firebaseio.com/testchat');
+      
+
+      var refChat=new Firebase('https: //snev.firebaseio.com/testchat/'+$scope.chatkey);
      
       $scope.input.message = '';
 
       message._id = new Date().getTime(); // :~)
      message.date = new Date().getTime();	
       message.sender = $scope.user.username;
-      message.reciever = $scope.user.username;
+      message.reciever = $scope.toUser.username;
       message.userId = $scope.user._id;
     //  message.pic = $scope.user.picture;
 	  message.pic = "https://blog.madmimi.com/wp-content/uploads/2014/06/gary_gravatar.png";
 
-      $scope.messages.push(message);
+    //  $scope.messages.push(message);
 	     refChat.push(message);
 	  
 
@@ -207,7 +228,7 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
       var deferred = $q.defer();
       
 		 setTimeout(function() {
-      	deferred.resolve(getMockMessages());
+     // 	deferred.resolve(getMockMessages());
 	    }, 1500);
       
       return deferred.promise;

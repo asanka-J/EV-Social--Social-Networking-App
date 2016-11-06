@@ -2323,6 +2323,7 @@ $scope.ToggleCompleted = function(toStatus){
 //loading friendlist 
 .controller('friendslistCntrl', function($scope, $http, $ionicPopup,$firebaseArray, $localStorage,$location) {
 		var username=$localStorage.username;
+		var userKey=$localStorage.userkey;
  var ref = new Firebase("https://snev.firebaseio.com/profile/"+$localStorage.userkey);
 var refChild=ref.child("friends");
 		$scope.myprofile = $firebaseArray(ref);
@@ -2345,6 +2346,38 @@ var refChild=ref.child("friends");
 				localStorage['sendTo']=selectedprofz ;
 			//	loaclStorage['userId']=$localStorage.uid;
 				localStorage['fromUser']=username;
+				localStorage['fromUserKey']=userKey;
+				localStorage['chatKey']=keyGen(username,selectedprofz);
+						
+						
+						function keyGen(uname,selctdProf){//my custom fucnction
+
+							var str1 = uname;
+							var str2=selctdProf;
+							var str=str1+str2;
+							var n=0;
+								var str11 = str1.charCodeAt(0);
+								var str22 = str2.charCodeAt(0);
+								var start="";
+								if(str11>str22){
+									
+									var start=str1.charAt(0)+str2.charAt(0);
+								}else{
+									var start=str2.charAt(0)+str1.charAt(0);
+								}
+							
+
+							for(var i=0;i<str.length;i++){
+
+					
+										var n = n + str.charCodeAt(i);
+								}
+						
+						return (start+n);
+						}
+							
+					
+
 				$location.path("/app/UserMessages");
 			//	console.log("UserMessages");
 				
