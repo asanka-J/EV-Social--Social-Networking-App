@@ -13,24 +13,21 @@
             
             <img id="profile-image" ng-src="{{myprofile.gravatar}}">
 
-            <div class="post-time">
-              
-         
-
-          <p>Member since {{myprofile.registered_in}}</p>
-      
+            <div style="float:right" class="post-time">
+          
+          <p>Member since {{myprofile.registered_in | date:'d MMM yyyy'}}</p>
+           <label ng-if="   myprofile.onlineOffline.status=='offline'"> <i class="icon ion-record assertive">   {{myprofile.onlineOffline.status}}  
+              Last online at {{myprofile.onlineOffline.lastSeenAt | date:'d MMM yyyy'}}</i></label>
+            <label ng-if="   myprofile.onlineOffline.status=='online'"> <i class="icon ion-record balanced">   {{myprofile.onlineOffline.status}}  now</i></label>
             </div>
             
             
           </ion-item> 
             
             
-            <!--<button class="button" ng-click="doSomething()">
-        | Change profile pic |</button>-->
-
           <h3 id="profile-name" ng-model="name">User Name : {{myprofile.name}}</h3>
-            <!--<h3 id="profile-name" ng-model="registeredIn">registered date : {{myprofile.registered_in}}</h3>
-            -->
+         
+           
      
           
         </div>
@@ -54,8 +51,7 @@
        </div>
            
        
-          <span id="profile-description"  class="item item-text-wrap">{{myprofile.description}}psum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
-             type specimen book. </span>
+          <span id="profile-description"  class="item item-text-wrap">{{myprofile.description}}</span>
          </div>
 
             
