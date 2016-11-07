@@ -2198,7 +2198,7 @@ $scope.ToggleCompleted = function(toStatus){
 
 // edit profile
 
-.controller('editProfile', function($scope ,$ionicPopup, $localStorage,$firebaseArray,$location){
+.controller('editProfile', function($scope ,$ionicPopup, $localStorage,$firebaseArray,$location,$timeout){
 
 	var ref = new Firebase('https://snev.firebaseio.com/profile');
   var username=$localStorage.username;
@@ -2271,13 +2271,13 @@ $scope.ToggleCompleted = function(toStatus){
 			
         });
 
-
-	
-
-        var alertPopup = $ionicPopup.alert({
+    var alertPopup = $ionicPopup.alert({
         title: 'Successful! <i class="ion-checkmark-round"></i>',
         template:'You have Successfuly Updated'
-         });
+         }).then($timeout(function() {
+			$location.path("/app/profile")
+			}, 3000)
+			);
 
 	 
 
