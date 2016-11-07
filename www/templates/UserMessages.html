@@ -1,6 +1,6 @@
 <ion-view id="userMessagesView"
     cache-view="false" 
-    view-title="<i class='icon ion-chatbubble user-messages-top-icon'></i> <div class='msg-header-username'>Private chat</div>">
+    view-title=" {{toUser.username}} Private chat">
   
   <div class="loader-center" ng-if="!doneLoading">
       <div class="loader">
@@ -68,11 +68,14 @@
     </ion-content>
 
     <form name="sendMessageForm" ng-submit="sendMessage(sendMessageForm)" novalidate>
+        
         <ion-footer-bar class="bar-stable item-input-inset message-footer" keyboard-attach>
+        
             <label class="item-input-wrapper">
                 <textarea ng-model="input.message" value="" placeholder="Send {{toUser.username}} a message..." required minlength="1" maxlength="1500" msd-elastic></textarea>
             </label>
            <div class="footer-btn-wrap">
+ 
         <button class="button button-icon icon ion-images button-dark button-clear photo" type="button" ng-if="!input.message || input.message === ''" on-tap="sendPhoto()"></button>
        
 		

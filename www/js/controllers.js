@@ -193,7 +193,7 @@ angular.module('app.controllers', [])
 
 .controller('loginController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils,$ionicSideMenuDelegate,$ionicPlatform) {
   var ref = new Firebase(FURL);
-	var presence = new Firebase('https://snev.firebaseio.com/precence');
+
   var userkey = "";
 							
 								$scope.signIn = function (user) { 
@@ -222,7 +222,15 @@ angular.module('app.controllers', [])
 												$localStorage.uregdate=obj.registered_in;
 												$localStorage.userkey = userkey;
 
-												Utils.hide();
+
+
+																var presLogin = new Firebase('https://snev.firebaseio.com/profile');
+
+																
+																		presLogin.child(userkey).child("onlineOffline").set({status:"online",lastSeenAt:Firebase.ServerValue.TIMESTAMP});	
+																	
+																		
+																		Utils.hide();
 												
                        
 												if($localStorage.useremail=="admin@gmail.com")
@@ -635,7 +643,7 @@ $scope.cmonth = month[$scope.cmonthNum];
 						
 						if(station_status.user_id==""){
 							status_id=snapshot.key();
-							console.log();
+							
 							firebaseObj.child(status_id).update({user_id: uid});
 						}
 						if(station_status.user_id==uid){
@@ -1672,7 +1680,7 @@ $scope.ToggleCompleted = function(toStatus){
                 "textAreaFileContents"
               );
 
-
+			
               $scope.imgs.$add({
                 					timeStamp: Firebase.ServerValue.TIMESTAMP,
                 					image: fileLoadedEvent.target.result,
@@ -1977,7 +1985,9 @@ $scope.ToggleCompleted = function(toStatus){
 												var path='https://snev.firebaseio.com/profile/'+userkey+'/gravatar';
 												var tempref = new Firebase(path);
 												tempref.once("value", function(imagesnapshot) {
+													
 													var userImage=imagesnapshot.val();
+
 												 
 													var reprofile= new Firebase('https://snev.firebaseio.com/profile/'+profilekey+'/friends');
 																	
@@ -2054,16 +2064,7 @@ $scope.ToggleCompleted = function(toStatus){
 				});
 
 
-				$scope.msg = function(selectedprofz) {//set selected profile
-
-				$localStorage.setFname=selectedprofz;
-				localStorage['sendTo']=selectedprofz ;
-			//	loaclStorage['userId']=$localStorage.uid;
-				localStorage['fromUser']=name;
-				$location.path("/app/UserMessages");
-				//console.log("UserMessages");
 				
- 				 }
 
 				    $scope.call = function () {
 							//alert($localStorage.mobileno);
@@ -2090,10 +2091,11 @@ $scope.ToggleCompleted = function(toStatus){
 											ref.orderByChild("name").equalTo($localStorage.username).once("child_added", function(mysnapshot) {
 												var userkey = mysnapshot.key();
 														
-												var path='https://snev.firebaseio.com/profile/'+userkey+'/gravatar';
+												var path='https://snev.firebaseio.com/profile/'+userkey;
 												var tempref = new Firebase(path);
 												tempref.once("value", function(imagesnapshot) {
-													var userImage=imagesnapshot.val();
+													var userImage=imagesnapshot.val().gravatar;
+													var secondname=imagesnapshot.val().sname;
 												 
 													var reprofile= new Firebase('https://snev.firebaseio.com/profile/'+profilekey+'/friends');
 																	
@@ -2101,7 +2103,7 @@ $scope.ToggleCompleted = function(toStatus){
 										reprofile.orderByChild("name").equalTo($localStorage.username).once("value", function(snapshot) {										
 													userkey = snapshot.val();
 											if(userkey==null){
-														reprofile.push({ 'name': $localStorage.username, 'image':userImage });
+														reprofile.push({ 'name': $localStorage.username,sname:secondname, 'image':userImage });
 														// .then(alert("sucessfully added"));//add my image
 														alert("you are now following "+follower);
 												  
@@ -2134,6 +2136,51 @@ $scope.ToggleCompleted = function(toStatus){
 																	}
 						
 						}
+
+						//private message with selected user
+						
+				  var username=$localStorage.username;
+				var userKey=$localStorage.userkey;
+									//set selected profile
+				$scope.message = function(selectedprofz) {
+				$localStorage.setFname=selectedprofz;
+				localStorage['sendTo']=selectedprofz ;
+			//	loaclStorage['userId']=$localStorage.uid;
+				localStorage['fromUser']=username;
+				localStorage['fromUserKey']=userKey;
+				localStorage['chatKey']=keyGen(username,selectedprofz);
+						
+						
+						function keyGen(uname,selctdProf){//my custom fucnction
+
+							var str1 = uname;
+							var str2=selctdProf;
+							var str=str1+str2;
+							var n=0;
+								var str11 = str1.charCodeAt(0);
+								var str22 = str2.charCodeAt(0);
+								var start="";
+								if(str11>str22){
+									
+									var start=str1.charAt(0)+str2.charAt(0);
+								}else{
+									var start=str2.charAt(0)+str1.charAt(0);
+								}
+							
+
+							for(var i=0;i<str.length;i++){
+
+					
+										var n = n + str.charCodeAt(i);
+								}
+						
+						return (start+n);
+						}
+					
+				$location.path("/app/UserMessages");
+			
+				
+ 				 }
 
 
 													
@@ -2332,7 +2379,7 @@ var refChild=ref.child("friends");
 	//	console.log($firebaseArray(refChild));
 		 $scope.friends = $firebaseArray(refChild);
 
-  
+		 console.log( $firebaseArray(refChild));
 
 				//set selected profile
 				$scope.setFProfile = function(selectedprofz) {
@@ -2342,6 +2389,7 @@ var refChild=ref.child("friends");
 				
  				 }
 
+				  
 									//set selected profile
 				$scope.message = function(selectedprofz) {
 				$localStorage.setFname=selectedprofz;
@@ -2381,7 +2429,7 @@ var refChild=ref.child("friends");
 					
 
 				$location.path("/app/UserMessages");
-			//	console.log("UserMessages");
+			
 				
  				 }
 

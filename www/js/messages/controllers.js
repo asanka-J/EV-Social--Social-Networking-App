@@ -6,7 +6,9 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
   '$ionicPopup', '$ionicScrollDelegate', '$timeout', '$interval',
   function($scope, $rootScope, $state, $stateParams, MockService,
     $ionicActionSheet,
-    $ionicPopup, $ionicScrollDelegate, $timeout, $interval,$localStorage, $firebaseArray) {
+    $ionicPopup, $ionicScrollDelegate,$timeout, $interval,$localStorage, $firebaseArray) {
+
+
 
 
       $scope.chatkey=localStorage.chatKey;
@@ -37,7 +39,7 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
     var txtInput; // ^^^
 
     $scope.$on('$ionicView.enter', function() {
-      
+     
             
          var refChat=new Firebase('https: //snev.firebaseio.com/testchat/'+$scope.chatkey);
           
@@ -65,7 +67,7 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
                $scope.messages.push(message);
                 })
 
-   
+    
       
       $timeout(function() {
         footerBar = document.body.querySelector('#userMessagesView .bar-footer');
@@ -75,10 +77,10 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
 
       messageCheckTimer = $interval(function() {
 
-        viewScroll.scrollBottom();
+        viewScroll.scrollBottom(true);
 
 
-      }, 20000);
+      }, 100);
     });
 
     $scope.$on('$ionicView.leave', function() {
@@ -88,6 +90,7 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
       if (angular.isDefined(messageCheckTimer)) {
         $interval.cancel(messageCheckTimer);
         messageCheckTimer = undefined;
+        $scope.input.message="";
       }
     });
     
@@ -95,7 +98,7 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
     $scope.$on('$ionicView.beforeLeave', function() {
       if (!$scope.input.message || $scope.input.message === '') {
         localStorage.removeItem('userMessage-' + $scope.toUser._id);
-       // alert("leaving");
+
       }
     });
 

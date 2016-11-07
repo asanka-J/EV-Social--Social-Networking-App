@@ -33,8 +33,8 @@
         
               <ion-list show-delete="false" ng-repeat="friend in friends | filter : search " can-swipe="true">
                     <ion-item href="#">
-                            <img style="border-radius:50%;  width: 30px; height: 30px;" ng-src="{{friend.image}}">
-                          <label >&thinsp;&thinsp;{{friend.name}}</label>
+                            <img style="border-radius:50%;  width: 30px; height: 30px;" ng-src="{{friend.image}}"> 
+                          <label >&thinsp;&thinsp;{{friend.name}}   {{friend.sname}} <i class="icon ion-record balanced" style="float:right;"></i> </label>
                         <ion-option-button class="button-assertive icon ion-android-person" ng-click="setFProfile(friend.name)">View Profile</ion-option-button>
                          <ion-option-button class="button-light  icon ion-android-mail" ng-click="message(friend.name)">Message</ion-option-button>
                     </ion-item>
