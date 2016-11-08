@@ -2,7 +2,7 @@
 <ion-view  view-title="Friends profile page">
 
   
-    <ion-content has-header="true" ng-controller="loadFProfileCtrl">
+    <ion-content has-header="true" ng-controller="loadFProfileCtrl" style="background: url(img/postbackground.jpg) no-repeat center;background-size:cover;">
      <div ng-repeat="myprofile in myprofile">
      
       <div id="profile-bg"></div>
@@ -36,13 +36,12 @@
              <button class="button button-positive  button-block icon ion-android-contacts" id="page2-button33"  ng-click="follow(myprofile.name)">  Follow</button>
        
            <button  class="button button-positive  button-block icon ion-email" ng-click="message(myprofile.name)" id="page2-button34">  message</button>
-             <button class="button button-positive  button-block" ng-click="call()">
-                    Call  <i class="icon ion-android-call"></i>
-                    </button>
+            
+                    <button class="button button-positive  button-block icon ion-android-call" ng-click="call()"> Call  </button> 
                   
-                  <button class="button button-positive  button-block" ng-click="mail()">
+                  <button class="button button-positive  button-block icon ion-ios-email" ng-click="mail()">
                     E-mail 
-                    <i class="icon ion-ios-email"></i>
+
                   </button> 
          
 
@@ -76,7 +75,7 @@
       
 
   </div>
-  
+    <div class="item item-divider" style=" opacity:0"> <div class="padding"> </div></div>  <div class="item item-divider" style=" opacity:0"> <div class="padding"> </div></div>  <div class="item item-divider" style=" opacity:0"> <div class="padding"> </div></div>
   
     </ion-content>
 

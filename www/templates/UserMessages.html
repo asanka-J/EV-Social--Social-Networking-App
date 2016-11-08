@@ -8,7 +8,7 @@
       </div>
   </div>
 
-    <ion-content has-bouncing="true" class="has-header has-footer" 
+    <ion-content has-bouncing="true" class="has-header has-footer"   style="background: url(img/chatB.jpg) no-repeat center;background-size:cover;"
         delegate-handle="userMessageScroll">
       
         <div ng-repeat="message in messages" class="message-wrapper"
@@ -57,12 +57,10 @@
         </div>
 
              
-            <div ng-if="">
+            <div ng-if="chatStat!='' " >
                 
-              <img  class="profile-pic " 
-                    ng-src="https://www.zap-map.com/engine/wp-content/uploads/2014/02/screen001-9cf1943e.jpg"/>
-
-               
+              {{toUser.username}} is  <img   ng-src="img/typing.gif"/>
+   
             </div>
 
     </ion-content>

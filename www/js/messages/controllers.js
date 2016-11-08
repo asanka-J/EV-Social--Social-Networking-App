@@ -66,6 +66,8 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
                     var message = dsnapshot.val();
                $scope.messages.push(message);
                 })
+                
+               
 
     
       
@@ -78,14 +80,18 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
       messageCheckTimer = $interval(function() {
 
         viewScroll.scrollBottom(true);
-
+             refChat.child("typingStat").child(localStorage.sendTo).on("child_changed", function(chatsnapshot) {
+                    var chatt = chatsnapshot.val();
+                    $scope.chatStat=chatt;
+                   
+                })
 
       }, 100);
     });
 
     $scope.$on('$ionicView.leave', function() {
       
-    //  alert("leaving the interface");
+    
       // Make sure that the interval is destroyed
       if (angular.isDefined(messageCheckTimer)) {
         $interval.cancel(messageCheckTimer);
@@ -105,10 +111,13 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
   
 
     $scope.$watch('input.message', function(newValue, oldValue) {
-   
+           var refChatstat=new Firebase('https: //snev.firebaseio.com/testchat/'+$scope.chatkey);
       if (!newValue) newValue = '';
          localStorage['userMessage-' + $scope.toUser._id] = newValue;
-        // alert(newValue);
+
+	    refChatstat.child("typingStat").child(localStorage.fromUser).set({typing:newValue});
+      
+	  
     });
 
   
@@ -125,7 +134,7 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
       
 
       var refChat=new Firebase('https: //snev.firebaseio.com/testchat/'+$scope.chatkey);
-     
+    
       $scope.input.message = '';
 
       message._id = new Date().getTime(); // :~)
@@ -138,8 +147,8 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
 
     //  $scope.messages.push(message);
 	     refChat.push(message).then($scope.input.message="");
-	  
-
+       
+	     
       $timeout(function() {
         keepKeyboardOpen();
         viewScroll.scrollBottom(true);
@@ -158,7 +167,7 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
     function keepKeyboardOpen() {
       
       txtInput.one('blur', function() {
-       
+      
         txtInput[0].focus();
       });
     }

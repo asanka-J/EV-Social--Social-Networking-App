@@ -1783,6 +1783,7 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 
+
 //get selected post and store
 .controller('newselect', function($scope ,$ionicPopup,$location,$window,$localStorage,$state) {
 
@@ -2370,7 +2371,7 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 //loading friendlist 
-.controller('friendslistCntrl', function($scope, $http, $ionicPopup,$firebaseArray, $localStorage,$location) {
+.controller('friendslistCntrl', function($scope, $http, $ionicPopup,$firebaseArray, $localStorage,$location,$ionicLoading) {
 		var username=$localStorage.username;
 		var userKey=$localStorage.userkey;
  var ref = new Firebase("https://snev.firebaseio.com/profile/"+$localStorage.userkey);
@@ -2426,9 +2427,14 @@ var refChild=ref.child("friends");
 						return (start+n);
 						}
 							
-					
+					$ionicLoading.show({
+						template: '<p>Loading Chat  </p><ion-spinner class="spinner-energized"></ion-spinner>'
 
-				$location.path("/app/UserMessages");
+,
+						duration: 4500
+						}).then( $location.path("/app/UserMessages")  );
+
+				
 			
 				
  				 }

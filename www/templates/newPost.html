@@ -1,5 +1,5 @@
 <ion-view title="New Post" id="page23" class=" ">
-    <ion-content padding="true" scroll="false" >
+    <ion-content padding="true" scroll="false"  style="background: url(img/postbackground.jpg) no-repeat center;background-size:cover;">
       <div ng-controller="newPostController">
 
 
@@ -17,7 +17,7 @@
                 <!--<img src="{{imageload}}" alt="">-->
 
             <label class="item item-input " id="newPost-textarea2" name="Descrip">
-                <textarea placeholder="Description" ng-model="description" name="description" required></textarea>
+                <textarea placeholder="Description" style=" height: 200px;" ng-model="description" name="description" required></textarea>
             </label>
 			<span style="color:red" ng-show="newPostForm.$submitted && newPostForm.description.$error.required">Description is required</span>
 
