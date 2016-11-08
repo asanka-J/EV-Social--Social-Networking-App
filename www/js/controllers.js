@@ -17,8 +17,11 @@ angular.module('app.controllers', [])
 
 .controller('vehiclepartsControllerNew', function($rootScope,$scope,$state,VechileFactory,$ionicModal, Auth, $stateParams) {
 	$scope.selectedParts = VechileFactory.getParts();
+	$scope.selectedPartsTotal = 0;
+	angular.forEach(VechileFactory.getParts(), function(part) {
+			$scope.selectedPartsTotal += !isNaN(part.price) ? part.price : 0;
+		});
 	$scope.partDetail = {};
-
 
 	$scope.init = function() {
 		$scope.parts = [];
@@ -37,9 +40,11 @@ angular.module('app.controllers', [])
 	    if (index > -1) {
 	        VechileFactory.removeParts(index);
 	        part.isCart = false;
+	        $scope.selectedPartsTotal -= !isNaN(part.price) ? part.price : 0;
 	    } else {
 	        VechileFactory.addParts(part);
 	        part.isCart = true;
+	        $scope.selectedPartsTotal += !isNaN(part.price) ? part.price : 0;
 	    }
 	}
 
