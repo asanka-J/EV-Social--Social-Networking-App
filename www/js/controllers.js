@@ -2571,6 +2571,15 @@ var refChild=ref.child("friends");
 		};
 		
  })
+ //view appointment History
+.controller('viewAppointmentHistoryCtrl', function($scope, $http, $firebaseArray) {
+	
+	var refappHistory = new Firebase('https://snev.firebaseio.com/make_apointments');
+	$scope.reports = $firebaseArray(refappHistory);
+	console.log('$scope.reports');
+	
+
+})
 
 //view user records
 .controller('adminUserRecordsCtrl', function($scope) {
