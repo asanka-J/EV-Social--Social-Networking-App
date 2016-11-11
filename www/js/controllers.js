@@ -2498,7 +2498,7 @@ var refChild=ref.child("friends");
 
 
 //Make Appointment
- .controller ('makeAppointmentCtrl' , function($scope, $http, $state,$ionicPopup,$firebaseArray, $localStorage) {
+ .controller ('makeAppointmentCtrl' , function($scope, $http, $state,$ionicPopup,$firebaseArray, $localStorage,$cordovaSms,$ionicPlatform) {
  
  $scope.cname = $localStorage.username;
   $scope.vRegNum=$localStorage.licenceplate;
@@ -2540,6 +2540,28 @@ var refChild=ref.child("friends");
 		title: 'Successful! <i class="ion-checkmark-round"></i>',
 		template:'You have Successfuly added the notice' 
 		});
+		
+		
+		 if (window.cordova) {
+		var phoneNo=tele;
+	
+	 var options = {
+            replaceLineBreaks: true, // true to replace \n by a new line, false by default
+            android: {
+                intent: 'INTENT'  // send SMS with the native android SMS messaging
+                //intent: '' // send SMS without open any other app
+            }
+        };
+	
+	$cordovaSms
+      .send(phoneNo, 'Appointment for charging on '+datetime+'requested by '+cname+' the owner of the vehicle '+vRegNum+'.', options)
+      .then(function() {
+        {$ionicPopup.alert({ template: 'sending sms!'});}
+      }, function(error) {
+        {$ionicPopup.alert({ template: 'fail sms!'});}
+      });
+	  
+		 }
 
          $scope.cname="";	
          $scope.tele="";
