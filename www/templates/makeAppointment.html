@@ -8,16 +8,17 @@
 		<div class="list">
 			<form name="makeAppointment" novalidate><!-- Start Form -->
 		<div>
+		
 			<label class="item item-input item-stacked-label">
 				<span class="input-label">Customer Name</span>
-				<input type="text" placeholder="name" name="cname" ng-model="cname" ng-pattern="/[A-Za-z]$/"required>
+				<input type="text" name="cname"  ng-disabled="true" ng-model="cname" ng-pattern="/[A-Za-z]$/"required >
 				<span style="color:red" ng-show="makeAppointment.$submitted && makeAppointment.cname.$error.required">*This field is required!</span> 
 				<span style="color:red" ng-show="makeAppointment.cname.$error.pattern">*Characters Only!</span> <!-- catch the error --> 
 			</label>
   
 			<label class="item item-input item-stacked-label">  
 				<span class="input-label">Contact Number</span>
-				<input type="tel" placeholder="mobile" name="tele" ng-model="tele" ng-pattern="/^[0-9]{1,10}$/" required>
+				<input type="tel" name="tele" ng-model="tele" ng-pattern="/^[0-9]{1,10}$/" required>
 				<span style="color:red" ng-show="makeAppointment.tele.$error.pattern">Not a valid phone number!</span>
 				<span style="color:red" ng-show="makeAppointment.$submitted && makeAppointment.tele.$error.required">*This field is required!</span>
 			
@@ -25,7 +26,7 @@
   
 			<label class="item item-input item-stacked-label">  
 				<span class="input-label">Vehicle Reg Number</span>
-				<input type="text" placeholder="vehical reg number" name="vRegNum" ng-model="vRegNum"  ng-maxlength="8" required>
+				<input type="text" name="vRegNum" ng-model="vRegNum"  ng-maxlength="8" required>
 			<!-- catch the error -->
 				<span style="color:red" ng-show="makeAppointment.$submitted && makeAppointment.vRegNum.$error.required">*This field is required!</span>
 				<!-- <span style="color:red" ng-show="makeAppointment.vRegNum.$error.minlength">length is 10</span> -->
@@ -33,20 +34,20 @@
 			</label>
   
 		<label class="item item-input item-select">
-		<div class="input-label">
+		<div class="input-label"> 
 		Station
 		</div>
 		<!-- <select ng-repeat="station_names in station_name" ng-model="mySelect" ng-change="showSelectValue(mySelect)">
 		<option >{{station_name.name}}</option>
 		</select> -->
-				<select>
+				<select name="station_name"  id="station_name" >
 		<option ng-repeat="x in names">{{x}}</option>
 		</select>
 		</label>
   {{x.name}}
 		<label class="item item-input">
 		<span class="input-label">Date</span>
-		<input id="input" type="text" name="date">
+		<input type="datetime-local" id="datepicker" name="date" ng_model="appdate">
 		</label>
 	
 		</div>
@@ -54,8 +55,11 @@
 			<button class="button button-full button-positive"   ng-click="makeAppointment.$valid && makeAppointmentForm(cname, tele, vRegNum)">
 			Make Appointment
 			</button>
-			<button class="button button-full button-assertive" ng-click="makeAppointmentForm2(cname, tele, vRegNum)">
+			<button id="reset" class="button button-full button-assertive" ng-click="makeAppointmentForm2(cname, tele, vRegNum)">
 			Clear
+			</button>
+			<button class="button button-full button-balanced" ui-sref="app.appHistory" id="appointmentHistory-button">
+			View History
 			</button>
 			
 			</form><!-- End form -->

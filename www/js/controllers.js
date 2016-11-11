@@ -2498,17 +2498,41 @@ var refChild=ref.child("friends");
 
 
 //Make Appointment
- .controller ('makeAppointmentCtrl' , function($scope, $http, $state,$ionicPopup,$firebaseArray) {
-	$scope.makeAppointmentForm = function(cname, tele, vRegNum, station) {
+ .controller ('makeAppointmentCtrl' , function($scope, $http, $state,$ionicPopup,$firebaseArray, $localStorage) {
+ 
+ $scope.cname = $localStorage.username;
+  $scope.vRegNum=$localStorage.licenceplate;
+	 $scope.tele=$localStorage.mobileno;
+		
+ 
+	$scope.makeAppointmentForm = function(cname, tele, vRegNum, appdate) {
 		var makeAppoRef1 = new Firebase('https://snev.firebaseio.com/make_apointments');
 		var makeAppoRef1 = makeAppoRef1.push();
 		
+		  
+		var currentdate=new Date($scope.appdate);
+		var datetime =  currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getFullYear() + " @ "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
+				
+				var x = document.getElementById("station_name").selectedIndex;
+    var y = document.getElementById("station_name").options;
+  var sname=y[x].text;
+				
+
 		
-			
+		
+	
+
+
+		
 		
 		//pass the data to DB ---------------------------------------------------------------
      var noticeID = makeAppoRef1.key();
-       makeAppoRef1.set({ 'cname': cname,   'tele': tele , 'vRegNum': vRegNum});
+       makeAppoRef1.set({ 'cname': cname,   'tele': tele , 'vRegNum': vRegNum,'appdate':datetime,'stationName':sname, 'date':Firebase.ServerValue.TIMESTAMP});
        var path = makeAppoRef1.toString();
 
 		//alert successfully add
@@ -2520,18 +2544,11 @@ var refChild=ref.child("friends");
          $scope.cname="";	
          $scope.tele="";
 		 $scope.vRegNum="";
-		 $scope.date="";
-			
+		 $('#datepicker').val("");
+		
 
 	}
-		//Clear the fields.------------------------------------------------
-		$scope.makeAppointmentForm2 = function(cname, tele, vRegNum) {
-  		$scope.cname="";
-			
-         $scope.tele="";
-		 $scope.vRegNum="";
-		 $scope.date="";
-		};
+		
 		 var list = [];
 		 var fb = new Firebase("https://snev.firebaseio.com/Stations_Details");
 				fb.on('value', function(snapshot){
@@ -2542,8 +2559,18 @@ var refChild=ref.child("friends");
 						});					 
 				});
 		$scope.names=list;
+		
+		
+		
+	//Clear the fields.------------------------------------------------
+		$scope.makeAppointmentForm2 = function(cname, tele, vRegNum) {
+  		$scope.cname="";	
+        $scope.tele="";
+		$scope.vRegNum="";
+		$('#datepicker').val("");
+		};
+		
  })
-
 
 //view user records
 .controller('adminUserRecordsCtrl', function($scope) {
