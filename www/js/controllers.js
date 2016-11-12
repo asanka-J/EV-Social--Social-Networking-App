@@ -149,10 +149,19 @@ angular.module('app.controllers', [])
 
  	var ref = new Firebase('https://snev.firebaseio.com/profile');
 
+	
+	if(!$localStorage.username){
+		
+		
+	}else{
 		ref.orderByChild("name").equalTo($localStorage.username).once("child_added", function(snapshot) {
 				var keyy =snapshot.key();
+				
 				ref.child(keyy).child("onlineOffline").set({status:"offline",lastSeenAt:Firebase.ServerValue.TIMESTAMP});	
 				}).then(Auth.logout());
+		
+	}
+		
 
 			$location.path("/app/login");
 			$window.localStorage.clear();
