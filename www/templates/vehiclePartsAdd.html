@@ -6,15 +6,17 @@
 <ion-content>
 <form name="myForm" ng-submit="addNewPart(partDetail)" style="margin-left:100px;">
 	<span class="input-label">Part Name</span>
-	<input type="text" ng-model="partDetail.partName" placeholder="Part Name" required>
+	<input type="text" ng-model="partDetail.name" placeholder="Part Name" required>
 	<span class="input-label">Part Description</span>
-	<input type="text" ng-model="partDetail.partDescription" placeholder="Part Description" required>
+	<input type="text" ng-model="partDetail.description" placeholder="Part Description" required>
 	<span class="input-label">Part Price</span>
-	<input type="number" ng-model="partDetail.partPrice" placeholder="Part Price" required>
+	<input type="number" ng-model="partDetail.price" placeholder="Part Price" required>
 	<span class="input-label">Part Image</span>
 	<input type="file" id="partImage" class="inputimg" accept="image/*" required><pre>
 	<!-- <button ng-click="addNewPart(partImage)" class="button button-block button-positive"> -->
-	<input padding-bottom="20px" type="submit" value="Add" class="button" style="background: #0099CC;color: white;">
+	<input ng-if="!update" padding-bottom="20px" type="submit" value="Add" class="button" style="background: #0099CC;color: white;">
+	<button ng-if="update" padding-bottom="20px" class="button" style="background: #0099CC;color: white;"
+	ng-click="updatePart(partDetail)">Update</button>
 </form>
 </ion-content>
 </ion-modal-view>

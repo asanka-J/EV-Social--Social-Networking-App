@@ -1,6 +1,6 @@
 <ion-view title="Parts">
 <ion-nav-buttons side="right" >
-	<i class="ion ion-android-add-circle" 
+	<i ng-if="admin" class="ion ion-android-add-circle" 
 ng-click="partsAdd.show()">&nbsp;</i>
 	
 <i class="ion ion-briefcase" ng-click="partsCart.show()">
@@ -9,16 +9,18 @@ ng-click="partsAdd.show()">&nbsp;</i>
   <ion-content>
     <ion-list>
   
-    <ion-item ng-repeat="part in parts"  ng-click="addTOCart(part)">
+    <ion-item ng-repeat="part in parts">
   
     <div class="row">
       	<img class="col col-10" height="80px" width="80px" ng-src="{{part.image || 'img/download.png'}}">
-      	<div class="col">
+        <div class="col col-70">
       		<h2>Part Name: {{part.name}}</h2>
       		<h3>Part Description: {{part.description}}</h3>
       		<h3>Part Price: Rs {{part.price}} /=</h3>
-      	</div>
-      	<ion-checkbox class="button button-clear" ng-model="part.isCart"></ion-checkbox>
+        </div>
+      	<ion-checkbox ng-click="addTOCart(part)" class="button button-clear" ng-model="part.isCart"></ion-checkbox>
+        <a ng-if="admin" class="text-right" class="button" ng-click="editPart(part)">Edit</a>
+        <ion-option-button ng-if="admin" class = "button-assertive" ng-click="deletePart(part)">Delete</ion-option-button>
       </div>
 	  </ion-item>
     </ion-list>

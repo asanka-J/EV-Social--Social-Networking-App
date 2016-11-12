@@ -16,6 +16,8 @@ angular.module('app.controllers', [])
 })
 
 .controller('vehiclepartsControllerNew', function($rootScope,$scope,$state,VechileFactory,$ionicModal, Auth, $stateParams) {
+	$scope.update = false;
+	//$rootScope.admin = true;
 	$scope.selectedParts = VechileFactory.getParts();
 	$scope.selectedPartsTotal = 0;
 	angular.forEach(VechileFactory.getParts(), function(part) {
@@ -24,9 +26,17 @@ angular.module('app.controllers', [])
 	$scope.partDetail = {};
 
 	$scope.init = function() {
+		VechileFactory.getVechilePartTypes()//shop load branavi
+			.then(function(parts) {
+				$rootScope.vechileParts = parts;
+					 
 		$scope.parts = [];
-		angular.forEach($rootScope.vechileParts[$stateParams.part], function(part) {
+		angular.forEach($rootScope.vechileParts[$stateParams.part], function(part,id) {
+			part.id = id;
 			$scope.parts.push(part);
+			console.log('part');
+			console.log(part);
+		});
 		});
 	}
 
@@ -83,13 +93,14 @@ angular.module('app.controllers', [])
                 "textAreaFileContents"
               );
       				var newPart = {
-      					name: partDetail.partName,
-      					description: partDetail.partDescription,
-      					price: partDetail.partPrice,
+      					name: partDetail.name,
+      					description: partDetail.description,
+      					price: partDetail.price,
       					image: fileLoadedEvent.target.result
       				};
               VechileFactory.addVechileParts(newPart, $stateParams.part);
-              $rootScope.vechileParts[$stateParams.part][new Date().valueOf()] = newPart;
+              //newPart.id = new Date().valueOf();
+              //$rootScope.vechileParts[$stateParams.part][newPart.id] = newPart;
      			    $rootScope.$broadcast('refresh');
         			$scope.partDetail = {};
         			$('#partImage').val('');
@@ -108,7 +119,30 @@ angular.module('app.controllers', [])
       }
     }
 	}
+
+	$scope.editPart = function(partDetail) {
+		$scope.partsAdd.show();
+		$scope.partDetail = partDetail;
+		$scope.update = true;
+	}
+
+	$scope.updatePart = function(partDetail) {
+		//$scope.addNewPart(partDetail);
+		VechileFactory.deleteVechileParts(partDetail.id, $stateParams.part);
+		VechileFactory.updateVechileParts({[partDetail.id]:partDetail}, $stateParams.part);
+		$scope.partsAdd.hide();
+		$scope.update = false;
+	}
+
+	$scope.deletePart = function(partDetail) {
+		VechileFactory.deleteVechileParts(partDetail.id, $stateParams.part);
+		console.log(Object.values($rootScope.vechileParts[$stateParams.part]));
+		delete $rootScope.vechileParts[$stateParams.part][partDetail.id];
+	    $rootScope.$broadcast('refresh');
+	    $scope.partsAdd.hide();
+	}
 })
+
 
 
 .controller('AppCtrl', function($scope,$location,Auth,$localStorage,$state,$ionicHistory,$window) {
@@ -205,7 +239,7 @@ angular.module('app.controllers', [])
 })
 
 
-.controller('loginController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils,$ionicSideMenuDelegate,$ionicPlatform) {
+.controller('loginController', function ($scope, $rootScope,$state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils,$ionicSideMenuDelegate,$ionicPlatform) {
   var ref = new Firebase(FURL);
 
   var userkey = "";
@@ -248,8 +282,10 @@ angular.module('app.controllers', [])
 												
                        
 												if($localStorage.useremail=="admin@gmail.com")
-														{$state.go('app.adminHomepage');}
-														
+														{
+														$state.go('app.adminHomepage');
+														$rootScope.admin = true;
+														}
 														else
 														{$state.go('app.home');}
 														
