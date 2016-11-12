@@ -1,0 +1,61 @@
+<ion-view title="Appointment History" id="page124" hide-back-button="true">
+    <ion-content padding="true" class="has-header">
+
+<!doctype html>
+	<html lang="en" ng-app="app">
+	<head>
+	<meta charset="utf-8">
+    
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+	
+	<script src="lib/angular/angular.js"></script>
+	<script src="lib/dirPagination.js"></script>
+	<script src="app/app.js"></script>
+	
+	</head>
+	
+	<body>
+	<form class="form-inline">
+        <div class="form-group">
+            <label >Search</label>
+            <input type="text" ng-model="search" class="table" placeholder="Search">
+        </div>
+    </form>
+		<div ng-controller="viewAppointmentHistoryCtrl" class="item">
+			<table class="table" width=100% border="2" text-align="center">
+				<thead>
+				<tr>
+					<th bgcolor="e6f3ff" >Name</th><th>&nbsp;</th>
+                    <th bgcolor="e6f3ff"  >Date</th><th>&nbsp;</th>
+                    <th bgcolor="#e6f3ff" >Station</th><th>&nbsp;</th>
+					<th bgcolor="#e6f3ff" >Actions</th><th>&nbsp;</th>
+				</tr>
+				</thead>
+				<tbody>  
+				
+                    <tr ng-repeat="report in reports|filter:search">
+	
+                         <td>{{report.cname}}</td><td>&nbsp;</td>
+                         <td>{{report.date| date:'d MMM yyyy hh:mm:ss a'}}</td><td>&nbsp;</td>
+						 <td>{{report.stationName}}</td><td>&nbsp;</td> 
+                      
+
+                        <td>
+                        <button class="btn btn-primary" ng-click="deletefine(fine) "align="center"> <i class="ion-trash-a"></i></button>&nbsp;
+                        </td></tr>
+						</div>
+						
+                    </tbody>
+			
+			
+			</table>
+		</div>
+	</body>
+	
+	</html>
+
+	
+	 </ion-content>
+</ion-view>

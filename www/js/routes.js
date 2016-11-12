@@ -405,6 +405,17 @@ angular.module('app.routes', [])
         }
       }
   })
+  
+//appointment History
+	.state('app.appHistory', {
+		url: '/appointmentHistory',
+		views: {
+			'menuContent': {
+		templateUrl : 'templates/appHistory.html',
+		controller:'viewAppointmentHistoryCtrl'
+			}
+		}
+	})
 
 
  //admin make new notices
