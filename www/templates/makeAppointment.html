@@ -15,10 +15,17 @@
 				<span style="color:red" ng-show="makeAppointment.$submitted && makeAppointment.cname.$error.required">*This field is required!</span> 
 				<span style="color:red" ng-show="makeAppointment.cname.$error.pattern">*Characters Only!</span> <!-- catch the error --> 
 			</label>
+			
+				<label class="item item-input item-select">
+			<span class="input-label">Station</span>
+				<select ng-model="selectedStation" ng-change="changedValue(selectedStation)" data-ng-options="name as name.name for name in names" >
+			<option>select</option>
+			</select>
+		</label>
   
 			<label class="item item-input item-stacked-label">  
 				<span class="input-label">Contact Number</span>
-				<input type="tel" name="tele" ng-model="tele" ng-pattern="/^[0-9]{1,10}$/" required>
+				<input type="tel" name="tele" ng-model="tele" required>
 				<span style="color:red" ng-show="makeAppointment.tele.$error.pattern">Not a valid phone number!</span>
 				<span style="color:red" ng-show="makeAppointment.$submitted && makeAppointment.tele.$error.required">*This field is required!</span>
 			
@@ -33,18 +40,7 @@
 				<span style="color:red" ng-show="makeAppointment.vRegNum.$error.maxlength">length is 8</span>
 			</label>
   
-		<label class="item item-input item-select">
-		<div class="input-label"> 
-		Station
-		</div>
-		<!-- <select ng-repeat="station_names in station_name" ng-model="mySelect" ng-change="showSelectValue(mySelect)">
-		<option >{{station_name.name}}</option>
-		</select> -->
-				<select name="station_name"  id="station_name" >
-		<option ng-repeat="x in names">{{x}}</option>
-		</select>
-		</label>
-  {{x.name}}
+ 
 		<label class="item item-input">
 		<span class="input-label">Date</span>
 		<input type="datetime-local" id="datepicker" name="date" ng_model="appdate">
@@ -52,10 +48,10 @@
 	
 		</div>
 	
-			<button class="button button-full button-positive"   ng-click="makeAppointment.$valid && makeAppointmentForm(cname, tele, vRegNum)">
+			<button class="button button-full button-positive"   ng-click="makeAppointment.$valid && makeAppointmentForm(cname,tele,vRegNum)">
 			Make Appointment
 			</button>
-			<button id="reset" class="button button-full button-assertive" ng-click="makeAppointmentForm2(cname, tele, vRegNum)">
+			<button id="reset" class="button button-full button-assertive" ng-click="makeAppointmentForm2()">
 			Clear
 			</button>
 			<button class="button button-full button-balanced" ui-sref="app.appHistory" id="appointmentHistory-button">

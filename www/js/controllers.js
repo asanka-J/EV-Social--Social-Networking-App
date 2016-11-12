@@ -2511,10 +2511,13 @@ var refChild=ref.child("friends");
  
  $scope.cname = $localStorage.username;
   $scope.vRegNum=$localStorage.licenceplate;
-	 $scope.tele=$localStorage.mobileno;
+	 //$scope.tele=$localStorage.mobileno;
 		
- 
-	$scope.makeAppointmentForm = function(cname, tele, vRegNum, appdate) {
+		$scope.changedValue=function(item){
+					$scope.sname=item.name;
+					$scope.tele=item.id;
+					}   
+	$scope.makeAppointmentForm = function(cname,tele,vRegNum) {
 		var makeAppoRef1 = new Firebase('https://snev.firebaseio.com/make_apointments');
 		var makeAppoRef1 = makeAppoRef1.push();
 		
@@ -2527,21 +2530,12 @@ var refChild=ref.child("friends");
                 + currentdate.getMinutes() + ":" 
                 + currentdate.getSeconds();
 				
-				var x = document.getElementById("station_name").selectedIndex;
-    var y = document.getElementById("station_name").options;
-  var sname=y[x].text;
 				
 
 		
-		
-	
-
-
-		
-		
 		//pass the data to DB ---------------------------------------------------------------
      var noticeID = makeAppoRef1.key();
-       makeAppoRef1.set({ 'cname': cname,   'tele': tele , 'vRegNum': vRegNum,'appdate':datetime,'stationName':sname, 'date':Firebase.ServerValue.TIMESTAMP});
+       makeAppoRef1.set({ 'cname': cname,   'tele': tele , 'vRegNum': vRegNum,'appdate':datetime,'stationName':$scope.sname, 'date':Firebase.ServerValue.TIMESTAMP});
        var path = makeAppoRef1.toString();
 
 		//alert successfully add
@@ -2552,7 +2546,10 @@ var refChild=ref.child("friends");
 		
 		
 		 if (window.cordova) {
-		var phoneNo=tele;
+			 
+			 if($scope.tele!=""){
+			 
+		var phoneNo=$scope.tele;
 	
 	 var options = {
             replaceLineBreaks: true, // true to replace \n by a new line, false by default
@@ -2569,13 +2566,12 @@ var refChild=ref.child("friends");
       }, function(error) {
         {$ionicPopup.alert({ template: 'fail sms!'});}
       });
-	  
+		 }
 		 }
 
-         $scope.cname="";	
-         $scope.tele="";
-		 $scope.vRegNum="";
 		 $('#datepicker').val("");
+		 $scope.selectedStation="";
+		 $scope.tele="";
 		
 
 	}
@@ -2585,7 +2581,8 @@ var refChild=ref.child("friends");
 				fb.on('value', function(snapshot){
 						snapshot.forEach(function(stationSnapshot) {
 							 var station =stationSnapshot.val();
-									list.push(station.name);
+									 $scope.data = { id: station.contact, name: station.name};
+									list.push($scope.data);
 							
 						});					 
 				});
@@ -2594,11 +2591,10 @@ var refChild=ref.child("friends");
 		
 		
 	//Clear the fields.------------------------------------------------
-		$scope.makeAppointmentForm2 = function(cname, tele, vRegNum) {
-  		$scope.cname="";	
-        $scope.tele="";
-		$scope.vRegNum="";
+		$scope.makeAppointmentForm2 = function() {
 		$('#datepicker').val("");
+		 $scope.selectedStation="";
+		 $scope.tele="";
 		};
 		
  })
