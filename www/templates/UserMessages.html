@@ -51,16 +51,32 @@
                 </div>
               
             </div>
+			
+			
              
             <div class="cf"></div>
 
         </div>
 
              
-            <div ng-if="chatStat!='' || chatStat "  >
-                
-              {{toUser.username}} is  <img   ng-src="img/typing.gif"/>
-   
+            <div ng-if="chatStat "  >
+			
+			
+			              <img ng-click="viewProfile(message)" class="profile-pic left" 
+                    ng-src="{{toUser.pic}}" onerror="onProfilePicError(this)" />
+
+                <div class="chat-bubble left">
+
+                     <img  style="border-radius: 15px/50px;" ng-src="img/typing.gif "/> 
+
+                    <div class="message-detail">
+                        <span ng-click="viewProfile(message)" 
+                            class="bold">{{toUser.username}}</span>,
+
+                    </div>
+
+                </div>
+			
             </div>
 
     </ion-content>
