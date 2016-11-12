@@ -5,7 +5,7 @@
 </ion-header-bar>
 <ion-content scroll="false">
 <ion-list>
-<h4 align="center">You can buy your parts manually within a one week.</h4>
+<h4 align="center">You can buy your parts manually within a week.</h4>
 <h3 align="center" ng-if="selectedParts.length < 1">There are no parts in the order.</h3>
 <ion-scroll style="height:45vh;" ng-if="selectedParts.length > 0">
   <ion-item ng-repeat="part in selectedParts">
@@ -18,7 +18,7 @@
       	</div>
       </div>
   </ion-item>
-  <h4 align="center">Total ammount : {{selectedPartsTotal}}</h4>
+  <h6 align="center">Total amount : {{selectedPartsTotal}}</h6>
   </ion-scroll>
 </ion-list>
 </ion-content>
