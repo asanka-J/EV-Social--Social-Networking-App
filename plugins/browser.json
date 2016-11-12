@@ -12,6 +12,24 @@
         },
         "cordova-plugin-actionsheet": {
             "PACKAGE_NAME": "com.ionicframework.sepproject560103"
+        },
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.ionicframework.sepproject560103"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.ionicframework.sepproject560103"
+        },
+        "cordova-plugin-image-picker": {
+            "PACKAGE_NAME": "com.ionicframework.sepproject560103"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.ionicframework.sepproject560103"
+        },
+        "cordova-plugin-vibration": {
+            "PACKAGE_NAME": "com.ionicframework.sepproject560103"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.ionicframework.sepproject560103"
         }
     },
     "dependent_plugins": {}

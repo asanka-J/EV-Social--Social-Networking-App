@@ -184,11 +184,11 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
         buttonClicked: function(index) {
           switch (index) {
             case 0: // Copy Text
-              //cordova.plugins.clipboard.copy(message.text);
+              cordova.plugins.clipboard.copy(message.text);
 
               break;
             case 1: // Delete
-              // no server side secrets here :~)
+              
               $scope.messages.splice(itemIndex, 1);
               //**************DELETE MESSAGE *************************************
               
@@ -245,9 +245,7 @@ var lastPhoto = 'img/donut.png';
           addMessage(message);
 
 					$timeout(function () {
-					//	var message = MockService.getMockMessage();
-				//		message.date = new Date();
-					//	$scope.messages.push(message);
+			
 					}, 2000);
 					return true;
 				}
@@ -258,13 +256,13 @@ var lastPhoto = 'img/donut.png';
     
     $scope.viewProfile = function(msg) {
       if (msg.userId === $scope.user._id) {
-        // go to your profile
+        
       } else {
-        // go to other users profile
+        
       }
     };
     
-    // I emit this event from the monospaced.elastic directive, read line 480
+
     $scope.$on('taResize', function(e, ta) {
       
       if (!ta) return;
@@ -320,81 +318,6 @@ var lastPhoto = 'img/donut.png';
     };
   }
 ])
-/*
-// directives
-.directive('autolinker', ['$timeout',
-  function($timeout) {
-    return {
-      restrict: 'A',
-      link: function(scope, element, attrs) {
-        $timeout(function() {
-          var eleHtml = element.html();
-
-          if (eleHtml === '') {
-            return false;
-          }
-
-          var text = Autolinker.link(eleHtml, {
-            className: 'autolinker',
-            newWindow: false
-          });
-
-          element.html(text);
-
-          var autolinks = element[0].getElementsByClassName('autolinker');
-
-          for (var i = 0; i < autolinks.length; i++) {
-            angular.element(autolinks[i]).bind('click', function(e) {
-              var href = e.target.href;
-              
-
-              if (href) {
-                //window.open(href, '_system');
-                window.open(href, '_blank');
-              }
-
-              e.preventDefault();
-              return false;
-            });
-          }
-        }, 0);
-      }
-    }
-  }
-])
-*/
-function onProfilePicError(ele) {
-  this.ele.src = ''; // set a fallback
-}
-
-//xxxx
-/*
-function getMockMessages() {
-	
-  	var refChat=new Firebase('https://snev.firebaseio.com/privateChat');
-	
-	refChat.orderByChild("id").on("child_added", function(snapshot) {
-			  var messages=snapshot.val();
-      //  console.log(messages);
-			 
-			});
-
-      var msg=$firebaseArray(refChat);
- console.log(msg);
-
-  // return {"messages":[
-  //                      { "_id":"535d625f898df4e80e2a125e",
-  //                        "text":"Ionic has changed the game for hybrid app development.",
-  //                        "userId":"534b8fb2aa5e7afc1b23e69c",
-  //                        "date":"2014-04-27T20:02:39.082Z",
-  //                        "read":true,
-  //                        "readDate":"2016-10-01T06:27:37.944Z"}   ,
-
-  // {"_id":"54781ca4ab43d1d4113abff1","text":"chat test 2","userId":"534b8e5aaa5e7afc1b23e69b","date":"2014-11-29T06:56:36.472Z","read":true,"readDate":"2014-12-01T06:27:38.338Z"}],"unread":0};
-
-			return messages;
-}
-*/
 
 
 
