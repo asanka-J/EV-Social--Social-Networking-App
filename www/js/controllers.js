@@ -2566,7 +2566,7 @@ var refChild=ref.child("friends");
 		}
 		else {
 		
-						var alertPopup = $ionicPopup.alert({
+				var alertPopup = $ionicPopup.alert({
 				title: 'Alert!!! <i class="ion-checkmark-round"></i>',
 				template:'You cannot delete this post until it exceeds the report limit' 
 				});  
@@ -2672,8 +2672,10 @@ var refChild=ref.child("friends");
 .controller('viewAppointmentHistoryCtrl', function($scope, $http, $firebaseArray) {
 	
 	var refappHistory = new Firebase('https://snev.firebaseio.com/make_apointments');
-	$scope.reports = $firebaseArray(refappHistory);
-	console.log('$scope.reports');
+	$scope.appointments = $firebaseArray(refappHistory);
+	//console.log($scope.appointments);
+	
+	console.log(refappHistory.cname);
 	
 
 })
