@@ -2521,12 +2521,6 @@ var refChild=ref.child("friends");
 				
  				 }
 
-	
-
-
-
-
-
 	})
 
 
@@ -2535,10 +2529,58 @@ var refChild=ref.child("friends");
 // Asanka end
 
 //report post
-.controller ('adminReportPostCtrl', function($scope, $http,$firebaseArray) {
+.controller ('adminReportPostCtrl', function($scope, $http,$firebaseArray, $ionicPopup) {
 	var reportPostRef = new Firebase('https://snev.firebaseio.com/posts');
 	$scope.reports = $firebaseArray(reportPostRef);
 	console.log('$scope.reports');
+	
+	$scope.deletePost = function(report){
+		
+		var numberOfReports = report.noOfReports;
+		if (numberOfReports > 5 ){
+			$scope.showConfirm = function() {
+	
+      			var confirmPopup = $ionicPopup.confirm({
+         		title: 'Warnning !!!',
+         		template: 'Do you really want to delete?'
+      			});
+
+      			confirmPopup.then(function(res) {
+         		if(res) {
+            	console.log('Yes');
+				$scope.reports.$remove(report);
+			
+				var alertPopup = $ionicPopup.alert({
+				title: 'Successfully deleted! <i class="ion-checkmark-round"></i>',
+				template:'You have Successfuly deleted the user' 
+				});
+         } else {
+            console.log('No');
+         }
+      		
+				});
+		
+   		};
+    	$scope.showConfirm();
+
+		}
+		else {
+		
+				$scope.showPrompt = function() {
+	   			var promptPopup = $ionicPopup.prompt({
+         		title: 'Alert !',
+         		template: 'You cannot delete till it exceeds the report limit',
+         		});
+        
+      			promptPopup.then(function(res) {
+         		console.log(res);
+      			});
+		
+  				};
+				$scope.showPrompt();  
+		}
+    
+	}
 })
 
 
