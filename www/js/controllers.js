@@ -2566,18 +2566,10 @@ var refChild=ref.child("friends");
 		}
 		else {
 		
-				$scope.showPrompt = function() {
-	   			var promptPopup = $ionicPopup.prompt({
-         		title: 'Alert !',
-         		template: 'You cannot delete till it exceeds the report limit',
-         		});
-        
-      			promptPopup.then(function(res) {
-         		console.log(res);
-      			});
-		
-  				};
-				$scope.showPrompt();  
+						var alertPopup = $ionicPopup.alert({
+				title: 'Alert!!! <i class="ion-checkmark-round"></i>',
+				template:'You cannot delete this post until it exceeds the report limit' 
+				});  
 		}
     
 	}
