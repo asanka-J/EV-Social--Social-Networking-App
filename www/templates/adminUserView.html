@@ -1,5 +1,5 @@
 
-<ion-view title="Users" id="ad_user_page">
+<ion-view title="Users" id="ad_user_page" hide-back-button="false">
    
 	<ion-content padding="true" class="has-header">
     	<!doctype html>
@@ -93,16 +93,13 @@
                         <input type="text" name="email" ng-model="email" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" required>
 						<span style="color:red" ng-show="edituser.email.$error.pattern">Enter valid email address!</span>
                         </label>
-						
-
-  
-                 
-				 <button class="button button-full button-positive" ng-disabled="edituser.$invalid"  >
-        Save
-        </button>
-		<button class="button button-full button-assertive" ng-click="clearform()">
-        Clear
-        </button>
+						                 
+				 <!--button class="button button-full button-positive" ng-disabled="edituser.$invalid"  >
+                     Save
+                 </button-->
+		         <button class="button button-full button-assertive" ng-click="clearform()">
+                    Clear
+                 </button>
 </form>
 </div>
  </div>

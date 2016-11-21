@@ -27,6 +27,8 @@ angular.module('app.auth', [])
 			});
     },
 
+
+
     login: function(user) {
       return auth.$authWithPassword(
         {email: user.email, password: user.password}

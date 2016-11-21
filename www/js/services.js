@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  angular
+ angular
     .module('app.services', [])
  function VechileFactory($firebaseArray,$q) {
       var ref = new Firebase('https://snev.firebaseio.com/');
@@ -23,6 +23,12 @@
           ref.child('vechile_parts').child(type).push().set(part);
           //return $firebaseArray(ref.child('vechile_parts').child(type));
         },
+        updateVechileParts: function(part, type) {console.log(part);
+          ref.child('vechile_parts').child(type).update(part);
+        },
+        deleteVechileParts: function(part, type) {
+          ref.child('vechile_parts').child(type).child(part).remove();
+        },
         addParts: function(part) {
           parts.push(part);
         },
@@ -34,7 +40,6 @@
         }
       }
     }
-
     function RoomFactory($firebaseArray) {
         var ref = new Firebase('https://snev.firebaseio.com/');
         var rooms = $firebaseArray(ref.child('rooms'));

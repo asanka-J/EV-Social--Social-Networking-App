@@ -1,4 +1,4 @@
-<ion-view title="Appointment History" id="page124" hide-back-button="true">
+<ion-view title="Appointment History" id="page124" hide-back-button="false">
     <ion-content padding="true" class="has-header">
 
 <!doctype html>
@@ -35,15 +35,15 @@
 				</thead>
 				<tbody>  
 				
-                    <tr ng-repeat="report in reports|filter:search">
+                    <tr ng-repeat="appointment in appointments|filter:search">
 	
-                         <td>{{report.cname}}</td><td>&nbsp;</td>
-                         <td>{{report.date| date:'d MMM yyyy hh:mm:ss a'}}</td><td>&nbsp;</td>
-						 <td>{{report.stationName}}</td><td>&nbsp;</td> 
+                         <td>{{appointment.cname}}</td><td>&nbsp;</td>
+                         <td>{{appointment.date| date:'d MMM yyyy hh:mm:ss a'}}</td><td>&nbsp;</td>
+						 <td>{{appointment.stationName}}</td><td>&nbsp;</td> 
                       
 
                         <td>
-                        <button class="btn btn-primary" ng-click="deletefine(fine) "align="center"> <i class="ion-trash-a"></i></button>&nbsp;
+                        <button class="btn btn-primary" ng-click="deleteAppointment(appointment) "align="center"> <i class="ion-trash-a"></i></button>&nbsp;
                         </td></tr>
 						</div>
 						

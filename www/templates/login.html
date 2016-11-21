@@ -1,5 +1,5 @@
 <ion-view title="Welcome EV User" hide-nav-bar="true" hide-back-button="true" id="page5">
-    <ion-content padding="true" style="background: url(img/xtJ5zbTeHee7BwTchbwZ_app_background.jpg) no-repeat center;background-size:cover;" class="manual-ios-statusbar-padding">
+    <ion-content padding="true" style="background: url(img/background.jpeg) no-repeat center;background-size:cover;" class="manual-ios-statusbar-padding">
           <div class="list text-center padding">
           </div>
           <form novalidate name="loginForm" ng-submit="loginForm.$valid && signIn(user)">
@@ -35,6 +35,10 @@
           </div>
           <div class="padding-top">
             <input type="submit" ng-click="presencecheck(user)"" class="button button-block button-positive" value="Sign-In">
+			<div class="button-bar" >
+			<button ng-click="socialSignIn('facebook')" class=" button button-outline  button-block icon-left ion-social-facebook "  id="signup-button4"></button>
+			<button ng-click="socialSignIn('twitter')" class=" button button-outline  button-block icon-left ion-social-twitter "  id="signup-button4"></button>
+			</div>
             <p class="text-center padding-top">
                 <a ui-sref="app.forgot" class="button button-clear button-positive">Forgot password</a><a ui-sref="app.register" class="button button-clear button-positive">Register</a>
           </div>

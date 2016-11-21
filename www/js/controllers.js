@@ -16,6 +16,8 @@ angular.module('app.controllers', [])
 })
 
 .controller('vehiclepartsControllerNew', function($rootScope,$scope,$state,VechileFactory,$ionicModal, Auth, $stateParams) {
+	$scope.update = false;
+	//$rootScope.admin = true;
 	$scope.selectedParts = VechileFactory.getParts();
 	$scope.selectedPartsTotal = 0;
 	angular.forEach(VechileFactory.getParts(), function(part) {
@@ -24,9 +26,17 @@ angular.module('app.controllers', [])
 	$scope.partDetail = {};
 
 	$scope.init = function() {
+		VechileFactory.getVechilePartTypes()//shop load branavi
+			.then(function(parts) {
+				$rootScope.vechileParts = parts;
+					 
 		$scope.parts = [];
-		angular.forEach($rootScope.vechileParts[$stateParams.part], function(part) {
+		angular.forEach($rootScope.vechileParts[$stateParams.part], function(part,id) {
+			part.id = id;
 			$scope.parts.push(part);
+			console.log('part');
+			console.log(part);
+		});
 		});
 	}
 
@@ -83,13 +93,14 @@ angular.module('app.controllers', [])
                 "textAreaFileContents"
               );
       				var newPart = {
-      					name: partDetail.partName,
-      					description: partDetail.partDescription,
-      					price: partDetail.partPrice,
+      					name: partDetail.name,
+      					description: partDetail.description,
+      					price: partDetail.price,
       					image: fileLoadedEvent.target.result
       				};
               VechileFactory.addVechileParts(newPart, $stateParams.part);
-              $rootScope.vechileParts[$stateParams.part][new Date().valueOf()] = newPart;
+              //newPart.id = new Date().valueOf();
+              //$rootScope.vechileParts[$stateParams.part][newPart.id] = newPart;
      			    $rootScope.$broadcast('refresh');
         			$scope.partDetail = {};
         			$('#partImage').val('');
@@ -108,7 +119,30 @@ angular.module('app.controllers', [])
       }
     }
 	}
+
+	$scope.editPart = function(partDetail) {
+		$scope.partsAdd.show();
+		$scope.partDetail = partDetail;
+		$scope.update = true;
+	}
+
+	$scope.updatePart = function(partDetail) {
+		//$scope.addNewPart(partDetail);
+		VechileFactory.deleteVechileParts(partDetail.id, $stateParams.part);
+		VechileFactory.updateVechileParts(partDetail, $stateParams.part);
+		$scope.partsAdd.hide();
+		$scope.update = false;
+	}
+
+	$scope.deletePart = function(partDetail) {
+		VechileFactory.deleteVechileParts(partDetail.id, $stateParams.part);
+		console.log(Object.values($rootScope.vechileParts[$stateParams.part]));
+		delete $rootScope.vechileParts[$stateParams.part][partDetail.id];
+	    $rootScope.$broadcast('refresh');
+	    $scope.partsAdd.hide();
+	}
 })
+
 
 
 .controller('AppCtrl', function($scope,$location,Auth,$localStorage,$state,$ionicHistory,$window) {
@@ -205,7 +239,7 @@ angular.module('app.controllers', [])
 })
 
 
-.controller('loginController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils,$ionicSideMenuDelegate,$ionicPlatform) {
+.controller('loginController', function ($scope, $rootScope,$state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils,$ionicSideMenuDelegate,$ionicPlatform) {
   var ref = new Firebase(FURL);
 
   var userkey = "";
@@ -248,8 +282,10 @@ angular.module('app.controllers', [])
 												
                        
 												if($localStorage.useremail=="admin@gmail.com")
-														{$state.go('app.adminHomepage');}
-														
+														{
+														$state.go('app.adminHomepage');
+														$rootScope.admin = true;
+														}
 														else
 														{$state.go('app.home');}
 														
@@ -265,6 +301,33 @@ angular.module('app.controllers', [])
 												});
 											}
 								};
+								
+								
+								
+								
+				$scope.socialSignIn = function (provider) { 
+ 
+				ref.authWithOAuthPopup(provider, function(error, authData) {
+					$localStorage.email="";
+					if (error) {
+							console.log("Login Failed!", error);
+							$state.go('app.home');
+					} else {
+					console.log("Authenticated successfully with payload:");
+		
+						// The signed-in user info.
+						if(provider=="twitter"){
+							$localStorage.username = authData.twitter.displayName;
+							$localStorage.userimage = authData.twitter.profileImageURL;
+							$localStorage.userkey = authData.twitter.WCN6OPE6HafMWVKW5gjHx0B0LMI3;
+						console.log($localStorage.username);
+						}
+																					
+					$state.go('app.home');
+					}
+				});
+ 
+				};
 
 
 	
@@ -2486,12 +2549,6 @@ var refChild=ref.child("friends");
 				
  				 }
 
-	
-
-
-
-
-
 	})
 
 
@@ -2500,10 +2557,50 @@ var refChild=ref.child("friends");
 // Asanka end
 
 //report post
-.controller ('adminReportPostCtrl', function($scope, $http,$firebaseArray) {
+.controller ('adminReportPostCtrl', function($scope, $http,$firebaseArray, $ionicPopup) {
 	var reportPostRef = new Firebase('https://snev.firebaseio.com/posts');
 	$scope.reports = $firebaseArray(reportPostRef);
 	console.log('$scope.reports');
+	
+	$scope.deletePost = function(report){
+		
+		var numberOfReports = report.noOfReports;
+		if (numberOfReports > 5 ){
+			$scope.showConfirm = function() {
+	
+      			var confirmPopup = $ionicPopup.confirm({
+         		title: 'Warnning !!!',
+         		template: 'Do you really want to delete?'
+      			});
+
+      			confirmPopup.then(function(res) {
+         		if(res) {
+            	console.log('Yes');
+				$scope.reports.$remove(report);
+			
+				var alertPopup = $ionicPopup.alert({
+				title: 'Successfully deleted! <i class="ion-checkmark-round"></i>',
+				template:'You have Successfuly deleted the user' 
+				});
+         } else {
+            console.log('No');
+         }
+      		
+				});
+		
+   		};
+    	$scope.showConfirm();
+
+		}
+		else {
+		
+				var alertPopup = $ionicPopup.alert({
+				title: 'Alert!!! <i class="ion-checkmark-round"></i>',
+				template:'You cannot delete this post until it exceeds the report limit' 
+				});  
+		}
+    
+	}
 })
 
 
@@ -2512,10 +2609,13 @@ var refChild=ref.child("friends");
  
  $scope.cname = $localStorage.username;
   $scope.vRegNum=$localStorage.licenceplate;
-	 $scope.tele=$localStorage.mobileno;
+	 //$scope.tele=$localStorage.mobileno;
 		
- 
-	$scope.makeAppointmentForm = function(cname, tele, vRegNum, appdate) {
+		$scope.changedValue=function(item){
+					$scope.sname=item.name;
+					$scope.tele=item.id;
+					}   
+	$scope.makeAppointmentForm = function(cname,tele,vRegNum) {
 		var makeAppoRef1 = new Firebase('https://snev.firebaseio.com/make_apointments');
 		var makeAppoRef1 = makeAppoRef1.push();
 		
@@ -2523,39 +2623,38 @@ var refChild=ref.child("friends");
 		var currentdate=new Date($scope.appdate);
 		var datetime =  currentdate.getDate() + "/"
                 + (currentdate.getMonth()+1)  + "/" 
-                + currentdate.getFullYear() + " @ "  
+                + currentdate.getFullYear() + " at "  
                 + currentdate.getHours() + ":"  
                 + currentdate.getMinutes() + ":" 
-                + currentdate.getSeconds();
+                + currentdate.getSeconds() || '00';
+				console.log(datetime);
 				
-				var x = document.getElementById("station_name").selectedIndex;
-    var y = document.getElementById("station_name").options;
-  var sname=y[x].text;
+		
+				
 				
 
-		
-		
-	
-
-
-		
 		
 		//pass the data to DB ---------------------------------------------------------------
      var noticeID = makeAppoRef1.key();
-       makeAppoRef1.set({ 'cname': cname,   'tele': tele , 'vRegNum': vRegNum,'appdate':datetime,'stationName':sname, 'date':Firebase.ServerValue.TIMESTAMP});
+       makeAppoRef1.set({ 'cname': cname,   'tele': tele , 'vRegNum': vRegNum,'appdate':datetime,'stationName':$scope.sname, 'date':Firebase.ServerValue.TIMESTAMP});
        var path = makeAppoRef1.toString();
 
-		//alert successfully add
-		var alertPopup = $ionicPopup.alert({
-		title: 'Successful! <i class="ion-checkmark-round"></i>',
-		template:'You have Successfuly added the notice' 
-		});
-		
-		
-		 if (window.cordova) {
-		var phoneNo=tele;
+	   
+	   var confirmPopup = $ionicPopup.confirm({
+         title: 'Successfully added the appointment',
+         template: 'If you wish to inform through SMS click OK otherwise click Cancel'
+      });
+//alert successfully add
+      confirmPopup.then(function(res) {
+         if(res) {
+			 
+						 if (window.cordova) {
+			 
+					if($scope.tele!=""){
+			 
+					var phoneNo=$scope.tele;
 	
-	 var options = {
+		var options = {
             replaceLineBreaks: true, // true to replace \n by a new line, false by default
             android: {
                 intent: 'INTENT'  // send SMS with the native android SMS messaging
@@ -2566,17 +2665,23 @@ var refChild=ref.child("friends");
 	$cordovaSms
       .send(phoneNo, 'Appointment for charging on '+datetime+'requested by '+cname+' the owner of the vehicle '+vRegNum+'.', options)
       .then(function() {
-        {$ionicPopup.alert({ template: 'sending sms!'});}
+        {console.log( 'sending sms!');}
       }, function(error) {
-        {$ionicPopup.alert({ template: 'fail sms!'});}
+        {console.log('fail sms!');}
       });
-	  
 		 }
+		 }
+   
+         } else {
+            console.log('No sms');
+         }
+      });
+	   
+	
 
-         $scope.cname="";	
-         $scope.tele="";
-		 $scope.vRegNum="";
 		 $('#datepicker').val("");
+		 $scope.selectedStation="";
+		 $scope.tele="";
 		
 
 	}
@@ -2586,7 +2691,8 @@ var refChild=ref.child("friends");
 				fb.on('value', function(snapshot){
 						snapshot.forEach(function(stationSnapshot) {
 							 var station =stationSnapshot.val();
-									list.push(station.name);
+									 $scope.data = { id: station.contact, name: station.name};
+									list.push($scope.data);
 							
 						});					 
 				});
@@ -2595,21 +2701,51 @@ var refChild=ref.child("friends");
 		
 		
 	//Clear the fields.------------------------------------------------
-		$scope.makeAppointmentForm2 = function(cname, tele, vRegNum) {
-  		$scope.cname="";	
-        $scope.tele="";
-		$scope.vRegNum="";
+		$scope.makeAppointmentForm2 = function() {
 		$('#datepicker').val("");
+		 $scope.selectedStation="";
+		 $scope.tele="";
 		};
 		
  })
  //view appointment History
-.controller('viewAppointmentHistoryCtrl', function($scope, $http, $firebaseArray) {
+.controller('viewAppointmentHistoryCtrl', function($scope, $http,$ionicPopup, $firebaseArray,$localStorage) {
+
+	var uid=$localStorage.username;
+	var refappHistory = new Firebase('https://snev.firebaseio.com/make_apointments').orderByChild("cname").equalTo(uid);
+
+
+
+$scope.appointments = $firebaseArray(refappHistory);
+						 
+	$scope.deleteAppointment = function(appointment){
+    
+	 $scope.showConfirm = function() {
 	
-	var refappHistory = new Firebase('https://snev.firebaseio.com/make_apointments');
-	$scope.reports = $firebaseArray(refappHistory);
-	console.log('$scope.reports');
+      var confirmPopup = $ionicPopup.confirm({
+         title: 'Warnning !!!',
+         template: 'Do you really want to delete?'
+      });
+
+      confirmPopup.then(function(res) {
+         if(res) {
+            console.log('Yes');
+			$scope.appointments.$remove(appointment);
+			
+			var alertPopup = $ionicPopup.alert({
+		title: 'Successfully deleted! <i class="ion-checkmark-round"></i>',
+		template:'You have Successfuly deleted the user' 
+		});
+         } else {
+            console.log('No');
+         }
+      });
+		
+   };
+    $scope.showConfirm();
 	
+    //clearForm();
+}
 
 })
 
@@ -2633,6 +2769,13 @@ var refChild=ref.child("friends");
 
 .controller('finecrud',  function($scope,$firebaseArray,$rootScope,$ionicPopup){
 	
+	$scope.name="";
+    $scope.id="";
+    $scope.mobile="";
+    $scope.vehicle_name="";
+    $scope.licence_plate="";
+   $scope.email="";
+
 	$scope.editFormSubmit = function() {
     if($scope.exampleForm.$valid)
       console.log('saving task'); // save $scope.user object
