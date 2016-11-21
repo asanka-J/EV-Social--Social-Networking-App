@@ -1577,7 +1577,7 @@ $scope.ToggleCompleted = function(toStatus){
 											dislikekey = dislikeSnapshot.val();
 
 												if(dislikekey==null){ 
-													alert("no dislikes");
+												
 												}else{
 													disLikedRef.orderByChild("user").equalTo($localStorage.username).once("child_added", function(dsnapshot) {
 														var value1=dsnapshot.key();
@@ -1589,9 +1589,7 @@ $scope.ToggleCompleted = function(toStatus){
 													});
 													
 												}
-										
-
-
+					
 									});
 
 
@@ -1770,7 +1768,7 @@ $scope.ToggleCompleted = function(toStatus){
 
 
 //adding a post 
-.controller('newPostController', function($scope, $http, $state,$ionicPopup,$firebaseArray, $localStorage,$firebase) {
+.controller('newPostController', function($scope, $http, $state,$ionicPopup,$firebaseArray, $location,$localStorage,$firebase) {
    $scope.postForm = function(title,description){
      
       	 var username= $localStorage.username;
@@ -1821,7 +1819,7 @@ $scope.ToggleCompleted = function(toStatus){
 										userimage:userImg,
 										noOfcomments:0
       
-              });
+              }).then(alert("sucessfully posted")).then($location.path("/app/socialnetwork"));
             };
 
             fileReader.readAsDataURL(fileToLoad);
@@ -1839,18 +1837,7 @@ $scope.ToggleCompleted = function(toStatus){
     return true;
   }
 
-  $scope.deleteimg = function(imgid) {
-    var r = confirm("Do you want to remove this image ?");
-    if (r == true) {
-      $scope.imgs.forEach(function(childSnapshot) {		
-        if (childSnapshot.$id == imgid) {
-            $scope.imgs.$remove(childSnapshot).then(function(ref) {
-              ref.key() === childSnapshot.$id; // true
-            });
-        }
-      });
-    }
-  }//image Upload controller end
+
 
 
          $scope.title="";
