@@ -75,7 +75,7 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
         footerBar = document.body.querySelector('#userMessagesView .bar-footer');
         scroller = document.body.querySelector('#userMessagesView .scroll-content');
         txtInput = angular.element(footerBar.querySelector('textarea'));
-      }, 0);
+      }, 20000);
 
       messageCheckTimer = $interval(function() {
 
@@ -214,7 +214,7 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
 
     	var addMessage = function (message) {
 
-        alert("image selected");
+       // alert("image selected");
 			message._id = new Date().getTime(); // :~)
 			message.date = new Date();
 			message.username = $scope.user.username;
@@ -224,6 +224,7 @@ angular.module('messages.controllers', [ 'ionic',"firebase",'app','angularMoment
 		};
 
 var lastPhoto = 'img/donut.png';
+
 
 		$scope.sendPhoto = function () {
 			$ionicActionSheet.show({
@@ -240,7 +241,7 @@ var lastPhoto = 'img/donut.png';
 						photo: lastPhoto
 					};
 					lastPhoto = lastPhoto === 'img/donut.png' ? 'img/woho.png' : 'img/donut.png';
-					alert(lastPhoto);
+				//	alert(lastPhoto);
           
           addMessage(message);
 
@@ -329,22 +330,3 @@ function getMockMessages() {
 }
 
 
-
-// // configure moment relative time
-// moment.locale('en', {
-//   relativeTime: {
-//     future: "in %s",
-//     past: "%s ago",
-//     s: "%d sec",
-//     m: "a minute",
-//     mm: "%d minutes",
-//     h: "an hour",
-//     hh: "%d hours",
-//     d: "a day",
-//     dd: "%d days",
-//     M: "a month",
-//     MM: "%d months",
-//     y: "a year",
-//     yy: "%d years"
-//   }
-// });

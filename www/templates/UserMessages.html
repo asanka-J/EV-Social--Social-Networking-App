@@ -37,6 +37,7 @@
               
                  <img ng-click="viewProfile(message)" class="profile-pic right" 
                     ng-src="{{user.pic}}" onerror="onProfilePicError(this)" />
+                      
               
                 <div class="chat-bubble right">
 
@@ -71,7 +72,7 @@
 
                     <div class="message-detail">
                         <span ng-click="viewProfile(message)" 
-                            class="bold">{{toUser.username}}</span>,
+                            class="bold">{{toUser.username}} </span>,typing now
 
                     </div>
 
@@ -89,7 +90,10 @@
                 <textarea ng-model="input.message" value="" placeholder="Send {{toUser.username}} a message..." required minlength="1" maxlength="1500" msd-elastic></textarea>
             </label>
 			
-			 <button class="button button-icon icon ion-images button-dark button-clear photo" type="button" ng-if="!input.message || input.message === ''" on-tap="sendPhoto()"></button> 
+			 <button class="button button-icon icon ion-images button-dark button-clear photo" type="button" ng-if="!input.message || input.message === ''" on-tap="sendPhoto() "></button> 
+             
+            
+
            <div class="footer-btn-wrap">
  
         <div>_</div><button class="button button-icon icon ion-android-send footer-btn" type="submit" ng-disabled="!input.message || input.message === ''"></button>
