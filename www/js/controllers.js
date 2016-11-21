@@ -2669,13 +2669,29 @@ var refChild=ref.child("friends");
 		
  })
  //view appointment History
-.controller('viewAppointmentHistoryCtrl', function($scope, $http, $firebaseArray) {
-	
+.controller('viewAppointmentHistoryCtrl', function($scope, $http, $firebaseArray,$localStorage) {
+
+	var uid=$localStorage.username;
 	var refappHistory = new Firebase('https://snev.firebaseio.com/make_apointments');
-	$scope.appointments = $firebaseArray(refappHistory);
+
+
+	refappHistory.orderByChild("cname").equalTo(uid).on("value", function(snapshot) {
+				 
+                     $scope.appointments = [];
+					 var list = [];
+						snapshot.forEach(function(userHisSnapshot) {
+							 var userHistory =userHisSnapshot.val();
+
+									list.push(userHistory);
+							
+						});	
+						 $scope.appointments = list.reverse(); 
+				  });
+
+	//$scope.appointments = $firebaseArray(refappHistory);
 	//console.log($scope.appointments);
 	
-	console.log(refappHistory.cname);
+	
 	
 
 })
