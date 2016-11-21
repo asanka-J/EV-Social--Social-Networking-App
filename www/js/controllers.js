@@ -2622,10 +2622,13 @@ var refChild=ref.child("friends");
 		var currentdate=new Date($scope.appdate);
 		var datetime =  currentdate.getDate() + "/"
                 + (currentdate.getMonth()+1)  + "/" 
-                + currentdate.getFullYear() + " @ "  
+                + currentdate.getFullYear() + " at "  
                 + currentdate.getHours() + ":"  
                 + currentdate.getMinutes() + ":" 
-                + currentdate.getSeconds();
+                + currentdate.getSeconds() || '00';
+				console.log(datetime);
+				
+		
 				
 				
 
@@ -2635,20 +2638,22 @@ var refChild=ref.child("friends");
        makeAppoRef1.set({ 'cname': cname,   'tele': tele , 'vRegNum': vRegNum,'appdate':datetime,'stationName':$scope.sname, 'date':Firebase.ServerValue.TIMESTAMP});
        var path = makeAppoRef1.toString();
 
-		//alert successfully add
-		var alertPopup = $ionicPopup.alert({
-		title: 'Successful! <i class="ion-checkmark-round"></i>',
-		template:'You have Successfuly added the notice' 
-		});
-		
-		
-		 if (window.cordova) {
+	   
+	   var confirmPopup = $ionicPopup.confirm({
+         title: 'Successfully added the appointment',
+         template: 'If you wish to inform through SMS click OK otherwise click Cancel'
+      });
+//alert successfully add
+      confirmPopup.then(function(res) {
+         if(res) {
 			 
-			 if($scope.tele!=""){
+						 if (window.cordova) {
 			 
-		var phoneNo=$scope.tele;
+					if($scope.tele!=""){
+			 
+					var phoneNo=$scope.tele;
 	
-	 var options = {
+		var options = {
             replaceLineBreaks: true, // true to replace \n by a new line, false by default
             android: {
                 intent: 'INTENT'  // send SMS with the native android SMS messaging
@@ -2659,12 +2664,19 @@ var refChild=ref.child("friends");
 	$cordovaSms
       .send(phoneNo, 'Appointment for charging on '+datetime+'requested by '+cname+' the owner of the vehicle '+vRegNum+'.', options)
       .then(function() {
-        {$ionicPopup.alert({ template: 'sending sms!'});}
+        {console.log( 'sending sms!');}
       }, function(error) {
-        {$ionicPopup.alert({ template: 'fail sms!'});}
+        {console.log('fail sms!');}
       });
 		 }
 		 }
+   
+         } else {
+            console.log('No sms');
+         }
+      });
+	   
+	
 
 		 $('#datepicker').val("");
 		 $scope.selectedStation="";
