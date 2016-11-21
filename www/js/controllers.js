@@ -2708,30 +2708,43 @@ var refChild=ref.child("friends");
 		
  })
  //view appointment History
-.controller('viewAppointmentHistoryCtrl', function($scope, $http, $firebaseArray,$localStorage) {
+.controller('viewAppointmentHistoryCtrl', function($scope, $http,$ionicPopup, $firebaseArray,$localStorage) {
 
 	var uid=$localStorage.username;
-	var refappHistory = new Firebase('https://snev.firebaseio.com/make_apointments');
+	var refappHistory = new Firebase('https://snev.firebaseio.com/make_apointments').orderByChild("cname").equalTo(uid);
 
 
-	refappHistory.orderByChild("cname").equalTo(uid).on("value", function(snapshot) {
-				 
-                     $scope.appointments = [];
-					 var list = [];
-						snapshot.forEach(function(userHisSnapshot) {
-							 var userHistory =userHisSnapshot.val();
 
-									list.push(userHistory);
-							
-						});	
-						 $scope.appointments = list.reverse(); 
-				  });
-
-	//$scope.appointments = $firebaseArray(refappHistory);
-	//console.log($scope.appointments);
+$scope.appointments = $firebaseArray(refappHistory);
+						 
+	$scope.deleteAppointment = function(appointment){
+    
+	 $scope.showConfirm = function() {
 	
+      var confirmPopup = $ionicPopup.confirm({
+         title: 'Warnning !!!',
+         template: 'Do you really want to delete?'
+      });
+
+      confirmPopup.then(function(res) {
+         if(res) {
+            console.log('Yes');
+			$scope.appointments.$remove(appointment);
+			
+			var alertPopup = $ionicPopup.alert({
+		title: 'Successfully deleted! <i class="ion-checkmark-round"></i>',
+		template:'You have Successfuly deleted the user' 
+		});
+         } else {
+            console.log('No');
+         }
+      });
+		
+   };
+    $scope.showConfirm();
 	
-	
+    //clearForm();
+}
 
 })
 
@@ -2755,6 +2768,13 @@ var refChild=ref.child("friends");
 
 .controller('finecrud',  function($scope,$firebaseArray,$rootScope,$ionicPopup){
 	
+	$scope.name="";
+    $scope.id="";
+    $scope.mobile="";
+    $scope.vehicle_name="";
+    $scope.licence_plate="";
+   $scope.email="";
+
 	$scope.editFormSubmit = function() {
     if($scope.exampleForm.$valid)
       console.log('saving task'); // save $scope.user object
