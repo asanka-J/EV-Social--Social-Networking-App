@@ -35,6 +35,10 @@
           </div>
           <div class="padding-top">
             <input type="submit" ng-click="presencecheck(user)"" class="button button-block button-positive" value="Sign-In">
+			<div class="button-bar" >
+			<button ng-click="socialSignIn('facebook')" class=" button button-outline  button-block icon-left ion-social-facebook "  id="signup-button4"></button>
+			<button ng-click="socialSignIn('twitter')" class=" button button-outline  button-block icon-left ion-social-twitter "  id="signup-button4"></button>
+			</div>
             <p class="text-center padding-top">
                 <a ui-sref="app.forgot" class="button button-clear button-positive">Forgot password</a><a ui-sref="app.register" class="button button-clear button-positive">Register</a>
           </div>

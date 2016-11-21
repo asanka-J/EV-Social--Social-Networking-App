@@ -301,6 +301,33 @@ angular.module('app.controllers', [])
 												});
 											}
 								};
+								
+								
+								
+								
+				$scope.socialSignIn = function (provider) { 
+ 
+				ref.authWithOAuthPopup(provider, function(error, authData) {
+					$localStorage.email="";
+					if (error) {
+							console.log("Login Failed!", error);
+							$state.go('app.home');
+					} else {
+					console.log("Authenticated successfully with payload:");
+		
+						// The signed-in user info.
+						if(provider=="twitter"){
+							$localStorage.username = authData.twitter.displayName;
+							$localStorage.userimage = authData.twitter.profileImageURL;
+							$localStorage.userkey = authData.twitter.WCN6OPE6HafMWVKW5gjHx0B0LMI3;
+						console.log($localStorage.username);
+						}
+																					
+					$state.go('app.home');
+					}
+				});
+ 
+				};
 
 
 	
