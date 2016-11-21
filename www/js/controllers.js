@@ -129,7 +129,7 @@ angular.module('app.controllers', [])
 	$scope.updatePart = function(partDetail) {
 		//$scope.addNewPart(partDetail);
 		VechileFactory.deleteVechileParts(partDetail.id, $stateParams.part);
-		VechileFactory.updateVechileParts({[partDetail.id]:partDetail}, $stateParams.part);
+		VechileFactory.updateVechileParts(partDetail, $stateParams.part);
 		$scope.partsAdd.hide();
 		$scope.update = false;
 	}
