@@ -1,6 +1,6 @@
 <!-- User can make appointment before arrive to the station -->
 
-<ion-view title="Make Appointment" id="page32">
+<ion-view title="Make Appointment" id="page32" hide-back-button="false">
     <ion-content padding="true" class="has-header">
     
 	<div ng-controller="makeAppointmentCtrl">
@@ -27,7 +27,7 @@
 				<span class="input-label">Contact Number</span>
 				<input type="tel" name="tele" ng-model="tele" required>
 				<span style="color:red" ng-show="makeAppointment.tele.$error.pattern">Not a valid phone number!</span>
-				<span style="color:red" ng-show="makeAppointment.$submitted && makeAppointment.tele.$error.required">*This field is required!</span>
+				<!--span style="color:red" ng-show="makeAppointment.$submitted && makeAppointment.tele.$error.required">*This field is required!</span-->
 			
 			</label>
   
