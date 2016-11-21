@@ -1557,8 +1557,12 @@ $scope.ToggleCompleted = function(toStatus){
 					  var value=snapshot.key();
 						var data = snapshot.val();
 						var noofl=data.noOfLikes;
+							var noofD=data.noOfDisLikes;
+
 						var postsreflike = new Firebase('https://snev.firebaseio.com/posts');
 						var likedRef=postsreflike.child(value).child("liked");
+						var disLikedRef=postsreflike.child(value).child("Disliked");
+						
 												
 									//load specific items to check existing
 										likedRef.orderByChild("user").equalTo($localStorage.username).once("value", function(snapshot) {
@@ -1567,6 +1571,30 @@ $scope.ToggleCompleted = function(toStatus){
 											if(userkey==null){
 														postsreflike.child(value).update({ noOfLikes: noofl+1},checkLike);
 														likedRef.push({user:username});
+
+									
+									disLikedRef.orderByChild("user").equalTo($localStorage.username).once("value", function(dislikeSnapshot) {
+											dislikekey = dislikeSnapshot.val();
+
+												if(dislikekey==null){ 
+													alert("no dislikes");
+												}else{
+													disLikedRef.orderByChild("user").equalTo($localStorage.username).once("child_added", function(dsnapshot) {
+														var value1=dsnapshot.key();
+
+														disLikedRef.child(value1).remove();		
+														postsreflike.child(value).update({ noOfDisLikes: noofD-1});
+														
+
+													});
+													
+												}
+										
+
+
+									});
+
+
 													
 											}else{
 												
@@ -1592,8 +1620,10 @@ $scope.ToggleCompleted = function(toStatus){
 					  var value=snapshot.key();
 						var data = snapshot.val();
 						var noofl=data.noOfDisLikes;
+						var noofD=data.noOfLikes;
 						var postsreflike = new Firebase('https://snev.firebaseio.com/posts');
 						var likedRef=postsreflike.child(value).child("Disliked");
+						var LikedRefLiked=postsreflike.child(value).child("liked");
 												
 									//load specific items to check existing
 										likedRef.orderByChild("user").equalTo($localStorage.username).once("value", function(snapshot) {
@@ -1602,6 +1632,27 @@ $scope.ToggleCompleted = function(toStatus){
 											if(userkey==null){
 														postsreflike.child(value).update({ noOfDisLikes: noofl+1},checkDisLike);
 														likedRef.push({user:username});
+
+
+											LikedRefLiked.orderByChild("user").equalTo($localStorage.username).once("value", function(likedSnap) {
+											likekey = likedSnap.val();
+
+												if(likekey==null){ 
+													
+												}else{
+													LikedRefLiked.orderByChild("user").equalTo($localStorage.username).once("child_added", function(dsnapshot) {
+														var value1=dsnapshot.key();
+
+														LikedRefLiked.child(value1).remove();		
+														postsreflike.child(value).update({ noOfLikes: noofD-1});
+														
+													});
+													
+												}
+										
+
+
+									});
 													
 											}else{
 													
