@@ -226,16 +226,12 @@ angular.module('app.controllers', [])
 .controller('homeController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils) {
 	
 
-	
-
-
-
-
-
+	$scope.$on('$ionicView.beforeEnter', function() {
 		
-			//managing logout presence- user control					
-			
-    $scope.username=$localStorage.username;
+			if ($state.current.name=="app.home") {
+				 $scope.username=$localStorage.username;
+			}
+		});
 })
 
 
@@ -392,14 +388,14 @@ var uid = $localStorage.userkey;//getting current user
 $scope.year = date.getFullYear();
 $scope.cmonthNum = date.getMonth();
 
-var JanCost=0; var FebCost=0; var MarCost=0; var AprCost=0; var MayCost=0; var JunCost=0;
-var JulCost=0; var AugCost=0; var SepCost=0; var OctCost=0; var NovCost=0; var DecCost=0;
 
 
 	var ref = new Firebase("https://snev.firebaseio.com/charge_history");
 	
 		var yearlyReport = function() {
-				  ref.orderByChild("user_id").equalTo(uid).on("value", function(snapshot) {
+			var JanCost=0; var FebCost=0; var MarCost=0; var AprCost=0; var MayCost=0; var JunCost=0;
+            var JulCost=0; var AugCost=0; var SepCost=0; var OctCost=0; var NovCost=0; var DecCost=0;
+				  ref.orderByChild("user_id").equalTo(uid).once("value", function(snapshot) {
 					  var userHistory=snapshot.val();
 					 snapshot.forEach(function(userHisSnapshot) {
 							 var userHistory =userHisSnapshot.val();
@@ -421,6 +417,7 @@ var JulCost=0; var AugCost=0; var SepCost=0; var OctCost=0; var NovCost=0; var D
 							  if(myDate.getMonth()==10){NovCost=NovCost+ncost;};
 							  if(myDate.getMonth()==11){DecCost=DecCost+ncost;};
 						  }
+						 
 						});	
 							$scope.labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"];
 							  $scope.data = [
@@ -487,6 +484,7 @@ $scope.cmonth = month[$scope.cmonthNum];
 			if(res){
 				 ref.child(taskid).remove();
 				monthlyReport();
+				 yearlyReport();
 			}
 		});
 	};
